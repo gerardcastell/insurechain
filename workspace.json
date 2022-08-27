@@ -2,6 +2,9 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "backend": "apps/backend"
+    "backend": "apps/backend",
+    "backend-policies": "libs/backend/policies",
+    "backend-proposals": "libs/backend/proposals",
+    "backend-users": "libs/backend/users"
   }
 }

@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@insurechain/backend/policies": ["libs/backend/policies/src/index.ts"],
+      "@insurechain/backend/proposals": ["libs/backend/proposals/src/index.ts"],
+      "@insurechain/backend/users": ["libs/backend/users/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
