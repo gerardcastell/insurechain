@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int     @default(autoincrement()) @id
+  email String  @unique
+  password String
+  name  String?
+  policies Policy[]
+}
+
+model Policy {
+  id        Int      @default(autoincrement()) @id
+  policyHolder  User @relation(fields: [policyHolderId], references: [id])
+  policyHolderId Int
+  vertical VerticalProduct
+  coverages Json
+  active Boolean? @default(false)
+}
+
+enum VerticalProduct {
+  CAR
+}
+
+

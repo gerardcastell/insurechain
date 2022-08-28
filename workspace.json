@@ -4,6 +4,7 @@
   "projects": {
     "backend": "apps/backend",
     "backend-policies": "libs/backend/policies",
+    "backend-prisma": "libs/backend/prisma",
     "backend-proposals": "libs/backend/proposals",
     "backend-users": "libs/backend/users"
   }

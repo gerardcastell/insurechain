@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@insurechain/backend/policies": ["libs/backend/policies/src/index.ts"],
+      "@insurechain/backend/prisma": ["libs/backend/prisma/src/index.ts"],
       "@insurechain/backend/proposals": ["libs/backend/proposals/src/index.ts"],
       "@insurechain/backend/users": ["libs/backend/users/src/index.ts"]
     }

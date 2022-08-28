@@ -1,2 +1,21 @@
 ### Basic Get
-GET http://localhost:3333/api
+POST  http://localhost:3333/api
+Content-Type: application/json
+
+{
+  "hola":"adios"
+}
+
+###Create User
+POST  http://localhost:3333/api/auth/signup
+Content-Type: application/json
+
+{
+  "email": "pruebda@gmail.com",
+  "password": "abcde1234",
+  "name": "pepito"
+}
+
+
+### Find user
+GET http://localhost:3333/api/auth/4
