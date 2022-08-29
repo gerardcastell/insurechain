@@ -2,13 +2,22 @@ import { BackendPoliciesModule } from '@insurechain/backend/policies';
 import { BackendProposalsModule } from '@insurechain/backend/proposals';
 import { BackendUsersModule } from '@insurechain/backend/users';
 import { Module, ValidationPipe } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [BackendUsersModule, BackendPoliciesModule, BackendProposalsModule],
+  imports: [
+    BackendUsersModule,
+    BackendPoliciesModule,
+    BackendProposalsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env`,
+    }),
+  ],
   controllers: [AppController],
   providers: [
     AppService,
