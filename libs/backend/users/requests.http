@@ -1,5 +1,6 @@
 ### Basic Get
 GET  http://localhost:3333/api/hello
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im90cm9AZ21haWwuY29tIiwic3ViIjoxLCJpYXQiOjE2NjE3NzcyNTMsImV4cCI6MTY2MTg2MzY1M30.F76P-C7ZLTBsl00CujLfEYcn9PSf5p9GPmhCOPm1Sds
 
 
 ###Create User
