@@ -5,7 +5,6 @@ import {
   NotFoundException,
   Param,
   Post,
-  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -47,11 +46,10 @@ export class UsersController {
    */
   @Get('/:id')
   async findUser(@Param('id') id) {
-    const user = await this.usersService.findUser(id);
+    const user = await this.usersService.findOneById(parseInt(id));
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    console.log(user);
     return user;
   }
 }

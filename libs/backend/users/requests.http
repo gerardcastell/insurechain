@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### Find user
-GET http://localhost:3333/api/auth/4
+GET http://localhost:3333/api/auth/1
 
 ### Sign in user
 POST  http://localhost:3333/api/auth/signin
@@ -34,18 +34,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im90cm9AZ
 
 
 ### Prueba login
-POST  http://localhost:3333/api/auth/signin
+POST  http://localhost:3333/api/auth/login
 Content-Type: application/json
 
 {
-      "username": "john",
-      "password": "changeme"
+  "email": "otro@gmail.com",
+  "password": "1234"
 }
-### prueba profile
 
-GET  http://localhost:3333/api/auth
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsImlhdCI6MTY2MTc1NzYzMiwiZXhwIjoxNjYxODE3NjMyfQ.jDtfXL0yve2qdK9QdXlqb6WuHm8VO9unshBLI3xfWdc
 
-### otro
+### Get profile with Jwt
 GET  http://localhost:3333/api/auth/profile
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsImlhdCI6MTY2MTc1NzYzMiwiZXhwIjoxNjYxODE3NjMyfQ.jDtfXL0yve2qdK9QdXlqb6WuHm8VO9unshBLI3xfWdc
