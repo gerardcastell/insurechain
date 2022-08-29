@@ -1,10 +1,6 @@
 ### Basic Get
-POST  http://localhost:3333/api
-Content-Type: application/json
+GET  http://localhost:3333/api/hello
 
-{
-  "hola":"adios"
-}
 
 ###Create User
 POST  http://localhost:3333/api/auth/signup
@@ -28,12 +24,7 @@ Content-Type: application/json
   "password": "1234"
 }
 
-### Profile Authenticated
-GET  http://localhost:3333/api/auth/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im90cm9AZ21haWwuY29tIiwic3ViIjoxLCJpYXQiOjE2NjE3MDI5MjQsImV4cCI6MTY2MTcwMzUyNH0.enCxpF_PiCY-0r2oydEdYMwMgjZ0Yn9bWRT1Dnr4iSI
-
-
-### Prueba login
+### Login
 POST  http://localhost:3333/api/auth/login
 Content-Type: application/json
 
@@ -45,4 +36,4 @@ Content-Type: application/json
 
 ### Get profile with Jwt
 GET  http://localhost:3333/api/auth/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsImlhdCI6MTY2MTc1NzYzMiwiZXhwIjoxNjYxODE3NjMyfQ.jDtfXL0yve2qdK9QdXlqb6WuHm8VO9unshBLI3xfWdc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im90cm9AZ21haWwuY29tIiwic3ViIjoxLCJpYXQiOjE2NjE3NzcyNTMsImV4cCI6MTY2MTg2MzY1M30.F76P-C7ZLTBsl00CujLfEYcn9PSf5p9GPmhCOPm1Sds

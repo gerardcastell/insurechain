@@ -12,6 +12,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { BackendUsersService } from './backend-users.service';
 import { CreateUserDto } from './dtos/CreateUser.dto';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtAuthGuard } from './guards/passport-auth.guard';
 
 @Controller('auth')
 export class UsersController {
@@ -26,13 +28,13 @@ export class UsersController {
     return user;
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
   }
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
     return this.authService.login(req.user);
