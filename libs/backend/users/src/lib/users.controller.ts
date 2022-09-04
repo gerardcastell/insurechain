@@ -9,9 +9,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { BackendUsersService } from './backend-users.service';
 import { CreateUserDto } from './dtos/CreateUser.dto';
+import { SigninDto } from './dtos/Signin.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/passport-auth.guard';
 
@@ -30,13 +32,14 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
+  @ApiBearerAuth()
   getProfile(@Request() req) {
     return req.user;
   }
 
   @UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Request() req) {
+  @Post('signin')
+  async signin(@Body() body: SigninDto, @Request() req) {
     return this.authService.login(req.user);
   }
 
