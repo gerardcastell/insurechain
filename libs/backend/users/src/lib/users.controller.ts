@@ -8,7 +8,6 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { BackendUsersService } from './backend-users.service';
@@ -26,7 +25,7 @@ export class UsersController {
 
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto) {
-    const user = await this.authService.signup(body.email, body.password);
+    const user = await this.authService.signup(body);
     return user;
   }
 
