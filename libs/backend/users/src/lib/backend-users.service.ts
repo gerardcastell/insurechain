@@ -1,20 +1,23 @@
-import { BackendPrismaService } from '@insurechain/backend/prisma';
+import { PrismaService } from '@insurechain/backend/prisma';
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { CreateUserDto } from './dtos/CreateUser.dto';
 @Injectable()
 export class BackendUsersService {
-  constructor(private prisma: BackendPrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
-  create(payload: CreateUserDto) {
-    return this.prisma.user.create({ data: { ...payload } });
+  create(email: string, password: string, name: string): Promise<User> {
+    return this.prisma.user.create({ data: { email, password, name } });
   }
 
-  async findOneByEmail(email: string): Promise<User> {
+  findOneByEmail(email: string): Promise<User> {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
-  async findOneById(id: number): Promise<User> {
+  findByEmail(email: string): Promise<User[]> {
+    return this.prisma.user.findMany({ where: { email } });
+  }
+
+  findOneById(id: number): Promise<User> {
     return this.prisma.user.findUnique({ where: { id } });
   }
 }

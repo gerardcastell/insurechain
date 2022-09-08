@@ -25,7 +25,11 @@ export class UsersController {
 
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto) {
-    const user = await this.authService.signup(body);
+    const user = await this.authService.signup(
+      body.email,
+      body.password,
+      body.name
+    );
     return user;
   }
 
@@ -39,7 +43,7 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)
   @Post('signin')
   async signin(@Body() body: SigninDto, @Request() req) {
-    return this.authService.login(req.user);
+    return this.authService.signin(req.user);
   }
 
   /**

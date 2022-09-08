@@ -1,8 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { BackendUsersService } from './backend-users.service';
-import { CreateUserDto } from './dtos/CreateUser.dto';
+import { promisify } from 'util';
 
+const scrypt = promisify(_scrypt);
 @Injectable()
 export class AuthService {
   constructor(
@@ -10,21 +16,43 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async signup(payload: CreateUserDto) {
-    const user = await this.usersService.create(payload);
+  async signup(email: string, password: string, name: string) {
+    //see if email is in use
+    const users = await this.usersService.findByEmail(email);
+    if (users.length) {
+      throw new BadRequestException('Email in use');
+    }
+    //Hash the users password
+    // Generate a salts
+    const salt = randomBytes(8).toString('hex');
+    // Hash the salt and the password together
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+    // Join the hash result and the salt together
+    const result = salt + '.' + hash.toString('hex');
+    // Create anew user and save it
+    const user = await this.usersService.create(email, result, name);
+    //  const user = await this.usersService.create(email, password, name);
+    // return the user
     return user;
   }
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(email: string, password: string) {
     const user = await this.usersService.findOneByEmail(email);
-    if (user && user.password === pass) {
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const [salt, storedHash] = user.password.split('.');
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+
+    if (user && storedHash === hash.toString('hex')) {
       const { password, ...result } = user;
       return result;
     }
     return null;
   }
 
-  async login(user: any) {
+  async signin(user: any) {
     const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),

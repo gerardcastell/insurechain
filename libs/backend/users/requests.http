@@ -8,8 +8,8 @@ POST  http://localhost:3333/api/auth/signup
 Content-Type: application/json
 
 {
-  "email": "otro@gmail.com",
-  "password": "1234",
+  "email": "pruvebasalt@gmail.com",
+  "password": "1234abcd",
   "name": "pepito"
 }
 
@@ -21,12 +21,12 @@ POST  http://localhost:3333/api/auth/signin
 Content-Type: application/json
 
 {
-  "email": "otro@gmail.com",
-  "password": "1234"
+  "email": "pruebasalt@gmail.com",
+  "password": "1234abcd"
 }
 
-### Login
-POST  http://localhost:3333/api/auth/login
+### signin
+POST  http://localhost:3333/api/auth/signin
 Content-Type: application/json
 
 {
@@ -37,4 +37,4 @@ Content-Type: application/json
 
 ### Get profile with Jwt
 GET  http://localhost:3333/api/auth/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im90cm9AZ21haWwuY29tIiwic3ViIjoxLCJpYXQiOjE2NjE3NzcyNTMsImV4cCI6MTY2MTg2MzY1M30.F76P-C7ZLTBsl00CujLfEYcn9PSf5p9GPmhCOPm1Sds
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBydWViYXNhbHRAZ21haWwuY29tIiwic3ViIjo0LCJpYXQiOjE2NjI2NjAyMjksImV4cCI6MTY2Mjc0NjYyOX0.3PMyyKkKA5i097HiU1_wcEQbIEdWyRhcflgbT1JK2rw
