@@ -3,13 +3,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { BackendPrismaModule } from '@insurechain/backend/prisma';
 
-import { AuthService } from './auth.service';
-import { BackendUsersService } from './backend-users.service';
-
 import { GUARDS } from './guards';
 import { STRATEGIES } from './passport-strategies';
 
 import { UsersController } from './users.controller';
+import { AuthService } from './services/auth/auth.service';
+import { BackendUsersService } from './services/users/backend-users.service';
 
 @Module({
   controllers: [UsersController],

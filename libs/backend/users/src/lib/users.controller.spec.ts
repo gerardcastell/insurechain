@@ -1,10 +1,9 @@
-import { PrismaService } from '@insurechain/backend/prisma';
 import { NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { User } from '@prisma/client';
-import { AuthService } from './auth.service';
-import { BackendUsersService } from './backend-users.service';
+import { AuthService } from './services/auth/auth.service';
+import { BackendUsersService } from './services/users/backend-users.service';
 import { UsersController } from './users.controller';
 
 describe('UsersController', () => {

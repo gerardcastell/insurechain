@@ -9,12 +9,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { BackendUsersService } from './backend-users.service';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { SigninDto } from './dtos/Signin.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/passport-auth.guard';
+import { AuthService } from './services/auth/auth.service';
+import { BackendUsersService } from './services/users/backend-users.service';
 
 @Controller('auth')
 export class UsersController {
@@ -43,7 +43,6 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)
   @Post('signin')
   async signin(@Body() body: SigninDto, @Request() req) {
-    console.log(req);
     return this.authService.signin(req.user);
   }
 
