@@ -43,6 +43,7 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)
   @Post('signin')
   async signin(@Body() body: SigninDto, @Request() req) {
+    console.log(req);
     return this.authService.signin(req.user);
   }
 
