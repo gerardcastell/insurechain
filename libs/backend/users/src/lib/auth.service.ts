@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { BackendUsersService } from './backend-users.service';
 import { promisify } from 'util';
+import { User } from '@prisma/client';
 
 const scrypt = promisify(_scrypt);
 @Injectable()
@@ -36,7 +37,10 @@ export class AuthService {
     return user;
   }
 
-  async validateUser(email: string, password: string) {
+  async validateUser(
+    email: string,
+    password: string
+  ): Promise<Omit<User, 'password'>> {
     const user = await this.usersService.findOneByEmail(email);
 
     if (!user) {
@@ -52,7 +56,7 @@ export class AuthService {
     return null;
   }
 
-  async signin(user: any) {
+  async signin(user: Omit<User, 'password'>) {
     const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
