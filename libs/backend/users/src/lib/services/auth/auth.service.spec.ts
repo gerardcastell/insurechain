@@ -13,12 +13,11 @@ describe('AuthService', () => {
     const users: User[] = [];
 
     fakeUsersService = {
-      create: (email, password, name) => {
+      create: (email, password) => {
         const user: User = {
           id: Math.floor(Math.random() * 9999),
           email,
           password,
-          name,
         };
         users.push(user);
         return Promise.resolve(user);
@@ -61,29 +60,23 @@ describe('AuthService', () => {
     const MOCK_DATA = {
       email: 'asdf@asdg.com',
       password: '12345abcd',
-      name: 'test',
     };
 
-    const user = await service.signup(
-      MOCK_DATA.email,
-      MOCK_DATA.password,
-      MOCK_DATA.name
-    );
+    const user = await service.signup(MOCK_DATA.email, MOCK_DATA.password);
 
     expect(user.password).not.toEqual(MOCK_DATA.password);
     const [salt, hash] = user.password.split('.');
-    const { email, name } = user;
+    const { email } = user;
     expect(user.email).toEqual(email);
-    expect(user.name).toEqual(name);
     expect(salt).toBeDefined();
     expect(hash).toBeDefined();
   });
 
   it('Throws an error if user signs up with email that is in use', async () => {
-    await service.signup('asa@assad.asd', 'asdf', 'dsjdjd');
-    await expect(
-      service.signup('asa@assad.asd', 'asdf', 'dsjdjd')
-    ).rejects.toThrow(BadRequestException);
+    await service.signup('asa@assad.asd', 'asdf');
+    await expect(service.signup('asa@assad.asd', 'asdf')).rejects.toThrow(
+      BadRequestException
+    );
   });
 
   it('Throws if sign in is called with an unused email', async () => {
@@ -93,7 +86,7 @@ describe('AuthService', () => {
   });
 
   it('returns null if an invalid password provided for signin', async () => {
-    await service.signup('otro@gmail.com', 'passworddd', 'manolo');
+    await service.signup('otro@gmail.com', 'passworddd');
     const user = await service.validateUser(
       'otro@gmail.com',
       'invalid password'
@@ -102,7 +95,7 @@ describe('AuthService', () => {
   });
 
   it('returns a user if correct password is provided', async () => {
-    await service.signup('asda@asdad.asd', 'mypassword', 'otro');
+    await service.signup('asda@asdad.asd', 'mypassword');
     const user = await service.validateUser('asda@asdad.asd', 'mypassword');
     expect(user).toBeDefined();
   });
@@ -111,7 +104,6 @@ describe('AuthService', () => {
     const { access_token } = await service.signin({
       email: 'hola@dsa.com',
       id: 4,
-      name: 'Manolo',
     });
     expect(access_token).toBeDefined();
   });

@@ -5,8 +5,8 @@ import { User } from '@prisma/client';
 export class BackendUsersService {
   constructor(private prisma: PrismaService) {}
 
-  create(email: string, password: string, name: string): Promise<User> {
-    return this.prisma.user.create({ data: { email, password, name } });
+  create(email: string, password: string): Promise<User> {
+    return this.prisma.user.create({ data: { email, password } });
   }
 
   findOneByEmail(email: string): Promise<User> {

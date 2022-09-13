@@ -17,7 +17,7 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async signup(email: string, password: string, name: string) {
+  async signup(email: string, password: string) {
     //see if email is in use
     const users = await this.usersService.findByEmail(email);
     if (users.length) {
@@ -31,9 +31,7 @@ export class AuthService {
     // Join the hash result and the salt together
     const result = salt + '.' + hash.toString('hex');
     // Create anew user and save it
-    const user = await this.usersService.create(email, result, name);
-    //  const user = await this.usersService.create(email, password, name);
-    // return the user
+    const user = await this.usersService.create(email, result);
     return user;
   }
 
