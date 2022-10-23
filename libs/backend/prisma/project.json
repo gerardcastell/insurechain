@@ -12,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/backend/prisma"],
+      "outputs": ["{workspaceRoot}/coverage/libs/backend/prisma"],
       "options": {
         "jestConfig": "libs/backend/prisma/jest.config.ts",
         "passWithNoTests": true
