@@ -18,7 +18,8 @@
       "@insurechain/backend/policies": ["libs/backend/policies/src/index.ts"],
       "@insurechain/backend/prisma": ["libs/backend/prisma/src/index.ts"],
       "@insurechain/backend/proposals": ["libs/backend/proposals/src/index.ts"],
-      "@insurechain/backend/users": ["libs/backend/users/src/index.ts"]
+      "@insurechain/backend/users": ["libs/backend/users/src/index.ts"],
+      "@insurechain/backend/utils": ["libs/backend/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

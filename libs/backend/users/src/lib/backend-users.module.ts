@@ -9,6 +9,7 @@ import { STRATEGIES } from './passport-strategies';
 import { UsersController } from './users.controller';
 import { AuthService } from './services/auth/auth.service';
 import { BackendUsersService } from './services/users/backend-users.service';
+import { BackendUtilsModule } from '@insurechain/backend/utils';
 
 @Module({
   controllers: [UsersController],
@@ -16,6 +17,7 @@ import { BackendUsersService } from './services/users/backend-users.service';
   exports: [BackendUsersService, ...GUARDS],
   imports: [
     BackendPrismaModule,
+    BackendUtilsModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,

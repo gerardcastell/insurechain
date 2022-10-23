@@ -1,3 +1,4 @@
+import { BackendUtilsService } from '@insurechain/backend/utils';
 import {
   Body,
   Controller,
@@ -10,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { CreateUserDto } from './dtos/CreateUser.dto';
-import { SigninDto } from './dtos/Signin.dto';
+import { SignInDto } from './dtos/Signin.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/passport-auth.guard';
 import { AuthService } from './services/auth/auth.service';
@@ -20,13 +21,15 @@ import { BackendUsersService } from './services/users/backend-users.service';
 export class UsersController {
   constructor(
     private authService: AuthService,
-    private usersService: BackendUsersService
+    private usersService: BackendUsersService,
+    private utilsService: BackendUtilsService
   ) {}
 
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto) {
     const user = await this.authService.signup(body.email, body.password);
-    return user;
+    const userWoPassword = this.utilsService.exclude(user, 'password');
+    return userWoPassword;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -38,8 +41,8 @@ export class UsersController {
 
   @UseGuards(LocalAuthGuard)
   @Post('signin')
-  async signin(@Body() body: SigninDto, @Request() req) {
-    return this.authService.signin(req.user);
+  async signIn(@Body() body: SignInDto, @Request() req) {
+    return this.authService.signIn(req.user);
   }
 
   /**

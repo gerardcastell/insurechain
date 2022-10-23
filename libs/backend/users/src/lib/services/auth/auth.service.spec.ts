@@ -33,7 +33,7 @@ describe('AuthService', () => {
     };
 
     fakeJwtService = {
-      sign(payload) {
+      sign() {
         return 'asd.fdsfsdfs';
       },
     };
@@ -85,7 +85,7 @@ describe('AuthService', () => {
     ).rejects.toThrow(NotFoundException);
   });
 
-  it('returns null if an invalid password provided for signin', async () => {
+  it('returns null if an invalid password provided for signing in', async () => {
     await service.signup('otro@gmail.com', 'passworddd');
     const user = await service.validateUser(
       'otro@gmail.com',
@@ -101,7 +101,7 @@ describe('AuthService', () => {
   });
 
   it('given a user returns an access_token', async () => {
-    const { access_token } = await service.signin({
+    const { access_token } = await service.signIn({
       email: 'hola@dsa.com',
       id: 4,
     });

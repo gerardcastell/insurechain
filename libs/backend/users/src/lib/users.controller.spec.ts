@@ -1,3 +1,7 @@
+import {
+  BackendUtilsModule,
+  BackendUtilsService,
+} from '@insurechain/backend/utils';
 import { NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -10,6 +14,7 @@ describe('UsersController', () => {
   let controller: UsersController;
   let fakeUsersService: Partial<BackendUsersService>;
   let fakeAuthService: Partial<AuthService>;
+  let fakeUtilsService: Partial<BackendUtilsService>;
   const MOCK_DATA = {
     email: 'asasd@asdas.com',
     name: 'Manolo',
@@ -29,8 +34,11 @@ describe('UsersController', () => {
       },
     };
     fakeAuthService = {
-      signin: (user) => {
+      signIn: () => {
         return Promise.resolve({ access_token: 'kajsdoadoa' });
+      },
+      signup: (email, password) => {
+        return Promise.resolve({ email, password });
       },
     };
 
@@ -38,8 +46,10 @@ describe('UsersController', () => {
       providers: [
         { provide: AuthService, useValue: fakeAuthService },
         { provide: BackendUsersService, useValue: fakeUsersService },
+        { provide: BackendUtilsService, useValue: fakeUtilsService },
         JwtService,
       ],
+      imports: [BackendUtilsModule],
       controllers: [UsersController],
     }).compile();
 
@@ -70,7 +80,7 @@ describe('UsersController', () => {
   });
 
   it('Signin retrieve a valid access token when for protected endpoints', async () => {
-    const { access_token } = await controller.signin(
+    const { access_token } = await controller.signIn(
       {
         email: 'asda@das.asd',
         password: 'asdasd',
@@ -78,5 +88,15 @@ describe('UsersController', () => {
       {}
     );
     expect(access_token).toBeDefined();
+  });
+  it('Signup does not return a password', async () => {
+    const userMock = {
+      email: 'asda@das.asd',
+      password: 'asdasd',
+    };
+    const user = await controller.createUser(userMock);
+    expect(user).toBeDefined();
+    expect(user.email).toEqual(userMock.email);
+    expect(user).not.toHaveProperty('password');
   });
 });
