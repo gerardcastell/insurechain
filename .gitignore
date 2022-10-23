@@ -3,6 +3,7 @@
 #env variables
 .*.env
 .env
+.env.*
 
 # compiled output
 /dist

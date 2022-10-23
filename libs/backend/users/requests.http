@@ -8,9 +8,8 @@ POST  http://localhost:3333/api/auth/signup
 Content-Type: application/json
 
 {
-  "email": "pruvebasalt@gmail.com",
-  "password": "1234abcd",
-  "name": "pepito"
+  "email": "hola@gmail.com",
+  "password": "1234"
 }
 
 ### Find user
@@ -21,8 +20,8 @@ POST  http://localhost:3333/api/auth/signin
 Content-Type: application/json
 
 {
-  "email": "pruebasalt@gmail.com",
-  "password": "1234abcd"
+  "email": "hola@gmail.com",
+  "password": "1234"
 }
 
 ### signin
@@ -37,4 +36,4 @@ Content-Type: application/json
 
 ### Get profile with Jwt
 GET  http://localhost:3333/api/auth/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBydWViYXNhbHRAZ21haWwuY29tIiwic3ViIjo0LCJpYXQiOjE2NjI2NjAyMjksImV4cCI6MTY2Mjc0NjYyOX0.3PMyyKkKA5i097HiU1_wcEQbIEdWyRhcflgbT1JK2rw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhvbGFAZ21haWwuY29tIiwiaWF0IjoxNjY2NTQ2MjA2LCJleHAiOjE2NjY2MzI2MDZ9.SXpz7446AYbFhPlEZVvcTqra2bXczyDA9cnLUtundjc

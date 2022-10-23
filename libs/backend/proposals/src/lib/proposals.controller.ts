@@ -1,10 +1,12 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateproposalDto } from './dtos/CreateProposal.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateProposalDto } from './dtos/CreateProposal.dto';
 
+@ApiTags('Proposals')
 @Controller('proposals')
 export class ProposalsController {
   @Post('quote')
-  createProposal(@Body() body: CreateproposalDto) {
+  createProposal(@Body() body: CreateProposalDto) {
     console.log(body);
   }
 }

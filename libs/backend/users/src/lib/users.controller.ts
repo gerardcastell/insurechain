@@ -9,7 +9,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { SignInDto } from './dtos/Signin.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -17,6 +17,7 @@ import { JwtAuthGuard } from './guards/passport-auth.guard';
 import { AuthService } from './services/auth/auth.service';
 import { BackendUsersService } from './services/users/backend-users.service';
 
+@ApiTags('Users')
 @Controller('auth')
 export class UsersController {
   constructor(
