@@ -4,4 +4,4 @@
 nx affected --target=lint
 nx affected --target=test
 nx format:write --uncommitted --excluded=dist
-npx nx@15 workspace-lint --verbose
+nx workspace-lint --verbose
