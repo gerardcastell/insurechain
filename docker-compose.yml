@@ -7,23 +7,11 @@ services:
     environment:
       - POSTGRES_USER=prisma
       - POSTGRES_PASSWORD=prisma
+      - POSTGRES_DB=dev
     volumes:
       - db:/var/lib/postgresql/data
     ports:
       - '5432:5432'
 
-  db-test:
-    image: postgres:14.5
-    restart: always
-    container_name: insurechain-db-tests
-    ports:
-      - '5433:5432'
-    environment:
-      POSTGRES_USER: test
-      POSTGRES_PASSWORD: test
-      POSTGRES_DB: test
-    volumes:
-      - db-test:/var/lib/postgresql/data
 volumes:
   db:
-  db-test:

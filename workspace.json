@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
+    "backend-e2e": "apps/backend-e2e",
     "backend-policies": "libs/backend/policies",
     "backend-prisma": "libs/backend/prisma",
     "backend-proposals": "libs/backend/proposals",

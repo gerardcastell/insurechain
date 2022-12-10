@@ -15,8 +15,8 @@ import { AppService } from './app.service';
     BackendProposalsModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV
-        ? `.env.${process.env.NODE_ENV}`
+      envFilePath: process.env['NODE' + '_ENV']
+        ? `.env.${process.env['NODE' + '_ENV']}`
         : '.env.development',
     }),
   ],

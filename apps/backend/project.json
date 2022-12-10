@@ -39,6 +39,13 @@
         }
       }
     },
+    "qa": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cross-env NODE_ENV=qa nx serve backend",
+        "readyWhen": "Application is running on"
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

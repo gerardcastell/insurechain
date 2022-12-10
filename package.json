@@ -3,13 +3,19 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "nx": "nx",
     "start": "nx serve",
+    "start:qa": "cross-env NODE_ENV=qa nx serve",
     "build": "nx build",
     "test": "nx test",
-    "db:up": "docker-compose up",
-    "migrate": "dotenv -e .env.development -- npx prisma migrate dev ",
-    "migrate:test": "dotenv -e .env.test -- npx prisma migrate dev ",
-    "prepare": "husky install"
+    "db:up:dev": "docker-compose up",
+    "db:migrate:dev": "dotenv -e .env.development -- npx prisma migrate dev ",
+    "db:migrate:qa": "dotenv -e .env.qa -- npx prisma migrate dev ",
+    "db:reset:dev": "dotenv -e .env.development -- prisma migrate reset --preview-feature",
+    "db:reset:qa": "dotenv -e .env.qa -- prisma migrate reset --preview-feature",
+    "prepare": "husky install",
+    "db:studio:dev": "dotenv -e .env.dev -- npx prisma studio",
+    "db:studio:qa": "dotenv -e .env.qa -- npx prisma studio"
   },
   "private": true,
   "dependencies": {
@@ -33,7 +39,7 @@
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
     "@nrwl/cli": "15.0.1",
-    "@nrwl/cypress": "^15.0.1",
+    "@nrwl/cypress": "15.0.1",
     "@nrwl/eslint-plugin-nx": "15.0.1",
     "@nrwl/jest": "15.0.1",
     "@nrwl/linter": "15.0.1",
@@ -50,8 +56,11 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "cross-env": "^7.0.3",
+    "cypress": "^10.7.0",
+    "cypress-plugin-api": "^2.6.1",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-cypress": "^2.10.3",
     "husky": "^8.0.0",
     "jest": "28.1.3",
     "jest-mock-extended": "^2.0.7",
@@ -60,6 +69,7 @@
     "prisma": "^4.5.0",
     "ts-jest": "28.0.8",
     "ts-node": "10.9.1",
-    "typescript": "4.8.4"
+    "typescript": "4.8.4",
+    "wait-on": "^6.0.1"
   }
 }

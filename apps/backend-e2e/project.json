@@ -1,0 +1,43 @@
+{
+  "name": "backend-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e-with-db": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "docker-compose -f docker-compose.yml up",
+            "forwardAllArgs": false
+          },
+          {
+            "command": "nx e2e backend-e2e",
+            "forwardAllArgs": true
+          }
+        ],
+        "parallel": true
+      }
+    },
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/backend-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "browser": "electron",
+        "devServerTarget": "backend:qa",
+        "baseUrl": "http://localhost:3333/api"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/backend-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["backend"]
+}
