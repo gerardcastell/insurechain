@@ -8,6 +8,7 @@
     "backend-prisma": "libs/backend/prisma",
     "backend-proposals": "libs/backend/proposals",
     "backend-users": "libs/backend/users",
-    "backend-utils": "libs/backend/utils"
+    "backend-utils": "libs/backend/utils",
+    "blockchain": "libs/blockchain"
   }
 }
