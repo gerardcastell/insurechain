@@ -2,13 +2,11 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/math/SafeMath.sol"
-
 struct RiskSubject {
     address holder;
     string id;
     string fullName;
-    uint birthdate;
+    uint birthDate;
     string driverLicense;
     uint licenseExpirationDate;
 }
@@ -46,7 +44,7 @@ contract Policy {
     uint pricingPerDay;
     RiskObject riskObject;
     RiskSubject riskSubject;
-    bool active;
+    Claim[] claims;
 
     modifier restrictedToPolicyHolder(){
         require(msg.sender == riskSubject.holder);
@@ -58,16 +56,10 @@ contract Policy {
         _;
     }
 
-    modifier insuredPeriod(bool isWithin){
-        if(isWithin){
-            require(now < endDate);
-        }else{
-            require(now > endDate);
-        }
+    modifier insuredPeriod(){
+        require(block.timestamp < endDate);
         _;
     }
-
-
 
     constructor(RiskSubject memory _riskSubject, RiskObject memory _riskObject) {
         insuranceManager = msg.sender;
@@ -75,17 +67,20 @@ contract Policy {
         riskSubject = _riskSubject;
     }
 
-    function renew() public payable insuredPeriod(false) restrictedToPolicyHolder {
-        uint amount = msg.value;
-        uint daysToRenew = msg.value / policy.pricingPerDay;
-        require(daysToRenew > 0, "You need to renew at least for one day");
+    function renew() public payable insuredPeriod restrictedToPolicyHolder {
+        uint daysToRenew = msg.value / pricingPerDay;
+        require(daysToRenew > 0, "You must renew at least 1 day");
         uint secondsToRenew = daysToRenew * 60 * 60 * 24;
-        active = true;
-        endDate = block.timestamp + secondsToRenew;
+
+        if(endDate < block.timestamp){
+            endDate = block.timestamp + secondsToRenew;
+        }else{
+            endDate = endDate + secondsToRenew;
+        }
     }
 
     function cancel() public restrictedToPolicyHolder(){
-
+        endDate = block.timestamp;
     }
 
 

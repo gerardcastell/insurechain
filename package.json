@@ -15,7 +15,8 @@
     "db:reset:qa": "dotenv -e .env.qa -- prisma migrate reset --preview-feature",
     "prepare": "husky install",
     "db:studio:dev": "dotenv -e .env.dev -- npx prisma studio",
-    "db:studio:qa": "dotenv -e .env.qa -- npx prisma studio"
+    "db:studio:qa": "dotenv -e .env.qa -- npx prisma studio",
+    "sc:compile": "node libs/blockchain/src/lib/scripts/compile.js"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +28,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.1.0",
     "@prisma/client": "^4.2.1",
+    "ethers": "^5.7.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -61,6 +63,7 @@
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
+    "ganache-cli": "^6.12.2",
     "husky": "^8.0.0",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
@@ -68,6 +71,7 @@
     "nx": "15.4.4",
     "prettier": "^2.6.2",
     "prisma": "^4.5.0",
+    "solc": "^0.8.17",
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
     "typescript": "4.8.4",
