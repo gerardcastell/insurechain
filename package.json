@@ -63,7 +63,7 @@
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
-    "ganache-cli": "^6.12.2",
+    "ganache": "^7.7.2",
     "husky": "^8.0.0",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",

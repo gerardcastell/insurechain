@@ -1,12 +1,11 @@
 /*
  * @jest-environment node
  */
-const ganache = require('ganache-cli');
+const ganache = require('ganache');
 const { ContractFactory, providers } = require('ethers');
 const { abi, evm } = require('../scripts/compile');
 import { riskSubject } from './fixtures/risk-subject';
 import { riskObject } from './fixtures/risk-object';
-import { assert } from 'console';
 const web3Provider = new providers.Web3Provider(ganache.provider());
 const signer = web3Provider.getSigner(0);
 
@@ -26,7 +25,7 @@ beforeEach(async () => {
 
 describe('Policy', () => {
   it('deploys a contract', () => {
-    console.log(contract.address);
-    console.log(contract.deployTransaction);
+    expect(contract.address).toBeTruthy();
+    expect(contract.deployTransaction).toBeTruthy();
   });
 });

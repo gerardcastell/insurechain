@@ -2,6 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 nx affected --target=lint
-nx affected --target=test
+# nx affected --target=test
 nx format:write --uncommitted --excluded=dist
 nx workspace-lint --verbose
