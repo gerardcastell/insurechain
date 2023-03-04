@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const solc = require('solc');
-const { create } = require('domain');
 
 const smartContractPath = path.resolve(
   __dirname,
@@ -45,5 +44,5 @@ const output = JSON.parse(solc.compile(JSON.stringify(input))).contracts[
 //     }
 //   }
 // );
-
+console.log(output);
 module.exports = output;

@@ -1,4 +1,5 @@
 export const riskSubject = {
+  holder: '',
   id: '1',
   fullName: 'fullName',
   birthDate: 123,
