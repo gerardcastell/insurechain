@@ -44,5 +44,4 @@ const output = JSON.parse(solc.compile(JSON.stringify(input))).contracts[
 //     }
 //   }
 // );
-console.log(output);
 module.exports = output;

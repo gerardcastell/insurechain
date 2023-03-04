@@ -19,7 +19,6 @@ describe('Authentication test', () => {
         status: number;
         body: Record<string, undefined>;
       };
-      console.log(res);
       expect(res.status).to.eq(201);
       expect(res.body).to.have.property('email');
       expect(res.body).not.to.have.property('password');
@@ -42,7 +41,6 @@ describe('Authentication test', () => {
         status: number;
         body: Record<string, undefined>;
       };
-      console.log(response);
       expect(res.status).to.eq(400);
     });
   });

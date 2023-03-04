@@ -4,8 +4,8 @@
 const ganache = require('ganache');
 const { ContractFactory, providers } = require('ethers');
 const { abi, evm } = require('../scripts/compile');
-import { riskSubject } from './fixtures/risk-subject';
 import { riskObject } from './fixtures/risk-object';
+import { riskSubject } from './fixtures/risk-subject';
 const web3Provider = new providers.Web3Provider(ganache.provider());
 const signer = web3Provider.getSigner(0);
 
