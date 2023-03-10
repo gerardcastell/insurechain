@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 const ganache = require('ganache');
-const { ContractFactory, providers } = require('ethers');
+const { ContractFactory, providers, utils } = require('ethers');
 const { abi, evm } = require('../scripts/compile');
 import { riskObject } from './fixtures/risk-object';
 import { riskSubject } from './fixtures/risk-subject';
@@ -19,7 +19,9 @@ beforeEach(async () => {
   accounts = await web3Provider.listAccounts();
 
   factory = new ContractFactory(abi, evm.bytecode.object, signer);
-  contract = await factory.deploy(riskSubject, riskObject);
+  contract = await factory.deploy({
+    value: utils.parseEther('1.0'),
+  });
   await contract.deployed();
 });
 

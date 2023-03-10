@@ -2,19 +2,27 @@ const path = require('path');
 const fs = require('fs');
 const solc = require('solc');
 
+const fileNames = ['Farmer', 'Policy_v2'];
+
 const smartContractPath = path.resolve(
   __dirname,
   '..',
   'contracts',
-  'Policy.sol'
+  'Farmer.sol'
 );
 const source = fs.readFileSync(smartContractPath, 'utf8');
-
+const source2 = fs.readFileSync(
+  path.resolve(__dirname, '..', 'contracts', 'Policy_v2.sol'),
+  'utf8'
+);
 const input = {
   language: 'Solidity',
   sources: {
-    'Policy.sol': {
+    'Farmer.sol': {
       content: source,
+    },
+    'Policy_v2.sol': {
+      content: source2,
     },
   },
   settings: {
@@ -26,8 +34,8 @@ const input = {
   },
 };
 const output = JSON.parse(solc.compile(JSON.stringify(input))).contracts[
-  'Policy.sol'
-].Policy;
+  'Farmer.sol'
+].Farmer;
 
 // const createStream = fs.createWriteStream(
 //   path.resolve(__dirname, '..', 'Policy.json')
