@@ -5,7 +5,7 @@ pragma solidity >=0.7.0 <0.9.0;
 import "./Policy_v2.sol";
 
 
-contract Farmer {
+contract Factory {
     address insuranceAddress;
     uint256 minimumBudget = 0.999 ether;
     mapping(uint256 => address[]) policiesMapping;

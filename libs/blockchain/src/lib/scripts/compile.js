@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const solc = require('solc');
 
-const fileNames = ['Farmer', 'Policy_v2'];
+const fileNames = ['Factory', 'Policy_v2'];
 
 const input = {
   language: 'Solidity',

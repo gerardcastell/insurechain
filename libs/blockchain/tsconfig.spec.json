@@ -11,6 +11,6 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
-    "src/lib/test/Policy.test.js"
+    "src/lib/test/Factory.test.js"
   ]
 }

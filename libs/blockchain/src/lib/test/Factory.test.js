@@ -12,7 +12,7 @@ const signer = web3Provider.getSigner(0);
 let accounts;
 let contract;
 let factory;
-const { abi, evm } = contracts['Policy_v2.sol'].Policy;
+const { abi, evm } = contracts['Factory.sol'].Factory;
 
 beforeEach(async () => {
   const address = await signer.getAddress();
@@ -20,11 +20,13 @@ beforeEach(async () => {
   accounts = await web3Provider.listAccounts();
 
   factory = new ContractFactory(abi, evm.bytecode.object, signer);
-  contract = await factory.deploy(12, 'riskObject', 1, accounts[1]);
+  contract = await factory.deploy({
+    value: utils.parseEther('1.0'),
+  });
   await contract.deployed();
 });
 
-describe('Policy', () => {
+describe('Factory', () => {
   it('deploys a contract', () => {
     expect(contract.address).toBeTruthy();
     expect(contract.deployTransaction).toBeTruthy();
