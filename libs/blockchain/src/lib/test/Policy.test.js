@@ -3,7 +3,7 @@
  */
 const ganache = require('ganache');
 const { ContractFactory, providers, utils } = require('ethers');
-const { abi, evm } = require('../scripts/compile');
+const { contracts } = require('../scripts/compile');
 import { riskObject } from './fixtures/risk-object';
 import { riskSubject } from './fixtures/risk-subject';
 const web3Provider = new providers.Web3Provider(ganache.provider());
@@ -12,6 +12,7 @@ const signer = web3Provider.getSigner(0);
 let accounts;
 let contract;
 let factory;
+const { abi, evm } = contracts['Farmer.sol'].Farmer;
 
 beforeEach(async () => {
   const address = await signer.getAddress();
