@@ -9,16 +9,22 @@ contract Factory {
   address payable insuranceAddress;
     uint256 minimumBudget = 0.999 ether;
     mapping(uint256 => address[]) policiesMapping;
+    mapping(address => bool) private claimEvaluators;
 
-    modifier companyOnly {
-        require(msg.sender == insuranceAddress);
-        _;
+    constructor() payable {
+        require(msg.value >= minimumBudget, "Minimum budget is not achieved to start an Insurance Smart Contract");
+        insuranceAddress = payable(msg.sender);
     }
 
 
-   constructor() payable {
-        require(msg.value >= minimumBudget, "Minimum budget is not achieved to start an Insurance Smart Contract" );
-        insuranceAddress = payable(msg.sender);
+    modifier companyOnly {
+        require(msg.sender == insuranceAddress, "Just the insurance company can perform this action");
+        _;
+    }
+
+     modifier claimEvaluatorsOnly {
+        require(msg.sender == insuranceAddress || isClaimEvaluatorKnown(msg.sender), "Required a valid evaluator approved by the company");
+        _;
     }
 
     function addBudget() companyOnly public payable returns (uint256){
@@ -51,6 +57,34 @@ contract Factory {
         Policy policyContract = Policy(policyAddress);
         require(msg.sender == policyContract.getOwnerAddress(), "Just the policyholder of the policy is able to renew it.");
         return policyContract.renew(daysToAdd);
+    }
+
+
+    function approveClaim(address policyAddress ,uint256 claimId , uint256 claimExpenses) claimEvaluatorsOnly public {
+        require(claimExpenses < address(this).balance, "Insufficient balance to pay the claim.");
+
+        Policy policy = Policy(policyAddress);
+        policy.approveClaim(claimId, claimExpenses);
+
+        address payable holderAddress = payable(policy.getOwnerAddress());
+        holderAddress.transfer(claimExpenses);
+    }
+
+    function declineClaim(address policyAddress, uint256 claimId) claimEvaluatorsOnly public {
+        Policy policy = Policy(policyAddress);
+        policy.declineClaim(claimId);
+    }
+
+    function addEvaluator(address newAddress) companyOnly public {
+        claimEvaluators[newAddress] = true;
+    }
+
+    function changeEvaluatorValue(address evaluator, bool value) companyOnly public {
+        claimEvaluators[evaluator] = value;
+    }
+
+    function isClaimEvaluatorKnown(address checkAddress) companyOnly public view returns(bool) {
+        return claimEvaluators[checkAddress];
     }
 }
 

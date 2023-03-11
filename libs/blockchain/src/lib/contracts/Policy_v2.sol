@@ -12,8 +12,7 @@ struct Claim {
 }
 
 
-contract Policy {
-    uint policyHolder;
+contract Policy { uint policyHolder;
     string riskObject;
     uint256 premium;
     address owner;
@@ -38,8 +37,15 @@ contract Policy {
         _;
     }
 
+    modifier isActive(){
+        require(endDate > block.timestamp);
+        _;
+    }
+
 
     constructor(uint _policyHolder, string memory _riskObject, uint256 _premium, address _owner, uint _endDate){
+        require(endDate > block.timestamp, "Renewal date has to be upcoming");
+        require(premium > 0 , "Required a premium to activate the policy");
         policyHolder = _policyHolder;
         riskObject = _riskObject;
         premium = _premium;
@@ -53,7 +59,7 @@ contract Policy {
         endDate = block.timestamp;
     }
 
-    function makeClaim(uint256 claimId, Claim memory _claim) onlyOwner external {
+    function makeClaim(uint256 claimId, Claim memory _claim) onlyOwner isActive external {
         Claim memory newClaim = _claim;
         claims[claimId].push(newClaim);
     }
