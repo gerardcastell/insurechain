@@ -14,7 +14,8 @@ let contract;
 let factory;
 const { abi, evm } = contracts['Policy_v2.sol'].Policy;
 const endDate = new Date();
-
+endDate.setDate(endDate.getDate() + 1);
+console.log('endate', { endDate: endDate.getTime() });
 beforeEach(async () => {
   const address = await signer.getAddress();
   riskSubject.holder = address;

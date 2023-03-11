@@ -44,8 +44,8 @@ contract Policy { uint policyHolder;
 
 
     constructor(uint _policyHolder, string memory _riskObject, uint256 _premium, address _owner, uint _endDate){
-        require(endDate > block.timestamp, "Renewal date has to be upcoming");
-        require(premium > 0 , "Required a premium to activate the policy");
+        require(_endDate > block.timestamp, "Renewal date has to be upcoming");
+        require(_premium > 0 , "Required a premium to activate the policy");
         policyHolder = _policyHolder;
         riskObject = _riskObject;
         premium = _premium;
