@@ -39,13 +39,14 @@ contract Policy {
     }
 
 
-    constructor(uint _policyHolder, string memory _riskObject, uint256 _premium, address _owner){
+    constructor(uint _policyHolder, string memory _riskObject, uint256 _premium, address _owner, uint _endDate){
         policyHolder = _policyHolder;
         riskObject = _riskObject;
         premium = _premium;
         owner = _owner;
         insuranceAddress = msg.sender;
         startDate = block.timestamp;
+        endDate = _endDate;
     }
 
     function cancelPolicy() onlyCompanyOrOwner external {
@@ -76,5 +77,14 @@ contract Policy {
 
         claim.resolveDate = block.timestamp;
         claim.approved = isApproved;
+    }
+
+    function getOwnerAddress() onlyCompanyOrOwner external view returns (address) {
+        return owner;
+    }
+
+    function renew(uint daysToAdd) onlyCompany external returns (uint){
+        endDate = endDate + (daysToAdd * 1 days);
+        return endDate;
     }
 }

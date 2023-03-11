@@ -6,30 +6,36 @@ import "./Policy_v2.sol";
 
 
 contract Factory {
-    address insuranceAddress;
+  address payable insuranceAddress;
     uint256 minimumBudget = 0.999 ether;
     mapping(uint256 => address[]) policiesMapping;
 
-
-   constructor() payable {
-        require(msg.value >= minimumBudget, "Minimum budget is not achieved to start an Insurance Smart Contract" );
-        insuranceAddress = msg.sender;
-    }
-
-    modifier onlyCompany {
+    modifier companyOnly {
         require(msg.sender == insuranceAddress);
         _;
     }
 
-    function addBuget() onlyCompany public payable returns (uint256){
+
+   constructor() payable {
+        require(msg.value >= minimumBudget, "Minimum budget is not achieved to start an Insurance Smart Contract" );
+        insuranceAddress = payable(msg.sender);
+    }
+
+    function addBudget() companyOnly public payable returns (uint256){
         return address(this).balance;
     }
 
-    function createPolicy(uint policyHolder, string memory riskObject) public payable returns (address){
+    function withdrawBudget(uint256 amount) companyOnly public returns (uint256){
+        require(amount < address(this).balance, "There is not enough amount to withdraw");
+        insuranceAddress.transfer(amount);
+        return address(this).balance;
+    }
+
+    function createPolicy(uint policyholder, string memory riskObject, uint endDate) public payable returns (address){
         require(msg.value > 0, "To create a policy you must pay a premium.");
-        Policy policyContract = new Policy(policyHolder, riskObject, msg.value, msg.sender);
+        Policy policyContract = new Policy(policyholder, riskObject, msg.value, msg.sender, endDate);
         address policyAddress = address(policyContract);
-        uint holderId = policyHolder;
+        uint holderId = policyholder;
         policiesMapping[holderId].push(policyAddress);
         return address(policyContract);
     }
@@ -39,5 +45,12 @@ contract Factory {
         return addresses;
     }
 
-
+    // Renews the policy and return the new end date.
+    function renewPolicy(address policyAddress, uint daysToAdd, uint renewalAmount) public payable returns (uint){
+        require(msg.value > renewalAmount, "To create a policy you must pay a premium.");
+        Policy policyContract = Policy(policyAddress);
+        require(msg.sender == policyContract.getOwnerAddress(), "Just the policyholder of the policy is able to renew it.");
+        return policyContract.renew(daysToAdd);
+    }
 }
+
