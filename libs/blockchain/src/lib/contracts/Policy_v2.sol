@@ -13,7 +13,7 @@ struct Claim {
 }
 
 
-contract Policy { uint policyHolder;
+contract Policy {   uint policyHolder;
     string riskObject;
     uint256 premium;
     address owner;
@@ -21,7 +21,14 @@ contract Policy { uint policyHolder;
     uint endDate;
     uint startDate;
     mapping(uint256 => Claim) claims;
+    uint256[] claimIdList;
 
+    event Creation(address policyholderAddress);
+    event Cancelation(uint endDate);
+    event ClaimDeclaration(uint claimId);
+    event ClaimApproved(uint claimId);
+    event ClaimDeclined(uint claimId);
+    event Renewal(uint endDate);
 
     modifier onlyCompanyOrOwner(){
         require(msg.sender == insuranceAddress || msg.sender == owner, "Just the policyholder or the insurance company can perform this action");
@@ -44,26 +51,30 @@ contract Policy { uint policyHolder;
     }
 
 
-    constructor(uint _policyHolder, string memory _riskObject, uint256 _premium, address _owner, uint _endDate){
+    constructor(uint _policyholderId, string memory _riskObject, uint256 _premium, address _owner, uint _endDate){
         require(_endDate > block.timestamp, "Renewal date has to be upcoming");
         require(_premium > 0 , "Required a premium to activate the policy");
-        policyHolder = _policyHolder;
+        policyHolder = _policyholderId;
         riskObject = _riskObject;
         premium = _premium;
         owner = _owner;
         insuranceAddress = msg.sender;
         startDate = block.timestamp;
         endDate = _endDate;
+
+        emit Creation(owner);
     }
 
     function cancelPolicy() onlyCompanyOrOwner isActive external {
         endDate = block.timestamp;
+        emit Cancelation(endDate);
     }
 
     function makeClaim(uint256 claimId, Claim memory _claim) onlyOwner isActive external {
         Claim memory newClaim = _claim;
         claims[claimId] = newClaim;
         claims[claimId].isResolved = false;
+        emit ClaimDeclaration(claimId);
     }
 
 
@@ -72,10 +83,12 @@ contract Policy { uint policyHolder;
 
         resolveClaim(claimId, true);
         claim.expenses = claimExpenses;
+        emit ClaimApproved(claimId);
     }
 
     function declineClaim(uint256 claimId) onlyCompany external{
         resolveClaim(claimId, false);
+        emit ClaimDeclined(claimId);
     }
 
     function resolveClaim(uint256 claimId, bool isApproved) internal {
@@ -94,6 +107,16 @@ contract Policy { uint policyHolder;
 
     function renew(uint daysToAdd) onlyCompany external returns (uint){
         endDate = endDate + (daysToAdd * 1 days);
+
+        emit Renewal(endDate);
         return endDate;
+    }
+
+    function getClaim(uint256 claimId) onlyCompanyOrOwner external view returns (Claim memory){
+        return claims[claimId];
+    }
+
+    function getClaimsList() onlyCompanyOrOwner external view returns (uint256[] memory){
+        return claimIdList;
     }
 }

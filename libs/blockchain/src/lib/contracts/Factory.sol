@@ -86,5 +86,9 @@ contract Factory {
     function isClaimEvaluatorKnown(address checkAddress) companyOnly public view returns(bool) {
         return claimEvaluators[checkAddress];
     }
+
+    function getHolderPolicies(uint holderId) public view returns (address[] memory){
+        return policiesMapping[holderId];
+    }
 }
 

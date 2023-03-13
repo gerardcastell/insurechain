@@ -11,13 +11,12 @@ const factorySigner = web3Provider.getSigner(0);
 const { abi, evm } = contracts['Policy_v2.sol'].Policy;
 const endDate = new Date();
 endDate.setDate(endDate.getDate() + 1);
-import { expect } from '@jest/globals';
+
 let accounts;
 let contract;
 let factory;
 let policyholderAddress;
 let policyholderSigner;
-let insuranceAddress;
 let claim;
 let expertSigner;
 
