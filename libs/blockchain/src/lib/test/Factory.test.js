@@ -28,7 +28,6 @@ describe('Factory', () => {
     riskSubject.holder = policyHolderAddress;
     accounts = await web3Provider.listAccounts();
     const companyBalance = await companySigner.getBalance();
-    console.log('company balance', utils.formatEther(companyBalance));
     factory = new ContractFactory(abi, evm.bytecode.object, companySigner);
     contract = await factory.deploy({
       value: utils.parseEther('5.0'),
