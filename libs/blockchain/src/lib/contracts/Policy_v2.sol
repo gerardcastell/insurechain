@@ -51,7 +51,7 @@ contract Policy {   uint policyHolder;
     }
 
 
-    constructor(uint _policyholderId, string memory _riskObject, uint256 _premium, address _owner, uint _endDate){
+    constructor(uint _policyholderId, string memory _riskObject, uint256 _premium, address _owner, uint256 _endDate){
         require(_endDate > block.timestamp, "Renewal date has to be upcoming");
         require(_premium > 0 , "Required a premium to activate the policy");
         policyHolder = _policyholderId;
@@ -105,8 +105,9 @@ contract Policy {   uint policyHolder;
         return owner;
     }
 
-    function renew(uint daysToAdd) onlyCompany external returns (uint){
-        endDate = endDate + (daysToAdd * 1 days);
+    function renew(uint newEndDate) onlyCompany external returns (uint){
+        require(newEndDate > endDate, "New end date has to be after the current one");
+        endDate = newEndDate;
 
         emit Renewal(endDate);
         return endDate;
@@ -118,5 +119,9 @@ contract Policy {   uint policyHolder;
 
     function getClaimsList() onlyCompanyOrOwner external view returns (uint256[] memory){
         return claimIdList;
+    }
+
+    function getEndDate() onlyCompanyOrOwner external view returns (uint){
+        return endDate;
     }
 }

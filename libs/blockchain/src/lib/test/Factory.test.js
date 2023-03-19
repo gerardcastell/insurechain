@@ -2,7 +2,13 @@
  * @jest-environment node
  */
 const ganache = require('ganache');
-const { ContractFactory, providers, utils } = require('ethers');
+const {
+  ContractFactory,
+  providers,
+  utils,
+  Contract,
+  provider,
+} = require('ethers');
 const { contracts } = require('../scripts/compile');
 import { riskObject } from './fixtures/risk-object';
 import { riskSubject } from './fixtures/risk-subject';
@@ -14,16 +20,18 @@ let accounts;
 let contract;
 let factory;
 const { abi, evm } = contracts['Factory.sol'].Factory;
+const Policy = contracts['Policy_v2.sol'].Policy;
 
 describe('Factory', () => {
   beforeEach(async () => {
     const policyHolderAddress = await policyholderSigner.getAddress();
     riskSubject.holder = policyHolderAddress;
     accounts = await web3Provider.listAccounts();
-
+    const companyBalance = await companySigner.getBalance();
+    console.log('company balance', utils.formatEther(companyBalance));
     factory = new ContractFactory(abi, evm.bytecode.object, companySigner);
     contract = await factory.deploy({
-      value: utils.parseEther('2.0'),
+      value: utils.parseEther('5.0'),
     });
     await contract.deployed();
   });
@@ -38,8 +46,7 @@ describe('Factory', () => {
       contract.connect(policyholderSigner).getHolderPolicies(123)
     ).resolves.not.toThrow();
     const tx = await contract.getHolderPolicies(123);
-    expect(tx).toHaveProperty('length', 0);
-    console.log(tx);
+    expect(tx).toHaveLength(0);
     await expect(
       contract
         .connect(policyholderSigner)
@@ -48,47 +55,98 @@ describe('Factory', () => {
         })
     ).resolves.not.toThrow();
     const tx2 = await contract.getHolderPolicies(123);
-    expect(tx2).toHaveProperty('length', 1);
+    expect(tx2).toHaveLength(1);
   });
 
-  // it("should get user policies", async () => {
-  //   await factory.createPolicy(123, "car", Date.now() + 1000, { value: ethers.utils.parseEther("0.5") });
-  //   const policies = await factory.getUserPolicies(123);
-  //   expect(policies).to.have.lengthOf(1);
-  // });
+  it('should get user policies', async () => {
+    await contract.createPolicy(123, 'car', Date.now() + 1000, {
+      value: utils.parseEther('0.5'),
+    });
+    const policies = await contract.getUserPolicies(123);
+    expect(policies).toHaveLength(1);
+  });
 
-  // it("should renew a policy", async () => {
-  //   const endDate = Date.now() + 1000;
-  //   const policyAddress = await factory.createPolicy(123, "car", endDate, { value: ethers.utils.parseEther("0.5") });
-  //   const policyContract = new ethers.Contract(policyAddress, Policy.abi, policyholderSigner);
-  //   const newEndDate = endDate + 86400;
-  //   await expect(factory.renewPolicy(policyAddress, 1, ethers.utils.parseEther("0.5"))).to.emit(policyContract, "PolicyRenewed");
-  //   expect(await policyContract.endDate()).to.equal(newEndDate);
-  // });
+  it('should renew a policy', async () => {
+    const endDate = Date.now() + 1000;
+    const policyAddress = await contract
+      .connect(policyholderSigner)
+      .createPolicy(123, 'car', endDate, {
+        value: utils.parseEther('0.5'),
+      });
+    const addresses = await contract.getUserPolicies(123);
 
-  // it("should approve a claim", async () => {
-  //   const claimId = 1;
-  //   const claimExpenses = ethers.utils.parseEther("0.1");
-  //   await factory.addEvaluator(policyholderSigner.address);
-  //   await factory.approveClaim(policy.address, claimId, claimExpenses);
-  //   expect(await provider.getBalance(policyholderSigner.address)).to.equal(claimExpenses);
-  // });
+    const newEndDate = endDate + 86400;
+    expect(addresses).toHaveLength(1);
+    await expect(
+      contract
+        .connect(policyholderSigner)
+        .renewPolicy(addresses[0], newEndDate, 100, {
+          value: utils.parseEther('0.5'),
+        })
+    ).resolves.not.toThrow();
+  });
 
-  // it("should decline a claim", async () => {
-  //   const claimId = 1;
-  //   await factory.addEvaluator(policyholderSigner.address);
-  //   await factory.declineClaim(policy.address, claimId);
-  //   // Assert that the claim was declined
-  // });
+  it('should approve a claim', async () => {
+    const endDate = Date.now() + 1000;
+    const claimId = 1;
+    const claimExpenses = utils.parseEther('0.1');
+    const evaluatorAddress = accounts[3];
+    await contract
+      .connect(policyholderSigner)
+      .createPolicy(123, 'car', endDate, {
+        value: claimExpenses,
+      });
+    const [policyAddress] = await contract.getUserPolicies(123);
+    const prevBalance = await policyholderSigner.getBalance();
+    await contract.addEvaluator(evaluatorAddress);
+    await contract.approveClaim(policyAddress, claimId, claimExpenses);
+    const newBalance = await policyholderSigner.getBalance();
 
-  // it("should add an evaluator", async () => {
-  //   await factory.addEvaluator(policyholderSigner.address);
-  //   expect(await factory.isClaimEvaluatorKnown(policyholderSigner.address)).to.be.true;
-  // });
+    expect(+utils.formatEther(newBalance.sub(prevBalance))).toBeGreaterThan(
+      +utils.formatEther(claimExpenses) * 0.99
+    );
+    expect(+utils.formatEther(newBalance.sub(prevBalance))).toBeLessThan(
+      +utils.formatEther(claimExpenses) * 1.01
+    );
+  });
 
-  // it("should change evaluator value", async () => {
-  //   await factory.addEvaluator(policyholderSigner.address);
-  //   await factory.changeEvaluatorValue(policyholderSigner.address, false);
-  //   expect(await factory.isClaimEvaluatorKnown(policyholderSigner.address)).to.be.false;
-  // });
+  it('should decline a claim', async () => {
+    const endDate = Date.now() + 1000;
+    const claimId = 1;
+    const evaluatorAddress = accounts[3];
+    await contract
+      .connect(policyholderSigner)
+      .createPolicy(123, 'car', endDate, {
+        value: utils.parseEther('0.1'),
+      });
+    const [policyAddress] = await contract.getUserPolicies(123);
+    const prevBalance = await policyholderSigner.getBalance();
+    await contract.addEvaluator(evaluatorAddress);
+    await contract.declineClaim(policyAddress, claimId);
+    const newBalance = await policyholderSigner.getBalance();
+
+    expect(+utils.formatEther(newBalance)).toBeGreaterThan(
+      +utils.formatEther(prevBalance) * 0.99
+    );
+    expect(+utils.formatEther(newBalance)).toBeLessThan(
+      +utils.formatEther(prevBalance) * 1.01
+    );
+  });
+
+  it('should add an evaluator', async () => {
+    await contract.addEvaluator(policyholderSigner.getAddress());
+    const isClaimEvaluatorKnown = await contract.isClaimEvaluatorKnown(
+      policyholderSigner.getAddress()
+    );
+    expect(isClaimEvaluatorKnown).toBeTruthy();
+  });
+
+  it('should change evaluator value', async () => {
+    await contract.addEvaluator(policyholderSigner.getAddress());
+    await contract.changeEvaluatorValue(policyholderSigner.getAddress(), false);
+    const isClaimEvaluatorKnown = await contract.isClaimEvaluatorKnown(
+      policyholderSigner.getAddress()
+    );
+    expect(isClaimEvaluatorKnown).toBeFalsy();
+  });
 });

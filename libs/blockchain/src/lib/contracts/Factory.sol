@@ -43,7 +43,7 @@ contract Factory {
         address policyAddress = address(policyContract);
         uint holderId = policyholder;
         policiesMapping[holderId].push(policyAddress);
-        return address(policyContract);
+        return policyAddress;
     }
 
     function getUserPolicies(uint userId) public view returns (address[] memory){
@@ -52,11 +52,11 @@ contract Factory {
     }
 
     // Renews the policy and return the new end date.
-    function renewPolicy(address policyAddress, uint daysToAdd, uint renewalAmount) public payable returns (uint){
-        require(msg.value > renewalAmount, "To create a policy you must pay a premium.");
+    function renewPolicy(address policyAddress, uint newEndDate, uint renewalAmount) public payable returns (uint){
+        require(msg.value > renewalAmount, "To renew a policy you must pay a premium.");
         Policy policyContract = Policy(policyAddress);
         require(msg.sender == policyContract.getOwnerAddress(), "Just the policyholder of the policy is able to renew it.");
-        return policyContract.renew(daysToAdd);
+        return policyContract.renew(newEndDate);
     }
 
 
