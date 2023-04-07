@@ -7,9 +7,11 @@ import { APP_PIPE } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BackendHealthModule } from '@insurechain/backend/health';
 
 @Module({
   imports: [
+    BackendHealthModule,
     BackendUsersModule,
     BackendPoliciesModule,
     BackendProposalsModule,

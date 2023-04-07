@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@insurechain/backend/health": ["libs/backend/health/src/index.ts"],
       "@insurechain/backend/policies": ["libs/backend/policies/src/index.ts"],
       "@insurechain/backend/prisma": ["libs/backend/prisma/src/index.ts"],
       "@insurechain/backend/proposals": ["libs/backend/proposals/src/index.ts"],
