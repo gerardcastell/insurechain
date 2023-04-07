@@ -6,6 +6,9 @@
     "types": ["node"],
     "target": "es6"
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "../prisma/src/lib/prisma-health-indicator.service.ts"
+  ],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }
