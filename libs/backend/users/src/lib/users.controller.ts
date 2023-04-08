@@ -10,8 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from './dtos/CreateUser.dto';
-import { SignInDto } from './dtos/Signin.dto';
+import { UserDto } from './dtos/CreateUser.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/passport-auth.guard';
 import { AuthService } from './services/auth/auth.service';
@@ -27,7 +26,7 @@ export class UsersController {
   ) {}
 
   @Post('/signup')
-  async createUser(@Body() body: CreateUserDto) {
+  async createUser(@Body() body: UserDto) {
     const user = await this.authService.signup(body.email, body.password);
     const userWoPassword = this.utilsService.exclude(user, 'password');
     return userWoPassword;
@@ -42,7 +41,7 @@ export class UsersController {
 
   @UseGuards(LocalAuthGuard)
   @Post('signin')
-  async signIn(@Body() body: SignInDto, @Request() req) {
+  async signIn(@Body() body: UserDto, @Request() req) {
     return this.authService.signIn(req.user);
   }
 
