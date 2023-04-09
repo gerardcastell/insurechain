@@ -7,6 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../config/theme';
 import createEmotionCache from '../config/createEmotionCache';
 import { Header } from '@insurechain/web/core/feature';
+import { SessionProvider } from 'next-auth/react';
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {
@@ -16,21 +17,23 @@ interface MyAppProps extends AppProps {
 function CustomApp({
   Component,
   emotionCache = clientSideEmotionCache,
-  pageProps,
+  pageProps: { session, ...pageProps },
 }: MyAppProps) {
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <title>Welcome to client-web!</title>
-      </Head>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Header />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </CacheProvider>
+    <SessionProvider session={session}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+          <title>Insurechain</title>
+        </Head>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <Header isLogged={false} />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </CacheProvider>
+    </SessionProvider>
   );
 }
 
