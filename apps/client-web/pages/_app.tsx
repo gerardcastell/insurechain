@@ -29,7 +29,7 @@ function CustomApp({
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <Header isLogged={false} />
+          <Header />
           <Component {...pageProps} />
         </ThemeProvider>
       </CacheProvider>

@@ -10,5 +10,6 @@ declare module 'next-auth' {
 
   interface User extends DefaultUser {
     access_token: unknown;
+    email: string;
   }
 }

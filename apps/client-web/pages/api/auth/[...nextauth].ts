@@ -1,5 +1,5 @@
 import { signIn as signInBackend } from '@insurechain/web/backend/data-access';
-import NextAuth, { NextAuthOptions, Session } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const authOptions: NextAuthOptions = {
@@ -28,8 +28,11 @@ export const authOptions: NextAuthOptions = {
         // const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' };
         const { email, password } = credentials;
         const { data } = await signInBackend(email, password);
-        const user = { ...data, email };
-        console.log('USER', user);
+        const user = {
+          ...data,
+          email,
+          image: 'https://xsgames.co/randomusers/avatar.php?g=male',
+        };
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
           return user;
@@ -44,7 +47,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, account, user }) {
-      console.log('JWT', token, account, user);
       // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.account = {
@@ -59,6 +61,9 @@ export const authOptions: NextAuthOptions = {
       session.access_token = token.access_token;
       return session;
     },
+  },
+  pages: {
+    error: '/auth/error', // Error code passed in query string as ?error=
   },
 };
 
