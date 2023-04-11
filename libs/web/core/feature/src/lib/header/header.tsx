@@ -16,45 +16,155 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import NextLink from 'next/link';
+import MUILink from '@mui/material/Link';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+
+const pages = [
+  { link: '/dashboard', name: 'Dashboard' },
+  { link: '/insurance-contract', name: 'Insurance Contract' },
+];
 
 export function Header() {
   const { data: session } = useSession();
   const [isDrawerOpened, setIsDrawerOpened] = React.useState(false);
-
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
   return (
     <>
       <AppBar position="sticky">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Insurechain
-          </Typography>
-          {session ? (
-            <div>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              INSURECHAIN
+            </Typography>
+
+            {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={() => setIsDrawerOpened(true)}
+                onClick={handleOpenNavMenu}
                 color="inherit"
               >
-                {session.user?.image ? (
-                  <Avatar alt="Avatar" src={session.user.image} />
-                ) : (
-                  <AccountCircle />
-                )}
+                <MenuIcon />
               </IconButton>
-            </div>
-          ) : (
-            <Button
-              color="inherit"
-              endIcon={<LoginIcon />}
-              onClick={() => signIn()}
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                {pages.map((page) => (
+                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                    <NextLink key={page.name} href={page.link} passHref>
+                      <MUILink
+                        sx={{ my: 2, color: 'white', display: 'block' }}
+                        variant="body2"
+                      >
+                        {page.name}
+                      </MUILink>
+                    </NextLink>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              href=""
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
             >
-              Log In
-            </Button>
-          )}
-        </Toolbar>
+              INSURECHAIN
+            </Typography> */}
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              {pages.map((page) => (
+                <MUILink
+                  key={page.name}
+                  href={page.link}
+                  sx={{ my: 2, mr: 2, color: 'white', display: 'block' }}
+                  component={NextLink}
+                  variant="body2"
+                >
+                  {page.name}
+                </MUILink>
+              ))}
+            </Box>
+            {session ? (
+              <div>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={() => setIsDrawerOpened(true)}
+                  color="inherit"
+                >
+                  {session.user?.image ? (
+                    <Avatar alt="Avatar" src={session.user.image} />
+                  ) : (
+                    <AccountCircle />
+                  )}
+                </IconButton>
+              </div>
+            ) : (
+              <Button
+                color="inherit"
+                endIcon={<LoginIcon />}
+                onClick={() => signIn()}
+              >
+                Log In
+              </Button>
+            )}
+          </Toolbar>
+        </Container>
       </AppBar>
       <Drawer
         anchor="right"
