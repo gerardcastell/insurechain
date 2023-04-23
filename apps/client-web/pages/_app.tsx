@@ -10,6 +10,7 @@ import { Header } from '@insurechain/web/core/feature';
 import { SessionProvider } from 'next-auth/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../lib/react-query';
+import BackendLauncherProvider from '../features/core/BackendLauncherProvider';
 
 const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
@@ -35,8 +36,10 @@ function CustomApp({
           <ThemeProvider theme={theme}>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
-            <Header />
-            <Component {...pageProps} />
+            <BackendLauncherProvider>
+              <Header />
+              <Component {...pageProps} />
+            </BackendLauncherProvider>
           </ThemeProvider>
         </CacheProvider>
       </SessionProvider>
