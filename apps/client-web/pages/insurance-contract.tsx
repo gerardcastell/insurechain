@@ -1,13 +1,18 @@
-import { GetServerSideProps } from 'next';
+import { useQuery } from '@tanstack/react-query';
+import { axios } from '../lib/axios';
 
 const InsuranceContract = () => {
-  return <div>Enter</div>;
-};
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return {
-    props: {},
-  };
+  const { isLoading, isError, data } = useQuery(
+    ['health'],
+    async () => await axios.get('health')
+  );
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    return <div>Error...</div>;
+  }
+  return <div>Data: {JSON.stringify(data)}</div>;
 };
 
 export default InsuranceContract;

@@ -8,8 +8,10 @@ import theme from '../config/theme';
 import createEmotionCache from '../config/createEmotionCache';
 import { Header } from '@insurechain/web/core/feature';
 import { SessionProvider } from 'next-auth/react';
-const clientSideEmotionCache = createEmotionCache();
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '../lib/react-query';
 
+const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
@@ -20,20 +22,25 @@ function CustomApp({
   pageProps: { session, ...pageProps },
 }: MyAppProps) {
   return (
-    <SessionProvider session={session}>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-          <title>Insurechain</title>
-        </Head>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Header />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </CacheProvider>
-    </SessionProvider>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider session={session}>
+        <CacheProvider value={emotionCache}>
+          <Head>
+            <meta
+              name="viewport"
+              content="initial-scale=1, width=device-width"
+            />
+            <title>Insurechain</title>
+          </Head>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Header />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </CacheProvider>
+      </SessionProvider>
+    </QueryClientProvider>
   );
 }
 
