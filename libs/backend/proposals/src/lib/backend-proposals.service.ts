@@ -7,6 +7,14 @@ export class BackendProposalsService {
   constructor(private prisma: PrismaService) {}
 
   quote(): Promise<CoverageType[]> {
-    return this.prisma.coverageType.findMany();
+    return this.prisma.coverageType.findMany({
+      include: {
+        params: {
+          include: {
+            choices: true,
+          },
+        },
+      },
+    });
   }
 }

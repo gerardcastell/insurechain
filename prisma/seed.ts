@@ -28,8 +28,8 @@ async function main() {
                 create: [
                   ...param.choices?.map((choice: any) => ({
                     identifier: choice.identifier,
-                    title: choice.title.en,
-                    description: choice.description.en,
+                    title: choice.title.es,
+                    description: choice.description.es,
                   })),
                 ],
               },
