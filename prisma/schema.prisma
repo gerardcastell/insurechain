@@ -10,22 +10,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+ enum CoverageTypeIdentifier {
+ FireWindscreen
+ Theft
+ ThirdPartyLiability
+ WildlifeCollision
+}
+
+enum DependencyOperand {
+ AND
+ OR
+}
+
 model User {
   id    Int     @default(autoincrement()) @id
   email String  @unique
   password String
+  licenseType     String?
+  documentNumber  String?
+  birthdate       DateTime?
   proposals Proposal[]
 }
 
+
 model Proposal {
-  id        Int      @default(autoincrement()) @id
-  policyHolder  User @relation(fields: [policyHolderId], references: [id])
-  policyHolderId Int
-  coverages Json
-  riskObject RiskObject?
-  riskSubject RiskSubject?
-  active Boolean? @default(false)
-  onBlockchain Boolean? @default(false)
+  id                Int      @default(autoincrement()) @id
+  policyHolder      User @relation(fields: [policyHolderId], references: [id])
+  policyHolderId    Int
+  coverages         Json
+  riskObject        RiskObject?
+  riskSubject       RiskSubject?
+  active            Boolean? @default(false)
+  onBlockchain      Boolean? @default(false)
 }
 
 model RiskObject {
@@ -38,17 +55,38 @@ model RiskObject {
   kmsYear       Int
   parking       String
   proposal      Proposal @relation(fields: [proposalId],references: [id])
-  proposalId      Int @unique
+  proposalId    Int @unique
 }
 
 model RiskSubject {
-  id    Int     @default(autoincrement()) @id
-  name  String
+  id              Int     @default(autoincrement()) @id
+  name            String
   licenseType     String
   documentNumber  String
   birthdate       DateTime
   proposal        Proposal  @relation(fields: [proposalId], references: [id])
   proposalId      Int @unique
 }
+
+model CoverageType {
+  id                  Int @default(autoincrement()) @id
+  identifier          String @unique
+  order               Int?
+  params              Param[]
+  monthlyPremium      Int
+  title               String
+  description         String
+}
+
+model Param {
+  id             Int @default(autoincrement()) @id
+  identifier     String
+  default        String
+  title          String
+  values         String[]
+  coverageType   CoverageType @relation(fields: [coverageTypeId], references: [id])
+  coverageTypeId Int
+}
+
 
 

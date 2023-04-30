@@ -15,6 +15,12 @@ Technologies used:
 
 ## Database Commands
 
+To seed the database:
+
+```bash
+npm run db:seed:dev
+```
+
 ### Local Database
 
 To init the database locally first we have to run the docker container with the database:

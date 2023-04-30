@@ -1,17 +1,15 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateProposalDto } from './dtos/CreateProposal.dto';
+import { BackendProposalsService } from './backend-proposals.service';
 
 @ApiTags('Proposals')
 @Controller('proposals')
 export class ProposalsController {
-  @Post('quote')
-  createProposal(@Body() body: CreateProposalDto) {
-    console.log(body);
-  }
+  constructor(private readonly proposalsService: BackendProposalsService) {}
 
-  @Get('proposals')
-  getProposals() {
-    return 'hello';
+  @Post('quote')
+  quote(@Body() body: CreateProposalDto) {
+    return this.proposalsService.quote();
   }
 }
