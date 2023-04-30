@@ -1,13 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Coverage } from '@prisma/client';
-import {
-  IsArray,
-  IsBoolean,
-  IsEnum,
-  IsNumber,
-  isNumber,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
 
 class RiskObject {
   @ApiProperty()
