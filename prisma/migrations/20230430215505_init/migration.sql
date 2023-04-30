@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "Coverage" AS ENUM ('third_party_liability', 'wildlife_collision', 'theft', 'roadside_assistance', 'fire_windscreen', 'vehicle_damages', 'replacement_vehicle');
+
+-- CreateEnum
 CREATE TYPE "DependencyOperand" AS ENUM ('AND', 'OR');
 
 -- CreateTable
@@ -8,7 +11,7 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "licenseType" TEXT,
     "documentNumber" TEXT,
-    "birthdate" TIMESTAMP(3),
+    "birthDate" TIMESTAMP(3),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -45,7 +48,7 @@ CREATE TABLE "RiskSubject" (
     "name" TEXT NOT NULL,
     "licenseType" TEXT NOT NULL,
     "documentNumber" TEXT NOT NULL,
-    "birthdate" TIMESTAMP(3) NOT NULL,
+    "birthDate" TIMESTAMP(3) NOT NULL,
     "proposalId" INTEGER NOT NULL,
 
     CONSTRAINT "RiskSubject_pkey" PRIMARY KEY ("id")
@@ -54,7 +57,7 @@ CREATE TABLE "RiskSubject" (
 -- CreateTable
 CREATE TABLE "CoverageType" (
     "id" SERIAL NOT NULL,
-    "identifier" TEXT NOT NULL,
+    "identifier" "Coverage" NOT NULL,
     "order" INTEGER,
     "premiumFactor" DOUBLE PRECISION NOT NULL,
     "title" TEXT NOT NULL,

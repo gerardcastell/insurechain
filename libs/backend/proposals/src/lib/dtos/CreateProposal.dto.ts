@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber, isNumber, IsString } from 'class-validator';
+import { Coverage } from '@prisma/client';
+import {
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  isNumber,
+  IsString,
+} from 'class-validator';
 
 class RiskObject {
   @ApiProperty()
@@ -16,7 +24,7 @@ class RiskObject {
 
   @ApiProperty()
   @IsString()
-  purchaseDate: string;
+  purchaseDate: Date;
 
   @ApiProperty()
   @IsString()
@@ -46,52 +54,15 @@ class RiskSubject {
 
   @ApiProperty()
   @IsString()
-  birthDate: string;
+  birthDate: Date;
 }
 
-// enum CoverageType {
-//   thirdPartyLiability,
-//   wildlifeCollision,
-//   theft,
-//   roadsideAssistance,
-//   fireWindscreen,
-//   vehicleDamages,
-//   replacementVehicle,
-// }
-class CoverageSetup {
-  @ApiProperty()
-  @IsBoolean()
-  thirdPartyLiability?: boolean;
-
-  @ApiProperty()
-  @IsBoolean()
-  wildlifeCollision?: boolean;
-
-  @ApiProperty()
-  @IsBoolean()
-  theft?: boolean;
-
-  @ApiProperty()
-  @IsBoolean()
-  roadsideAssistance?: boolean;
-
-  @ApiProperty()
-  @IsBoolean()
-  fireWindscreen?: boolean;
-
-  @ApiProperty()
-  @IsBoolean()
-  vehicleDamages?: boolean;
-
-  @ApiProperty()
-  @IsBoolean()
-  replacementVehicle?: boolean;
-}
 export class CreateProposalDto {
   @ApiProperty()
   riskObject: RiskObject;
   @ApiProperty()
   riskSubject: RiskSubject;
-  @ApiProperty()
-  coverages?: CoverageSetup;
+  @ApiProperty({ enumName: 'Coverage', enum: Coverage, isArray: true })
+  @IsEnum(Coverage, { each: true })
+  coverages: Coverage[];
 }

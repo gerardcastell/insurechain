@@ -9,7 +9,7 @@ export class ProposalsController {
   constructor(private readonly proposalsService: BackendProposalsService) {}
 
   @Post('quote')
-  quote(@Body() body: CreateProposalDto) {
-    return this.proposalsService.quote();
+  quote(@Body() { riskObject, riskSubject, coverages }: CreateProposalDto) {
+    return this.proposalsService.quote(riskObject, riskSubject, coverages);
   }
 }

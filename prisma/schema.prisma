@@ -10,7 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
+enum Coverage {
+  third_party_liability
+  wildlife_collision
+  theft
+  roadside_assistance
+  fire_windscreen
+  vehicle_damages
+  replacement_vehicle
+}
 
 enum DependencyOperand {
  AND
@@ -23,7 +31,7 @@ model User {
   password String
   licenseType     String?
   documentNumber  String?
-  birthdate       DateTime?
+  birthDate       DateTime?
   proposals Proposal[]
 }
 
@@ -57,14 +65,14 @@ model RiskSubject {
   name            String
   licenseType     String
   documentNumber  String
-  birthdate       DateTime
+  birthDate       DateTime
   proposal        Proposal  @relation(fields: [proposalId], references: [id])
   proposalId      Int @unique
 }
 
 model CoverageType {
   id                  Int @default(autoincrement()) @id
-  identifier          String @unique
+  identifier          Coverage @unique
   order               Int?
   params              Param[]
   premiumFactor       Float
