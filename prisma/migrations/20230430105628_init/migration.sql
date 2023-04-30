@@ -1,7 +1,4 @@
 -- CreateEnum
-CREATE TYPE "CoverageTypeIdentifier" AS ENUM ('FireWindscreen', 'Theft', 'ThirdPartyLiability', 'WildlifeCollision');
-
--- CreateEnum
 CREATE TYPE "DependencyOperand" AS ENUM ('AND', 'OR');
 
 -- CreateTable
@@ -59,7 +56,7 @@ CREATE TABLE "CoverageType" (
     "id" SERIAL NOT NULL,
     "identifier" TEXT NOT NULL,
     "order" INTEGER,
-    "monthlyPremium" INTEGER NOT NULL,
+    "premiumFactor" DOUBLE PRECISION NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
 
@@ -71,11 +68,21 @@ CREATE TABLE "Param" (
     "id" SERIAL NOT NULL,
     "identifier" TEXT NOT NULL,
     "default" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
     "values" TEXT[],
     "coverageTypeId" INTEGER NOT NULL,
 
     CONSTRAINT "Param_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Choice" (
+    "id" SERIAL NOT NULL,
+    "identifier" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "paramId" INTEGER NOT NULL,
+
+    CONSTRAINT "Choice_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -101,3 +108,6 @@ ALTER TABLE "RiskSubject" ADD CONSTRAINT "RiskSubject_proposalId_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "Param" ADD CONSTRAINT "Param_coverageTypeId_fkey" FOREIGN KEY ("coverageTypeId") REFERENCES "CoverageType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Choice" ADD CONSTRAINT "Choice_paramId_fkey" FOREIGN KEY ("paramId") REFERENCES "Param"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

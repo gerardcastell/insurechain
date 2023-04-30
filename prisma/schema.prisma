@@ -11,12 +11,6 @@ datasource db {
 }
 
 
- enum CoverageTypeIdentifier {
- FireWindscreen
- Theft
- ThirdPartyLiability
- WildlifeCollision
-}
 
 enum DependencyOperand {
  AND
@@ -73,7 +67,7 @@ model CoverageType {
   identifier          String @unique
   order               Int?
   params              Param[]
-  monthlyPremium      Int
+  premiumFactor       Float
   title               String
   description         String
 }
@@ -82,11 +76,19 @@ model Param {
   id             Int @default(autoincrement()) @id
   identifier     String
   default        String
-  title          String
   values         String[]
+  choices        Choice[]
   coverageType   CoverageType @relation(fields: [coverageTypeId], references: [id])
   coverageTypeId Int
 }
 
+model Choice {
+  id             Int @default(autoincrement()) @id
+  identifier     String
+  title          String
+  description    String
+  param          Param @relation(fields: [paramId], references: [id])
+  paramId        Int
+}
 
 
