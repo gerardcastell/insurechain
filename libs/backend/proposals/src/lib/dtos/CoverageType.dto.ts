@@ -5,15 +5,11 @@ import { IsEnum, IsNumber, IsString } from 'class-validator';
 export class CoverageType {
   @ApiProperty({ enum: Coverage, enumName: 'Coverage' })
   @IsEnum(Coverage)
-  coverage: Coverage;
+  identifier: Coverage;
 
   @ApiProperty({ default: 10 })
   @IsNumber()
   premium: number;
-
-  @ApiProperty({ default: Coverage.theft })
-  @IsString()
-  identifier: Coverage;
 
   @ApiProperty({ default: 'Theft' })
   @IsString()

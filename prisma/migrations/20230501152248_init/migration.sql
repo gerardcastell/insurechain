@@ -20,7 +20,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Proposal" (
     "id" SERIAL NOT NULL,
     "policyHolderId" INTEGER NOT NULL,
-    "onBlockchain" BOOLEAN DEFAULT false,
+    "smartContractAddress" TEXT,
 
     CONSTRAINT "Proposal_pkey" PRIMARY KEY ("id")
 );
@@ -49,7 +49,6 @@ CREATE TABLE "RiskObject" (
 CREATE TABLE "RiskSubject" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "licenseType" TEXT NOT NULL,
     "documentNumber" TEXT NOT NULL,
     "birthDate" TIMESTAMP(3) NOT NULL,
     "proposalId" INTEGER NOT NULL,

@@ -2,19 +2,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class RiskSubject {
-  @ApiProperty()
+  @ApiProperty({ default: 'Gerard' })
   @IsString()
   name: string;
 
-  @ApiProperty()
-  @IsString()
-  licenseType: string;
-
-  @ApiProperty()
+  @ApiProperty({ default: '11111111H' })
   @IsString()
   documentNumber: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: new Date('1990-01-01') })
   @IsString()
   birthDate: Date;
 }

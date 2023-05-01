@@ -43,18 +43,17 @@ export class BackendProposalsService {
   ) {
     const user = await this.userService.findOneById(userId);
     if (!user) throw new NotFoundException('User not found');
-    console.log({ user });
     return this.prisma.proposal.create({
       data: {
         policyHolderId: userId,
         riskObject: {
-          create: { ...riskObject },
+          create: riskObject,
         },
         riskSubject: {
-          create: { ...riskSubject },
+          create: riskSubject,
         },
         coverages: {
-          create: [],
+          create: coverages,
         },
       },
     });

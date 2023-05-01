@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { RiskObject, RiskSubject, Coverage } from '@prisma/client';
 import { Type } from 'class-transformer';
 import { IsArray, IsNotEmpty, ArrayMinSize } from 'class-validator';
 import { CoverageType } from './CoverageType.dto';
+import { RiskObject } from './RiskObject.dto';
+import { RiskSubject } from './RiskSubject.dto';
 
 const getTodayAndAddYears = (years: number) => {
   const today = new Date();

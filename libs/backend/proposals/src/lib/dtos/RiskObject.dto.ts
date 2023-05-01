@@ -3,52 +3,59 @@ import { FuelType, ParkingType } from '@prisma/client';
 import { IsString, IsNumber } from 'class-validator';
 
 export class RiskObject {
-  @ApiProperty()
+  @ApiProperty({ default: 'AUDI' })
   @IsString()
   maker: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: 'A1' })
   @IsString()
   model: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: 3 })
   @IsNumber()
   doorsNumber: number;
 
-  @ApiProperty()
-  @ApiProperty()
+  @ApiProperty({
+    enum: FuelType,
+    enumName: 'FuelType',
+    default: FuelType.gasoline,
+  })
   @IsString()
   fuelType: FuelType;
 
-  @ApiProperty()
+  @ApiProperty({ default: '120' })
   @IsNumber()
   power: number;
 
-  @ApiProperty()
+  @ApiProperty({ default: new Date('2018-02-01') })
   @IsString()
   purchaseDate: Date;
 
-  @ApiProperty()
+  @ApiProperty({ default: new Date('2016-02-01') })
   @IsString()
   releaseDate: Date;
 
-  @ApiProperty()
+  @ApiProperty({ default: '1234LLC' })
   @IsString()
   plate: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: 20750 })
   @IsNumber()
   retailPrice: number;
 
-  @ApiProperty()
+  @ApiProperty({ default: '1.0 TFSI ACTIVE KIT' })
   @IsString()
   version: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: 10000 })
   @IsNumber()
   kmsYear: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: ParkingType,
+    enumName: 'ParkingType',
+    default: ParkingType.garage,
+  })
   @IsString()
   parking: ParkingType;
 }

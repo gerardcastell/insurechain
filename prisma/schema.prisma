@@ -49,7 +49,7 @@ model Proposal {
   coverages         CoverageType[]
   riskObject        RiskObject?
   riskSubject       RiskSubject?
-  onBlockchain      Boolean? @default(false)
+  smartContractAddress      String?
 }
 
 model RiskObject {
@@ -73,7 +73,6 @@ model RiskObject {
 model RiskSubject {
   id              Int     @default(autoincrement()) @id
   name            String
-  licenseType     String
   documentNumber  String
   birthDate       DateTime
   proposal        Proposal  @relation(fields: [proposalId], references: [id])
