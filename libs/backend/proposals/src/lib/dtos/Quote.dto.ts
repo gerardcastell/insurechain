@@ -1,13 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Coverage, RiskObject, RiskSubject } from '@prisma/client';
-import { IsEnum } from 'class-validator';
-
+import { IsArray, IsEnum, IsObject, IsOptional } from 'class-validator';
+import { RiskObjectDto } from './RiskObject.dto';
+import { RiskSubjectDto } from './RiskSubject.dto';
+import { Coverage } from '@prisma/client';
 export class QuoteDto {
-  @ApiProperty()
-  riskObject: RiskObject;
-  @ApiProperty()
-  riskSubject: RiskSubject;
-  @ApiProperty({ enumName: 'Coverage', enum: Coverage, isArray: true })
+  @ApiProperty({ type: () => RiskObjectDto })
+  @IsObject()
+  riskObject: RiskObjectDto;
+
+  @ApiProperty({ type: () => RiskSubjectDto })
+  @IsObject()
+  riskSubject: RiskSubjectDto;
+
+  @ApiProperty({ default: [Coverage.theft] })
   @IsEnum(Coverage, { each: true })
+  @IsArray()
+  @IsOptional()
   coverages: Coverage[];
 }

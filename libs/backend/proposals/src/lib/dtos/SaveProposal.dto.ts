@@ -1,10 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, ArrayMinSize } from 'class-validator';
-import { CoverageType } from './CoverageType.dto';
-import { RiskObject } from './RiskObject.dto';
-import { RiskSubject } from './RiskSubject.dto';
-
+import {
+  IsArray,
+  IsNotEmpty,
+  ArrayMinSize,
+  ValidateNested,
+  IsObject,
+  IsDefined,
+} from 'class-validator';
+import { RiskObjectDto } from './RiskObject.dto';
+import { RiskSubjectDto } from './RiskSubject.dto';
+import { CoverageDto } from './CoverageType.dto';
 const getTodayAndAddYears = (years: number) => {
   const today = new Date();
   today.setFullYear(today.getFullYear() + years);
@@ -14,17 +20,29 @@ const getTodayAndAddYears = (years: number) => {
 export class SaveProposalDto {
   @ApiProperty({ default: getTodayAndAddYears(1) })
   endDate: Date;
+
   @ApiProperty({ default: new Date() })
   effectiveDate: Date;
-  @ApiProperty()
-  riskObject: RiskObject;
-  @ApiProperty()
-  riskSubject: RiskSubject;
 
-  @ApiProperty({ isArray: true, type: CoverageType })
+  @ApiProperty()
+  @IsDefined()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => RiskObjectDto)
+  riskObject: RiskObjectDto;
+
+  @ApiProperty()
+  @IsDefined()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => RiskSubjectDto)
+  riskSubject: RiskSubjectDto;
+
+  @ApiProperty({ isArray: true, type: CoverageDto })
   @IsArray()
   @IsNotEmpty()
   @ArrayMinSize(1)
-  @Type(() => CoverageType)
-  coverages: CoverageType[];
+  @ValidateNested({ each: true })
+  @Type(() => CoverageDto)
+  coverages: CoverageDto[];
 }

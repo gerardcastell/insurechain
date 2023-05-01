@@ -2,12 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Coverage } from '@prisma/client';
 import { IsEnum, IsNumber, IsString } from 'class-validator';
 
-export class CoverageType {
+export class CoverageDto {
   @ApiProperty({ enum: Coverage, enumName: 'Coverage' })
   @IsEnum(Coverage)
   identifier: Coverage;
 
-  @ApiProperty({ default: 10 })
+  @ApiProperty({ default: 10, required: true })
   @IsNumber()
   premium: number;
 
