@@ -1,7 +1,9 @@
 import { PrismaService } from '@insurechain/backend/prisma';
-import { Injectable } from '@nestjs/common';
+import { BackendUsersService } from '@insurechain/backend/users';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   Coverage,
+  CoverageProduct,
   CoverageType,
   RiskObject,
   RiskSubject,
@@ -9,33 +11,64 @@ import {
 
 @Injectable()
 export class BackendProposalsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private userService: BackendUsersService
+  ) {}
 
-  async quote(
+  quote(
     riskObject: Omit<RiskObject, 'id' | 'proposalId'>,
     riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>,
     coverages: Coverage[]
-  ): Promise<(Omit<CoverageType, 'premiumFactor'> & { premium: number })[]> {
-    const coverageTypes = await this.getCoverages(coverages);
-
+  ): Promise<
+    (Omit<CoverageProduct, 'basePriceFactor'> & { premium: number })[]
+  > {
     const price = this.getPrice(riskObject, riskSubject);
+    return this.getCoverageProducts(coverages).then((coverageTypes) =>
+      coverageTypes.map((coverageType) => {
+        const { basePriceFactor, ...rest } = coverageType;
+        return {
+          ...rest,
+          premium: Math.round(basePriceFactor * price * 100) / 100,
+        };
+      })
+    );
+  }
 
-    return coverageTypes.map((coverageType) => {
-      const { premiumFactor, ...rest } = coverageType;
-      return {
-        ...rest,
-        premium: Math.round(premiumFactor * price * 100) / 100,
-      };
+  async saveProposal(
+    userId: number,
+    riskObject: Omit<RiskObject, 'id' | 'proposalId'>,
+    riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>,
+    coverages: Omit<CoverageType, 'id' | 'proposalId'>[]
+  ) {
+    const user = await this.userService.findOneById(userId);
+    if (!user) throw new NotFoundException('User not found');
+    console.log({ user });
+    return this.prisma.proposal.create({
+      data: {
+        policyHolderId: userId,
+        riskObject: {
+          create: { ...riskObject },
+        },
+        riskSubject: {
+          create: { ...riskSubject },
+        },
+        coverages: {
+          create: [],
+        },
+      },
     });
   }
 
-  getCoverages(coverages: Coverage[]): Promise<CoverageType[]> {
-    return this.prisma.coverageType.findMany({
+  private getCoverageProducts(
+    coverages: Coverage[]
+  ): Promise<CoverageProduct[]> {
+    return this.prisma.coverageProduct.findMany({
       ...(coverages.length && { where: { identifier: { in: coverages } } }),
     });
   }
 
-  getPrice(
+  private getPrice(
     riskObject: Omit<RiskObject, 'id' | 'proposalId'>,
     riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>
   ): number {

@@ -20,19 +20,25 @@ enum Coverage {
   replacement_vehicle
 }
 
-enum DependencyOperand {
- AND
- OR
+enum FuelType {
+  gasoline
+  diesel
+  hybrid
+  electric
+}
+
+enum ParkingType {
+  street
+  collective_car_park
+  collective_car_park_surveillance
+  garage
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  password String
-  licenseType     String?
-  documentNumber  String?
-  birthDate       DateTime?
-  proposals Proposal[]
+  id              Int     @default(autoincrement()) @id
+  email           String  @unique
+  password        String
+  proposals       Proposal[]
 }
 
 
@@ -40,22 +46,26 @@ model Proposal {
   id                Int      @default(autoincrement()) @id
   policyHolder      User @relation(fields: [policyHolderId], references: [id])
   policyHolderId    Int
-  coverages         Json
+  coverages         CoverageType[]
   riskObject        RiskObject?
   riskSubject       RiskSubject?
-  active            Boolean? @default(false)
   onBlockchain      Boolean? @default(false)
 }
 
 model RiskObject {
   id            Int @default(autoincrement()) @id
+  maker         String
   model         String
-  fuelType      String
+  doorsNumber   Int
+  fuelType      FuelType
   power         Int
   purchaseDate  DateTime
+  releaseDate   DateTime
+  version       String
+  retailPrice   Float
   plate         String
   kmsYear       Int
-  parking       String
+  parking       ParkingType
   proposal      Proposal @relation(fields: [proposalId],references: [id])
   proposalId    Int @unique
 }
@@ -70,33 +80,22 @@ model RiskSubject {
   proposalId      Int @unique
 }
 
-model CoverageType {
+model CoverageProduct {
   id                  Int @default(autoincrement()) @id
   identifier          Coverage @unique
   order               Int?
-  params              Param[]
-  premiumFactor       Float
+  basePriceFactor     Float
   title               String
   description         String
 }
 
-model Param {
-  id             Int @default(autoincrement()) @id
-  identifier     String
-  default        String
-  values         String[]
-  choices        Choice[]
-  coverageType   CoverageType @relation(fields: [coverageTypeId], references: [id])
-  coverageTypeId Int
+model CoverageType {
+  id                  Int @default(autoincrement()) @id
+  identifier          Coverage @unique
+  premium             Float
+  title               String
+  description         String
+  proposal             Proposal @relation(fields: [proposalId], references: [id])
+  proposalId          Int @unique
 }
-
-model Choice {
-  id             Int @default(autoincrement()) @id
-  identifier     String
-  title          String
-  description    String
-  param          Param @relation(fields: [paramId], references: [id])
-  paramId        Int
-}
-
 

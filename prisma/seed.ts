@@ -17,30 +17,12 @@ async function main() {
         order: coverageType.order,
         title: coverageType.title.en,
         description: coverageType.description.en,
-        premiumFactor: coverageType.premium.monthly_plan.receipt_amount / 10,
-        params: {
-          create: [
-            ...coverageType.params.map((param: any) => ({
-              identifier: param.identifier,
-              default: param.default,
-              values: param.values,
-              choices: {
-                create: [
-                  ...param.choices?.map((choice: any) => ({
-                    identifier: choice.identifier,
-                    title: choice.title.es,
-                    description: choice.description.es,
-                  })),
-                ],
-              },
-            })),
-          ],
-        },
+        basePriceFactor: coverageType.premium.monthly_plan.receipt_amount / 10,
       },
     })
   );
   const upsertedCoverageTypes = coverageTypes.map(
-    async (c) => await prisma.coverageType.upsert(c)
+    async (c) => await prisma.coverageProduct.upsert(c)
   );
   console.log(
     upsertedCoverageTypes.reduce((acc, curr) => ({ ...acc, curr }), {})
