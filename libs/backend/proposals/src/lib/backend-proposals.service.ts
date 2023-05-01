@@ -56,6 +56,11 @@ export class BackendProposalsService {
           create: coverages,
         },
       },
+      include: {
+        coverages: true,
+        riskObject: true,
+        riskSubject: true,
+      },
     });
   }
 

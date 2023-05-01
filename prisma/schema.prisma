@@ -49,7 +49,7 @@ model Proposal {
   coverages         CoverageType[]
   riskObject        RiskObject?
   riskSubject       RiskSubject?
-  smartContractAddress      String?
+  smartContractAddress      String? @unique
 }
 
 model RiskObject {
@@ -73,7 +73,7 @@ model RiskObject {
 model RiskSubject {
   id              Int     @default(autoincrement()) @id
   name            String
-  documentNumber  String
+  documentNumber  String  @unique
   birthDate       DateTime
   proposal        Proposal  @relation(fields: [proposalId], references: [id])
   proposalId      Int @unique
@@ -82,7 +82,6 @@ model RiskSubject {
 model CoverageProduct {
   id                  Int @default(autoincrement()) @id
   identifier          Coverage @unique
-  order               Int?
   basePriceFactor     Float
   title               String
   description         String
@@ -90,11 +89,11 @@ model CoverageProduct {
 
 model CoverageType {
   id                  Int @default(autoincrement()) @id
-  identifier          Coverage @unique
+  identifier          Coverage
   premium             Float
   title               String
   description         String
-  proposal             Proposal @relation(fields: [proposalId], references: [id])
-  proposalId          Int @unique
+  proposal            Proposal  @relation(fields: [proposalId], references: [id])
+  proposalId          Int       @unique
 }
 

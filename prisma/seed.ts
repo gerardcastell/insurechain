@@ -8,13 +8,13 @@ async function main() {
   const json: { data: any } = JSON.parse(
     readFileSync(join(__dirname, 'quote.json'), 'utf8')
   );
+
   const coverageTypes: any[] = json.data.coverage_types.map(
     (coverageType: any) => ({
       where: { identifier: coverageType.identifier },
       update: {},
       create: {
         identifier: coverageType.identifier,
-        order: coverageType.order,
         title: coverageType.title.en,
         description: coverageType.description.en,
         basePriceFactor: coverageType.premium.monthly_plan.receipt_amount / 10,

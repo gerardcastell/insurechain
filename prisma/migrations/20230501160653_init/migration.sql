@@ -60,7 +60,6 @@ CREATE TABLE "RiskSubject" (
 CREATE TABLE "CoverageProduct" (
     "id" SERIAL NOT NULL,
     "identifier" "Coverage" NOT NULL,
-    "order" INTEGER,
     "basePriceFactor" DOUBLE PRECISION NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
@@ -84,16 +83,22 @@ CREATE TABLE "CoverageType" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Proposal_smartContractAddress_key" ON "Proposal"("smartContractAddress");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RiskObject_plate_key" ON "RiskObject"("plate");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "RiskObject_proposalId_key" ON "RiskObject"("proposalId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RiskSubject_documentNumber_key" ON "RiskSubject"("documentNumber");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RiskSubject_proposalId_key" ON "RiskSubject"("proposalId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "CoverageProduct_identifier_key" ON "CoverageProduct"("identifier");
-
--- CreateIndex
-CREATE UNIQUE INDEX "CoverageType_identifier_key" ON "CoverageType"("identifier");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "CoverageType_proposalId_key" ON "CoverageType"("proposalId");
