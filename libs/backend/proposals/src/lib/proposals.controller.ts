@@ -5,17 +5,27 @@ import {
   UseGuards,
   Request,
   Get,
+  Patch,
+  Param,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { QuoteDto } from './dtos/Quote.dto';
 import { BackendProposalsService } from './backend-proposals.service';
 import { JwtAuthGuard } from '@insurechain/backend/users';
 import { SaveProposalDto } from './dtos/SaveProposal.dto';
+import { UploadToBlockchainDto } from './dtos/UploadToBlockchain.dto';
 
 @ApiTags('Proposals')
 @Controller('proposals')
 export class ProposalsController {
   constructor(private readonly proposalsService: BackendProposalsService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get('')
+  getProposals(@Request() req) {
+    return this.proposalsService.getProposals(req.user.userId);
+  }
 
   @Post('quote')
   quote(@Body() { riskObject, riskSubject, coverages }: QuoteDto) {
@@ -37,8 +47,15 @@ export class ProposalsController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Get('')
-  getProposals(@Request() req) {
-    return this.proposalsService.getProposals(req.user.userId);
+  @ApiParam({ name: 'proposalId', type: 'number' })
+  @Patch('blockchain/:proposalId')
+  uploadToBlockchain(
+    @Body() { address }: UploadToBlockchainDto,
+    @Param('proposalId') proposalId
+  ) {
+    return this.proposalsService.uploadToBlockchain(
+      parseInt(proposalId),
+      address
+    );
   }
 }

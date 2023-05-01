@@ -77,6 +77,17 @@ export class BackendProposalsService {
     });
   }
 
+  uploadToBlockchain(proposalId: number, address: string) {
+    return this.prisma.proposal.update({
+      where: {
+        id: proposalId,
+      },
+      data: {
+        smartContractAddress: address,
+      },
+    });
+  }
+
   private getCoverageProducts(
     coverages: Coverage[]
   ): Promise<CoverageProduct[]> {
