@@ -16,6 +16,19 @@ export class BackendProposalsService {
     private userService: BackendUsersService
   ) {}
 
+  getProposals(userId: number) {
+    return this.prisma.proposal.findMany({
+      where: {
+        policyHolderId: userId,
+      },
+      include: {
+        coverages: true,
+        riskObject: true,
+        riskSubject: true,
+      },
+    });
+  }
+
   quote(
     riskObject: Omit<RiskObject, 'id' | 'proposalId'>,
     riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>,

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { FuelType, ParkingType } from '@prisma/client';
-import { IsString, IsNumber, IsDate, IsEnum } from 'class-validator';
+import { IsString, IsNumber, IsEnum, IsDateString } from 'class-validator';
 
 export class RiskObjectDto {
   @ApiProperty({ default: 'AUDI' })
@@ -29,11 +29,11 @@ export class RiskObjectDto {
   power: number;
 
   @ApiProperty({ default: new Date('2018-02-01') })
-  @IsDate()
+  @IsDateString()
   purchaseDate: Date;
 
   @ApiProperty({ default: new Date('2016-02-01') })
-  @IsDate()
+  @IsDateString()
   releaseDate: Date;
 
   @ApiProperty({ default: '1234LLC' })

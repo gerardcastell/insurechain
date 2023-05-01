@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  Request,
+  Get,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { QuoteDto } from './dtos/Quote.dto';
 import { BackendProposalsService } from './backend-proposals.service';
@@ -19,7 +26,6 @@ export class ProposalsController {
   @ApiBearerAuth()
   @Post('save-proposal')
   saveProposal(@Body() body: SaveProposalDto, @Request() req) {
-    console.log(body);
     const { riskObject, riskSubject, coverages } = body;
     return this.proposalsService.saveProposal(
       req.user.userId,
@@ -27,5 +33,12 @@ export class ProposalsController {
       riskSubject,
       coverages
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get('')
+  getProposals(@Request() req) {
+    return this.proposalsService.getProposals(req.user.userId);
   }
 }
