@@ -18,7 +18,7 @@ model Proposal {
   id                   Int           @id @default(autoincrement())
   policyHolderId       Int
   smartContractAddress String?       @unique
-  coverages            CoverageType?
+  coverages            CoverageType[]
   policyHolder         User          @relation(fields: [policyHolderId], references: [id])
   riskObject           RiskObject?
   riskSubject          RiskSubject?
