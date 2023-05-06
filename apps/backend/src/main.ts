@@ -20,7 +20,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('InsureChain')
-    .setDescription('The Insure API description')
+    .setDescription('The Insurechain API description')
     .setVersion('0.1')
     .addBearerAuth()
     .build();

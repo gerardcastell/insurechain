@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,44 +8,87 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  password String
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
   proposals Proposal[]
 }
 
 model Proposal {
-  id        Int      @default(autoincrement()) @id
-  policyHolder  User @relation(fields: [policyHolderId], references: [id])
-  policyHolderId Int
-  coverages Json
-  riskObject RiskObject?
-  riskSubject RiskSubject?
-  active Boolean? @default(false)
-  onBlockchain Boolean? @default(false)
+  id                   Int           @id @default(autoincrement())
+  policyHolderId       Int
+  smartContractAddress String?       @unique
+  coverages            CoverageType?
+  policyHolder         User          @relation(fields: [policyHolderId], references: [id])
+  riskObject           RiskObject?
+  riskSubject          RiskSubject?
 }
 
 model RiskObject {
-  id            Int @default(autoincrement()) @id
-  model         String
-  fuelType      String
-  power         Int
-  purchaseDate  DateTime
-  plate         String
-  kmsYear       Int
-  parking       String
-  proposal      Proposal @relation(fields: [proposalId],references: [id])
-  proposalId      Int @unique
+  id           Int         @id @default(autoincrement())
+  model        String
+  power        Int
+  purchaseDate DateTime
+  plate        String
+  kmsYear      Int
+  proposalId   Int         @unique
+  doorsNumber  Int
+  maker        String
+  releaseDate  DateTime
+  retailPrice  Float
+  version      String
+  fuelType     FuelType
+  parking      ParkingType
+  proposal     Proposal    @relation(fields: [proposalId], references: [id])
 }
 
 model RiskSubject {
-  id    Int     @default(autoincrement()) @id
-  name  String
-  licenseType     String
-  documentNumber  String
-  birthdate       DateTime
-  proposal        Proposal  @relation(fields: [proposalId], references: [id])
-  proposalId      Int @unique
+  id             Int      @id @default(autoincrement())
+  name           String
+  documentNumber String   @unique
+  proposalId     Int      @unique
+  birthDate      DateTime
+  proposal       Proposal @relation(fields: [proposalId], references: [id])
 }
 
+model CoverageProduct {
+  id              Int      @id @default(autoincrement())
+  identifier      Coverage @unique
+  basePriceFactor Float
+  title           String
+  description     String
+}
 
+model CoverageType {
+  id          Int      @id @default(autoincrement())
+  identifier  Coverage
+  premium     Float
+  title       String
+  description String
+  proposalId  Int      @unique
+  proposal    Proposal @relation(fields: [proposalId], references: [id])
+}
+
+enum Coverage {
+  third_party_liability
+  wildlife_collision
+  theft
+  roadside_assistance
+  fire_windscreen
+  vehicle_damages
+  replacement_vehicle
+}
+
+enum FuelType {
+  gasoline
+  diesel
+  hybrid
+  electric
+}
+
+enum ParkingType {
+  street
+  collective_car_park
+  collective_car_park_surveillance
+  garage
+}

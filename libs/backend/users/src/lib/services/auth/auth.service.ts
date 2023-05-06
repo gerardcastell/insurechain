@@ -39,7 +39,7 @@ export class AuthService {
   async validateUser(
     email: string,
     password: string
-  ): Promise<Pick<User, 'email'>> {
+  ): Promise<Pick<User, 'email' | 'id'>> {
     const user = await this.usersService.findOneByEmail(email);
 
     if (!user) {
@@ -56,7 +56,7 @@ export class AuthService {
     return null;
   }
 
-  async signIn(user: Omit<User, 'password'>) {
+  async signIn(user: Pick<User, 'email' | 'id'>) {
     const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),

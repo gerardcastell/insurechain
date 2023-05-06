@@ -16,10 +16,12 @@ export class BackendUsersService {
     });
   }
 
-  findOneByEmail(email: string): Promise<Pick<User, 'email' | 'password'>> {
+  findOneByEmail(
+    email: string
+  ): Promise<Pick<User, 'email' | 'password' | 'id'>> {
     return this.prisma.user.findUnique({
       where: { email },
-      select: { email: true, password: true },
+      select: { email: true, password: true, id: true },
     });
   }
 

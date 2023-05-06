@@ -25,7 +25,13 @@ import { BackendHealthModule } from '@insurechain/backend/health';
   controllers: [AppController],
   providers: [
     AppService,
-    { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true }) },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        whitelist: true,
+        skipMissingProperties: false,
+      }),
+    },
   ],
 })
 export class AppModule {}

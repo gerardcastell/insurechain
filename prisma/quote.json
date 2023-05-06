@@ -1,0 +1,1156 @@
+{
+  "data": {
+    "product_identifier": "total_risk",
+    "premium": {
+      "annual_plan": {
+        "receipt_amount": 759.14,
+        "annual_gross_premium": 759.14,
+        "annual_net_premium": 691.51,
+        "annual_taxes": 67.63,
+        "annual_discounted_gross_premium": null,
+        "annual_discounted_net_premium": null,
+        "annual_discounted_taxes": null
+      },
+      "monthly_plan": {
+        "receipt_amount": 81.14,
+        "annual_gross_premium": 973.66,
+        "annual_net_premium": 887.48,
+        "annual_taxes": 86.18,
+        "annual_discounted_gross_premium": null,
+        "annual_discounted_net_premium": null,
+        "annual_discounted_taxes": null
+      }
+    },
+    "coverage_types": [
+      {
+        "coverages": [
+          {
+            "title": {
+              "en": "Obligatory third party liability",
+              "es": "Responsabilidad Civil Obligatoria"
+            },
+            "description": {
+              "en": "Compulsory coverage to circulate. It covers the compensation she is responsible for to damages caused to third parties in a traffic accident, both material and personal damages.",
+              "es": "Cobertura obligatoria para circular y se encarga de cubrir al asegurado frente a aquellas indemnizaciones de las que sea responsable por daños causados a terceros en un accidente de circulación, tanto daños materiales como personales."
+            },
+            "identifier": "third_party_liability",
+            "limit": [
+              {
+                "identifier": "limit_tpl",
+                "insured_amount_identifier": "amount",
+                "coverage_identifier": "limit_third_party_liability_car",
+                "value": 85000000,
+                "title": {
+                  "en": "",
+                  "es": "Límite responsabilidad civil obligatoria"
+                },
+                "description": {
+                  "en": "",
+                  "es": "70M de daños personales y 15M de daños materiales"
+                },
+                "choices": [
+                  {
+                    "identifier": "limit_tpl",
+                    "value": 85000000,
+                    "title": {
+                      "en": "",
+                      "es": "Límite responsabilidad civil obligatoria"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "70M de daños personales y 15M de daños materiales"
+                    }
+                  }
+                ]
+              }
+            ],
+            "deductible": []
+          },
+          {
+            "title": {
+              "en": "Obligatory third party liability plus",
+              "es": "Responsabilidad Civil Obligatoria Ampliada"
+            },
+            "description": {
+              "en": "Extendend the mandatory limit with an additional €50 million.",
+              "es": " Ampliamos el límite obligatorio con 50 millones de € adicionales."
+            },
+            "identifier": "third_party_liability_plus",
+            "limit": [
+              {
+                "identifier": "limit_tpl_plus",
+                "insured_amount_identifier": "amount",
+                "coverage_identifier": "limit_third_party_liability_plus_car",
+                "value": 50000000,
+                "title": {
+                  "en": "",
+                  "es": "Límite responsabilidad civil voluntaria"
+                },
+                "description": {
+                  "en": "",
+                  "es": "Límite responsabilidad civil voluntaria"
+                },
+                "choices": [
+                  {
+                    "identifier": "limit_tpl_plus",
+                    "value": 50000000,
+                    "title": {
+                      "en": "",
+                      "es": "Límite responsabilidad civil voluntaria"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite responsabilidad civil voluntaria"
+                    }
+                  }
+                ]
+              }
+            ],
+            "deductible": []
+          },
+          {
+            "title": {
+              "en": "Legal defense",
+              "es": "Defensa legal"
+            },
+            "description": {
+              "en": "Providing of the necessary services, both judicial and extrajudicial assistance, when claiming damages suffered.",
+              "es": "Prestación de los servicios necesarios, tanto de asistencia judicial como extrajudicial, a la hora de reclamar daños y perjuicios sufridos."
+            },
+            "identifier": "legal_defense",
+            "limit": [
+              {
+                "identifier": "limit_legal_defense",
+                "insured_amount_identifier": "amount",
+                "coverage_identifier": "limit_legal_defense_car",
+                "value": 1500,
+                "title": {
+                  "en": "",
+                  "es": "Límite defensa legal"
+                },
+                "description": {
+                  "en": "",
+                  "es": "Límite defensa legal libre elección del asegurado"
+                },
+                "choices": [
+                  {
+                    "identifier": "limit_legal_defense",
+                    "value": 1500,
+                    "title": {
+                      "en": "",
+                      "es": "Límite defensa legal"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite defensa legal libre elección del asegurado"
+                    }
+                  }
+                ]
+              },
+              {
+                "identifier": "limit_international_judicial_bonds",
+                "insured_amount_identifier": null,
+                "coverage_identifier": "limit_international_judicial_bonds_car",
+                "value": 6000,
+                "title": {
+                  "en": "",
+                  "es": "Fianzas judiciales fuera del territorio español"
+                },
+                "description": {
+                  "en": "",
+                  "es": "Fianzas judiciales fuera del territorio español"
+                },
+                "choices": [
+                  {
+                    "identifier": "limit_international_judicial_bonds",
+                    "value": 6000,
+                    "title": {
+                      "en": "",
+                      "es": "Fianzas judiciales fuera del territorio español"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Fianzas judiciales fuera del territorio español"
+                    }
+                  }
+                ]
+              }
+            ],
+            "deductible": []
+          },
+          {
+            "title": {
+              "en": "Claim damage",
+              "es": "Daños por siniestro"
+            },
+            "description": {
+              "en": "Claiming a damage to the third party company is managed by Cleverea. ",
+              "es": "Gestionamos por ti la reclamación de daños sufridos en accidente a la compañía contraria."
+            },
+            "identifier": "damage_claim",
+            "limit": [
+              {
+                "identifier": "limit_damage_claim",
+                "insured_amount_identifier": "amount",
+                "coverage_identifier": "limit_damage_claim_car",
+                "value": 1500,
+                "title": {
+                  "en": "",
+                  "es": "Límite daños por siniestro"
+                },
+                "description": {
+                  "en": "",
+                  "es": "Límite daños por siniestro"
+                },
+                "choices": [
+                  {
+                    "identifier": "limit_damage_claim",
+                    "value": 1500,
+                    "title": {
+                      "en": "",
+                      "es": "Límite daños por siniestro"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite daños por siniestro"
+                    }
+                  }
+                ]
+              }
+            ],
+            "deductible": []
+          },
+          {
+            "title": {
+              "en": "Death and disability",
+              "es": "Invalidez y fallecimiento"
+            },
+            "description": {
+              "en": "You will receive compensation in the event that the main driver dies or suffers permanent disability as a result of an accident caused by or during the use of the insured car.",
+              "es": "Recibirás una indemnización en caso que el conductor principal fallezca o padezca una invalidez permanente como consecuencia de un accidente ocurrido por o durante el uso del coche asegurado."
+            },
+            "identifier": "disability_death",
+            "limit": [
+              {
+                "identifier": "limit_disability_death_6000",
+                "insured_amount_identifier": null,
+                "coverage_identifier": "limit_disability_death_car",
+                "value": 6000,
+                "title": {
+                  "en": "",
+                  "es": "Límite fallecimiento o incapacidad"
+                },
+                "description": {
+                  "en": "",
+                  "es": "Límite fallecimiento o incapacidad 6000"
+                },
+                "choices": [
+                  {
+                    "identifier": "limit_disability_death_60000",
+                    "value": 60000,
+                    "title": {
+                      "en": "",
+                      "es": "Límite fallecimiento o incapacidad"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite fallecimiento o incapacidad 60000"
+                    }
+                  },
+                  {
+                    "identifier": "limit_disability_death_18000",
+                    "value": 18000,
+                    "title": {
+                      "en": "",
+                      "es": "Límite fallecimiento o incapacidad"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite fallecimiento o incapacidad 18000"
+                    }
+                  },
+                  {
+                    "identifier": "limit_disability_death_6000",
+                    "value": 6000,
+                    "title": {
+                      "en": "",
+                      "es": "Límite fallecimiento o incapacidad"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite fallecimiento o incapacidad 6000"
+                    }
+                  },
+                  {
+                    "identifier": "limit_disability_death_30000",
+                    "value": 30000,
+                    "title": {
+                      "en": "",
+                      "es": "Límite fallecimiento o incapacidad"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite fallecimiento o incapacidad 30000"
+                    }
+                  }
+                ]
+              }
+            ],
+            "deductible": []
+          },
+          {
+            "title": {
+              "en": "Healthcare",
+              "es": "Asistencia médica"
+            },
+            "description": {
+              "en": "Covers expenses for medical, surgical, hospital and pharmaceutical assistance including aesthetic corrections, prostheses and psycho-emotional assistance to the driver and direct family. It also includes the accommodation expenses of the companion.",
+              "es": "Cubre gastos de asistencia médica, quirúrgica, hospitalaria y farmacéutica incluyendo correccione estéticas, prótesis y asistencia psicoemocional al conductor y família directa. También incluye los gastos de estancia del acompañante."
+            },
+            "identifier": "medical_expenses",
+            "limit": [
+              {
+                "identifier": "limit_medical_expenses_1500",
+                "insured_amount_identifier": "amount",
+                "coverage_identifier": "limit_medical_expenses_car",
+                "value": 1500,
+                "title": {
+                  "en": "",
+                  "es": "Límite asistencia sanitaria"
+                },
+                "description": {
+                  "en": "",
+                  "es": "Límite asistencia sanitaria 1500"
+                },
+                "choices": [
+                  {
+                    "identifier": "limit_medical_expenses_6000",
+                    "value": 6000,
+                    "title": {
+                      "en": "",
+                      "es": "Límite asistencia sanitaria"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite asistencia sanitaria 6000"
+                    }
+                  },
+                  {
+                    "identifier": "limit_medical_expenses_7500",
+                    "value": 7500,
+                    "title": {
+                      "en": "",
+                      "es": "Límite asistencia sanitaria"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite asistencia sanitaria 7500"
+                    }
+                  },
+                  {
+                    "identifier": "limit_medical_expenses_1500",
+                    "value": 1500,
+                    "title": {
+                      "en": "",
+                      "es": "Límite asistencia sanitaria"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Límite asistencia sanitaria 1500"
+                    }
+                  }
+                ]
+              }
+            ],
+            "deductible": []
+          }
+        ],
+        "title": {
+          "en": "Third party liability and Driver Damages",
+          "es": "Responsabilidad Civil y Daños del conductor"
+        },
+        "description": {
+          "en": "The mandatory coverage to be able to drive your car. You are covered of the mandatory and voluntary third party liability, damages to a third person and legal defense. It includes indemnization in case of driver damages and the medical expenses cost.",
+          "es": "La cobertura legalmente obligatoria para circular. Cubre la RC obligatoria y voluntaria por los daños causados a un tercero y la protección legal. También cubre indemnización en caso de daños al conductor por accidente y cubre los gastos médicos asociados."
+        },
+        "params": [
+          {
+            "identifier": "limit",
+            "value": "basic",
+            "choices": [
+              {
+                "description": {
+                  "en": "Driver damages basic pack limits: 1.500€ medical expenses and 6.000€ for death and disability",
+                  "es": "Daños al conductor pack básico con límites: 1.500€ asisténcia sanitaria y 6.000€ para invalidez o fallecimiento"
+                },
+                "identifier": "basic",
+                "title": {
+                  "en": "",
+                  "es": "Pack básico"
+                }
+              },
+              {
+                "description": {
+                  "en": "Driver damages medium pack limits: 6.000€ medical expenses and 30.000€ for death and disability",
+                  "es": "Daños al conductor pack estándar con límites: 6.000€ asisténcia sanitaria y 30.000€ para invalidez o fallecimiento"
+                },
+                "identifier": "medium",
+                "title": {
+                  "en": "",
+                  "es": "Pack estándar"
+                }
+              },
+              {
+                "description": {
+                  "en": "Driver damages premium pack limits: 7.500€ medical expenses and 60.000€ for death and disability",
+                  "es": "Daños al conductor pack premium con límites: 7.500€ asisténcia sanitaria y 60.000€ para invalidez o fallecimiento"
+                },
+                "identifier": "premium",
+                "title": {
+                  "en": "",
+                  "es": "Pack premium"
+                }
+              }
+            ],
+            "values": ["basic", "medium", "premium"],
+            "default": "basic"
+          }
+        ],
+        "selected": true,
+        "dependencies": {},
+        "identifier": "third_party_liability",
+        "compulsory": true,
+        "premium": {
+          "monthly_plan": {
+            "receipt_amount": 32.31,
+            "annual_gross_premium": 411.99,
+            "annual_net_premium": 375.96,
+            "annual_taxes": 36.03,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          },
+          "annual_plan": {
+            "receipt_amount": 302.08,
+            "annual_gross_premium": 321.06,
+            "annual_net_premium": 292.94,
+            "annual_taxes": 28.12,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          }
+        },
+        "order": 1
+      },
+      {
+        "coverages": [
+          {
+            "title": {
+              "en": "Roadside assistance",
+              "es": "Asistencia en carretera"
+            },
+            "description": {
+              "en": "Mechanical assistance on the road and towing. Includes: - Towing service: either due to a breakdown, an accident, if the battery runs out, if you lose the keys or run out of fuel, etc. - Mechanical assistance on the road: we try to solve the problem at the place of the event. Punctures, battery discharge, etc. - Rescue: for when we can't tow your car. For example, if you fall down a slope or into a hole. - Transport to destination or home: we take you where you tell us, in case of theft, breakdown or accident. Countries where the service is available: throughout Europe and in the countries included in the Green Card. Attention: in case of failure, you can only use the service after 7 days from the date of contracting the insurance.",
+              "es": "Asistencia mecánica en carretera y remolcaje. Incluye: -Servicio de grúa: ya sea por una avería, un accidente, si se agota la batería, si pierdes las llaves o te quedas sin combustible, etc. -Asistencia mecánica en carretera: intentamos resolver el problema en el lugar del suceso. Pinchazos, descarga de la batería, etc. -Rescate: para cuando no podamos remolcar tu coche. Por ejemplo, si se cae por una pendiente o en un hoyo. -Transporte a destino o domicilio: te llevamos a dónde nos digas, en caso de robo, avería o accidente. Países donde el servicio está disponible: en toda Europa y en los paises incluídos en la Carta Verde. Atención: en caso de avería, podrás utilitzar el servicio únicamente pasados 7 días desde la fecha de contratación del seguro."
+            },
+            "identifier": "roadside_assistance",
+            "limit": [],
+            "deductible": []
+          }
+        ],
+        "title": {
+          "en": "Roadside assistance",
+          "es": "Asistencia en carretera"
+        },
+        "description": {
+          "en": "Roadside assistance and towing services. Maximum protection for you and your car in the event of an accident or breakdown.",
+          "es": "Ayuda técnica en carretera y remolcaje. Máxima protección para tí y para tu coche en caso de sufrir un accidente o avería."
+        },
+        "params": [],
+        "selected": true,
+        "dependencies": {
+          "operand": "or",
+          "coverage_types": [
+            {
+              "identifier": "third_party_liability"
+            }
+          ]
+        },
+        "identifier": "roadside_assistance",
+        "compulsory": false,
+        "premium": {
+          "monthly_plan": {
+            "receipt_amount": 4.98,
+            "annual_gross_premium": 59.77,
+            "annual_net_premium": 49.4,
+            "annual_taxes": 10.37,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          },
+          "annual_plan": {
+            "receipt_amount": 46.58,
+            "annual_gross_premium": 46.58,
+            "annual_net_premium": 38.5,
+            "annual_taxes": 8.08,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          }
+        },
+        "order": 2
+      },
+      {
+        "coverages": [
+          {
+            "title": {
+              "en": "Windscreen",
+              "es": "Lunas"
+            },
+            "description": {
+              "en": "Repair or replacement costs are covered in case of broken front windshield, rear window, side window glass and sunroof or panoramic roof. To activate the coverage, you must upload a video of the car where the windows can be seen in detail.",
+              "es": "Cubiertos los gastos de reparación o sustitución por rotura de parabrisas delantero, luna trasera, cristales de las ventanillas laterales y techo solar o panorámico. Para activar la cobertura se deberá subir un vídeo del coche donde se vea con detalle las lunas."
+            },
+            "identifier": "windscreen",
+            "limit": [],
+            "deductible": []
+          },
+          {
+            "title": {
+              "en": "Fire",
+              "es": "Incendio"
+            },
+            "description": {
+              "en": "Damage suffered by the car as a result of fire, explosion and lightning strike are covered.",
+              "es": "Estan cubiertos los daños que sufra el vehículo como consecuencia de incendio, explosión y caída de un rayo."
+            },
+            "identifier": "fire",
+            "limit": [],
+            "deductible": []
+          }
+        ],
+        "title": {
+          "en": "Fire and windscreen",
+          "es": "Incendio y lunas"
+        },
+        "description": {
+          "en": "Covers the damage as a result of fire or broken windows.",
+          "es": "Cubre los daños como consecuencia de incendio o rotura de lunas."
+        },
+        "params": [],
+        "selected": true,
+        "dependencies": {
+          "operand": "or",
+          "coverage_types": [
+            {
+              "identifier": "third_party_liability"
+            }
+          ]
+        },
+        "identifier": "fire_windscreen",
+        "compulsory": false,
+        "premium": {
+          "monthly_plan": {
+            "receipt_amount": 2.27,
+            "annual_gross_premium": 31.15,
+            "annual_net_premium": 28.79,
+            "annual_taxes": 2.36,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          },
+          "annual_plan": {
+            "receipt_amount": 21.23,
+            "annual_gross_premium": 24.25,
+            "annual_net_premium": 22.43,
+            "annual_taxes": 1.82,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          }
+        },
+        "order": 3
+      },
+      {
+        "coverages": [
+          {
+            "title": {
+              "en": "Theft",
+              "es": "Robo"
+            },
+            "description": {
+              "en": "You are covered in case your car is stolen.",
+              "es": "Estás cubierto/a en caso de sufrir el robo de tu coche."
+            },
+            "identifier": "theft",
+            "limit": [],
+            "deductible": []
+          },
+          {
+            "title": {
+              "en": "Partial Theft",
+              "es": "Robo Parcial"
+            },
+            "description": {
+              "en": "You are covered in case one of the fixed parts of your car is stolen.",
+              "es": "Estás cubierto/a en caso de sufrir el robo de una de las partes fijas de tu coche."
+            },
+            "identifier": "partial_theft",
+            "limit": [],
+            "deductible": [
+              {
+                "identifier": "deductible_partial_theft",
+                "insured_amount_identifier": null,
+                "coverage_identifier": "deductible_partial_theft_car",
+                "value": 0.1,
+                "title": {
+                  "en": "",
+                  "es": "Franquicia por robo parcial"
+                },
+                "description": {
+                  "en": "",
+                  "es": "Franquicia por robo parcial (10%)"
+                },
+                "choices": [
+                  {
+                    "identifier": "deductible_partial_theft",
+                    "value": 0.1,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia por robo parcial"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia por robo parcial (10%)"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": {
+              "en": "Theft Attempt",
+              "es": "Intento de Robo"
+            },
+            "description": {
+              "en": "Damages caused when attempting to steal your car are covered.",
+              "es": "Estás cubierto/a en caso de sufrir daños al intentar comenter el robo de tu coche."
+            },
+            "identifier": "damages_attempted_theft",
+            "limit": [],
+            "deductible": [
+              {
+                "identifier": "deductible_damages_attempted_theft",
+                "insured_amount_identifier": null,
+                "coverage_identifier": "deductible_damages_attempted_theft_car",
+                "value": 0.1,
+                "title": {
+                  "en": "",
+                  "es": "Franquicia por daños por tentativa de robo"
+                },
+                "description": {
+                  "en": "",
+                  "es": "Franquicia por daños por tentativa de robo (10%)"
+                },
+                "choices": [
+                  {
+                    "identifier": "deductible_damages_attempted_theft",
+                    "value": 0.1,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia por daños por tentativa de robo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia por daños por tentativa de robo (10%)"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "title": {
+          "en": "Theft",
+          "es": "Robo"
+        },
+        "description": {
+          "en": "Covers total or partial car theft.",
+          "es": "Cubre el robo total o parcial del coche."
+        },
+        "params": [],
+        "selected": true,
+        "dependencies": {
+          "operand": "and",
+          "coverage_types": [
+            {
+              "identifier": "fire_windscreen"
+            },
+            {
+              "identifier": "third_party_liability"
+            }
+          ]
+        },
+        "identifier": "theft",
+        "compulsory": false,
+        "premium": {
+          "monthly_plan": {
+            "receipt_amount": 0.82,
+            "annual_gross_premium": 9.89,
+            "annual_net_premium": 7.2,
+            "annual_taxes": 2.69,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          },
+          "annual_plan": {
+            "receipt_amount": 8.17,
+            "annual_gross_premium": 8.17,
+            "annual_net_premium": 5.61,
+            "annual_taxes": 2.56,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          }
+        },
+        "order": 4
+      },
+      {
+        "coverages": [
+          {
+            "title": {
+              "en": "Wildlife collision",
+              "es": "Colisión animales cinegéticos"
+            },
+            "description": {
+              "en": "Material damage suffered to the insured vehicle caused by damage suffered by the insured vehicle due to impact, collision or run over with game species (game animals) and domestic animals (livestock farms, farms or similar) are covered.",
+              "es": "Se cubren los daños materiales sufridos al vehículo asegurado producidos por los daños que sufra el vehículo asegurado por impacto, colisión o atropello con especies cinegéticas (animales de caza) y animales domésticos (de explotaciones ganaderas, granjas o similares)."
+            },
+            "identifier": "wildlife_collision",
+            "limit": [],
+            "deductible": []
+          }
+        ],
+        "title": {
+          "en": "Wildlife collision",
+          "es": "Animales cinegéticos"
+        },
+        "description": {
+          "en": "You are insured if there is a colisión with a wild or domestic animal",
+          "es": "Cubre cualquier colisión con animales salvajes y domésticos."
+        },
+        "params": [],
+        "selected": true,
+        "dependencies": {
+          "operand": "or",
+          "coverage_types": [
+            {
+              "identifier": "third_party_liability"
+            }
+          ]
+        },
+        "identifier": "wildlife_collision",
+        "compulsory": false,
+        "premium": {
+          "monthly_plan": {
+            "receipt_amount": 1.13,
+            "annual_gross_premium": 13.51,
+            "annual_net_premium": 12.49,
+            "annual_taxes": 1.02,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          },
+          "annual_plan": {
+            "receipt_amount": 10.52,
+            "annual_gross_premium": 10.52,
+            "annual_net_premium": 9.73,
+            "annual_taxes": 0.79,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          }
+        },
+        "order": 4
+      },
+      {
+        "coverages": [
+          {
+            "title": {
+              "en": "Vehicle damages",
+              "es": "Daños al vehículo"
+            },
+            "description": {
+              "en": "Covers accidental damage caused by the driver to his own vehicle, for any reason, for example: scratches in the parking lot, dents in the bumper. It also covers damage by unidentified third parties such as hit-and-run cars or hail damage.",
+              "es": "Cubre los daños accidentales causados por el conductor a su propio vehículo, por cualquier motivo por ejemplo: rayadas del parking, abolladuras del paracoches. También cubre daños por terceros no identificados como coches que se dan a la fuga o daños por acción del granizo."
+            },
+            "identifier": "vehicle_damages",
+            "limit": [],
+            "deductible": [
+              {
+                "identifier": "deductible_vehicle_damages_295",
+                "insured_amount_identifier": null,
+                "coverage_identifier": "deductible_vehicle_damages_car",
+                "value": 295,
+                "title": {
+                  "en": "",
+                  "es": "Franquicia daños vehículo"
+                },
+                "description": {
+                  "en": "",
+                  "es": "Franquicia daños vehículo 295€"
+                },
+                "choices": [
+                  {
+                    "identifier": "deductible_vehicle_damages_295",
+                    "value": 295,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 295€"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_0",
+                    "value": 0,
+                    "title": {
+                      "en": "",
+                      "es": "Sin franquicia"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Sin franquicia"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_595",
+                    "value": 595,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 595€"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_325",
+                    "value": 325,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 325€"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_245",
+                    "value": 245,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 245€"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_95",
+                    "value": 95,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 95€"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_345",
+                    "value": 345,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 345€"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_995",
+                    "value": 995,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 995€"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_195",
+                    "value": 195,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 195€"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_275",
+                    "value": 275,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 275€"
+                    }
+                  },
+                  {
+                    "identifier": "deductible_vehicle_damages_395",
+                    "value": 395,
+                    "title": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo"
+                    },
+                    "description": {
+                      "en": "",
+                      "es": "Franquicia daños vehículo 395€"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "title": {
+          "en": "Vehicle damages",
+          "es": "Daños al vehículo"
+        },
+        "description": {
+          "en": "It covers the damages that your car may suffer in an accident, parked or being transported.",
+          "es": "Cubre los daños que pueda sufrir tu coche en un accidente, estacionado o siendo transportado."
+        },
+        "params": [
+          {
+            "identifier": "deductible",
+            "value": "295",
+            "choices": [
+              {
+                "description": {
+                  "en": "",
+                  "es": "Sin franquicia"
+                },
+                "identifier": "0",
+                "title": {
+                  "en": "",
+                  "es": "Sin franq."
+                }
+              },
+              {
+                "description": {
+                  "en": "",
+                  "es": "Franquicia 95€"
+                },
+                "identifier": "95",
+                "title": {
+                  "en": "",
+                  "es": "95€"
+                }
+              },
+              {
+                "description": {
+                  "en": "",
+                  "es": "Franquicia 195€"
+                },
+                "identifier": "195",
+                "title": {
+                  "en": "",
+                  "es": "195€"
+                }
+              },
+              {
+                "description": {
+                  "en": "",
+                  "es": "Franquicia 295€"
+                },
+                "identifier": "295",
+                "title": {
+                  "en": "",
+                  "es": "295€"
+                }
+              },
+              {
+                "description": {
+                  "en": "",
+                  "es": "Franquicia 395€"
+                },
+                "identifier": "395",
+                "title": {
+                  "en": "",
+                  "es": "395€"
+                }
+              },
+              {
+                "description": {
+                  "en": "",
+                  "es": "Franquicia 595€"
+                },
+                "identifier": "595",
+                "title": {
+                  "en": "",
+                  "es": "595€"
+                }
+              }
+            ],
+            "values": ["0", "95", "195", "295", "395", "595"],
+            "default": "295"
+          }
+        ],
+        "selected": true,
+        "dependencies": {
+          "operand": "and",
+          "coverage_types": [
+            {
+              "identifier": "fire_windscreen"
+            },
+            {
+              "identifier": "theft"
+            },
+            {
+              "identifier": "wildlife_collision"
+            },
+            {
+              "identifier": "third_party_liability"
+            }
+          ]
+        },
+        "identifier": "vehicle_damages",
+        "compulsory": false,
+        "premium": {
+          "monthly_plan": {
+            "receipt_amount": 37.28,
+            "annual_gross_premium": 447.35,
+            "annual_net_premium": 413.64,
+            "annual_taxes": 33.71,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          },
+          "annual_plan": {
+            "receipt_amount": 348.56,
+            "annual_gross_premium": 348.56,
+            "annual_net_premium": 322.3,
+            "annual_taxes": 26.26,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          }
+        },
+        "order": 5
+      },
+      {
+        "coverages": [
+          {
+            "title": {
+              "en": "Replacement vehicle",
+              "es": "Vehículo de sustitución"
+            },
+            "description": {
+              "en": "The replacement car is a vehicle at your disposal in the event that the insured car is not available in the event of an accident, damage to the vehicle, theft, fire or total loss. Whenever possible, a car with sustainable characteristics (plug-in hybrid or electric) will be delivered. Attention: the service will not be available in the event of a traffic accident, breakdown, fire or theft during the 7 days after the date of contracting the insurance.",
+              "es": "El coche de sustitución es un vehículo a tu disposición en el caso de que el coche asegurado no éste disponible en caso de accidente, daños al vehiculo, robo, incendio o siniestro total. Siempre que sea posible, se entregará un coche con características sostenibles (híbrido enchufable o eléctrico). Atención: no se dipondrá del servicio en caso accidente de circulación, avería, incendio o robo duranto los 7 días posteriores a la fecha de contratación del seguro."
+            },
+            "identifier": "replacement_vehicle",
+            "limit": [],
+            "deductible": []
+          }
+        ],
+        "title": {
+          "en": "Replacement vehicle",
+          "es": "Vehículo de sustitución"
+        },
+        "description": {
+          "en": "In the event that due to an accident your car is disabled, Cleverea will provide you with one.",
+          "es": "En caso de que debido a un accidente tu coche quede inutilizado, Cleverea te proporcionará uno."
+        },
+        "params": [],
+        "selected": false,
+        "dependencies": {
+          "operand": "or",
+          "coverage_types": [
+            {
+              "identifier": "third_party_liability"
+            }
+          ]
+        },
+        "identifier": "replacement_vehicle",
+        "compulsory": false,
+        "premium": {
+          "monthly_plan": {
+            "receipt_amount": 5.3,
+            "annual_gross_premium": 63.65,
+            "annual_net_premium": 52.6,
+            "annual_taxes": 11.05,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          },
+          "annual_plan": {
+            "receipt_amount": 49.61,
+            "annual_gross_premium": 49.61,
+            "annual_net_premium": 41,
+            "annual_taxes": 8.61,
+            "annual_discounted_gross_premium": null,
+            "annual_discounted_net_premium": null,
+            "annual_discounted_taxes": null
+          }
+        },
+        "order": 6
+      }
+    ],
+    "quote_reference": "KLII7X9KR5PRTI",
+    "confirmed_price": true,
+    "detailed_price": true,
+    "is_purchasable": false,
+    "purchase_required_missing_fields": {
+      "policy_holder": {
+        "email": ["This field may not be null."],
+        "phone_number": ["This field may not be null."]
+      }
+    },
+    "deeplinking_url": "https://app.cleverea.com/checkout/mobility/car/pcw?proposal=KLII7X9KR5PRTI&partner=cleverea&partner_agent_id=2",
+    "payment_link": null,
+    "title": {
+      "en": "Total risk",
+      "es": "Todo riesgo"
+    },
+    "description": {
+      "en": "Total risk with deductible",
+      "es": "Todo Riesgo con franquicia"
+    },
+    "pms2": true,
+    "checkout_data": {
+      "policy": {
+        "billing_plan": "annual",
+        "discount_code": null,
+        "discount_data": null
+      }
+    }
+  }
+}

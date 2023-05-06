@@ -4,8 +4,6 @@ Insurechain is DAPP which consists on a technological ecosystem that pursuits to
 
 ## Stacks
 
-Technologies used:
-
 - Frontend: Next.js
 - Backend: Nest.js
 - Database: Prisma and PostgreSQL
@@ -23,7 +21,13 @@ To init the database locally first we have to run the docker container with the 
 npm run db:up:dev
 ```
 
-In order to perform a migration, let's suppose the schema is already edited, we may run:
+To seed the database:
+
+```bash
+npm run db:seed:dev
+```
+
+In order to perform a migration, let's suppose the schema is already edited. Take into account that on init the database the seed is already performed automatically. To migrate we may run:
 
 ```bash
 prisma migrate dev --name migration_title
@@ -33,6 +37,12 @@ Even if we have to init for the first time the database or we have perform some 
 
 ```bash
 npm run db:migrate:dev
+```
+
+To reset our database with the seed:
+
+```bash
+rm -rf prisma/migrations && npm run db:migrate:dev
 ```
 
 We can use the Prisma Studio to visualize the data of our database:
