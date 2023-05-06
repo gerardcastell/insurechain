@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,6 +5,68 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
+  proposals Proposal[]
+}
+
+model Proposal {
+  id                   Int           @id @default(autoincrement())
+  policyHolderId       Int
+  smartContractAddress String?       @unique
+  coverages            CoverageType?
+  policyHolder         User          @relation(fields: [policyHolderId], references: [id])
+  riskObject           RiskObject?
+  riskSubject          RiskSubject?
+}
+
+model RiskObject {
+  id           Int         @id @default(autoincrement())
+  model        String
+  power        Int
+  purchaseDate DateTime
+  plate        String
+  kmsYear      Int
+  proposalId   Int         @unique
+  doorsNumber  Int
+  maker        String
+  releaseDate  DateTime
+  retailPrice  Float
+  version      String
+  fuelType     FuelType
+  parking      ParkingType
+  proposal     Proposal    @relation(fields: [proposalId], references: [id])
+}
+
+model RiskSubject {
+  id             Int      @id @default(autoincrement())
+  name           String
+  documentNumber String   @unique
+  proposalId     Int      @unique
+  birthDate      DateTime
+  proposal       Proposal @relation(fields: [proposalId], references: [id])
+}
+
+model CoverageProduct {
+  id              Int      @id @default(autoincrement())
+  identifier      Coverage @unique
+  basePriceFactor Float
+  title           String
+  description     String
+}
+
+model CoverageType {
+  id          Int      @id @default(autoincrement())
+  identifier  Coverage
+  premium     Float
+  title       String
+  description String
+  proposalId  Int      @unique
+  proposal    Proposal @relation(fields: [proposalId], references: [id])
 }
 
 enum Coverage {
@@ -33,67 +92,3 @@ enum ParkingType {
   collective_car_park_surveillance
   garage
 }
-
-model User {
-  id              Int     @default(autoincrement()) @id
-  email           String  @unique
-  password        String
-  proposals       Proposal[]
-}
-
-
-model Proposal {
-  id                Int      @default(autoincrement()) @id
-  policyHolder      User @relation(fields: [policyHolderId], references: [id])
-  policyHolderId    Int
-  coverages         CoverageType[]
-  riskObject        RiskObject?
-  riskSubject       RiskSubject?
-  smartContractAddress      String? @unique
-}
-
-model RiskObject {
-  id            Int @default(autoincrement()) @id
-  maker         String
-  model         String
-  doorsNumber   Int
-  fuelType      FuelType
-  power         Int
-  purchaseDate  DateTime
-  releaseDate   DateTime
-  version       String
-  retailPrice   Float
-  plate         String
-  kmsYear       Int
-  parking       ParkingType
-  proposal      Proposal @relation(fields: [proposalId],references: [id])
-  proposalId    Int @unique
-}
-
-model RiskSubject {
-  id              Int     @default(autoincrement()) @id
-  name            String
-  documentNumber  String  @unique
-  birthDate       DateTime
-  proposal        Proposal  @relation(fields: [proposalId], references: [id])
-  proposalId      Int @unique
-}
-
-model CoverageProduct {
-  id                  Int @default(autoincrement()) @id
-  identifier          Coverage @unique
-  basePriceFactor     Float
-  title               String
-  description         String
-}
-
-model CoverageType {
-  id                  Int @default(autoincrement()) @id
-  identifier          Coverage
-  premium             Float
-  title               String
-  description         String
-  proposal            Proposal  @relation(fields: [proposalId], references: [id])
-  proposalId          Int       @unique
-}
-

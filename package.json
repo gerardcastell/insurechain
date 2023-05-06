@@ -16,6 +16,7 @@
     "db:studio:prod": "dotenv -e .env.production -- prisma studio",
     "db:studio:dev": "dotenv -e .env.development -- prisma studio",
     "db:seed:dev": "dotenv -e .env.development  prisma db seed",
+    "db:seed:prod": "dotenv -e .env.production  prisma db seed",
     "sc:compile": "node libs/blockchain/src/lib/scripts/compile.js"
   },
   "private": true,
