@@ -18,6 +18,9 @@ describe('AuthService', () => {
           id: Math.floor(Math.random() * 9999),
           email,
           password,
+          birthDate: new Date(),
+          licenseType: null,
+          documentNumber: null,
         };
         users.push(user);
         return Promise.resolve(user);

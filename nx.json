@@ -29,7 +29,7 @@
       "inputs": ["default", "^production"]
     }
   },
-  "defaultProject": "backend",
+  "defaultProject": "client-web",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"],

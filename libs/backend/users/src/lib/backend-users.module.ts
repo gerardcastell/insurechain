@@ -21,7 +21,7 @@ import { BackendUtilsModule } from '@insurechain/backend/utils';
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
-      signOptions: { expiresIn: '1d' },
+      signOptions: { expiresIn: '1h' },
     }),
   ],
 })
