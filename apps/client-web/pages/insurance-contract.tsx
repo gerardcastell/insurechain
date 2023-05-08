@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { axios } from '../lib/axios';
-import Form from '../features/insurance-contract/forms';
+import InsuranceContractForm from '../features/insurance-contract';
+import { Grid, Avatar, Box } from '@mui/material';
 const InsuranceContract = () => {
   const { isLoading, isError, data } = useQuery(
     ['health'],
@@ -13,9 +14,15 @@ const InsuranceContract = () => {
     return <div>Error...</div>;
   }
   return (
-    <div>
-      <Form />
-    </div>
+    <Grid
+      sx={{ height: 'calc(100vh - 56px)' }}
+      container
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <InsuranceContractForm />
+    </Grid>
   );
 };
 
