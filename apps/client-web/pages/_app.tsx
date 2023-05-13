@@ -12,6 +12,9 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../lib/react-query';
 import BackendLauncherProvider from '../features/core/BackendLauncherProvider';
 
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
 const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -26,21 +29,23 @@ function CustomApp({
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
         <CacheProvider value={emotionCache}>
-          <Head>
-            <meta
-              name="viewport"
-              content="initial-scale=1, width=device-width"
-            />
-            <title>Insurechain</title>
-          </Head>
-          <ThemeProvider theme={theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <BackendLauncherProvider>
-              <Header />
-              <Component {...pageProps} />
-            </BackendLauncherProvider>
-          </ThemeProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Head>
+              <meta
+                name="viewport"
+                content="initial-scale=1, width=device-width"
+              />
+              <title>Insurechain</title>
+            </Head>
+            <ThemeProvider theme={theme}>
+              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+              <CssBaseline />
+              <BackendLauncherProvider>
+                <Header />
+                <Component {...pageProps} />
+              </BackendLauncherProvider>
+            </ThemeProvider>
+          </LocalizationProvider>
         </CacheProvider>
       </SessionProvider>
     </QueryClientProvider>

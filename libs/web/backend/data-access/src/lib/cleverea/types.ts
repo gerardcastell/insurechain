@@ -7,9 +7,9 @@ export interface MakerDto {
 export interface GetVersionsPayload {
   maker: string;
   model: string;
-  fuelType?: FuelType;
-  numberDoors?: number;
-  power?: number;
+  fuelType: FuelType | null;
+  numberDoors: number | null;
+  power: number | null;
 }
 
 export interface ModelVersionDto {
