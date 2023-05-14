@@ -2,13 +2,13 @@ import { useForm, Controller } from 'react-hook-form';
 import React, { useEffect, useState } from 'react';
 import {
   Autocomplete,
+  Box,
   Button,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
   Select,
-  Slider,
   TextField,
 } from '@mui/material';
 import { FuelType, ParkingType } from '@prisma/client';
@@ -17,13 +17,12 @@ import {
   getVersions,
   GetVersionsPayload,
   MakerDto,
-  ModelVersionDto,
   VersionDto,
 } from '@insurechain/web/backend/data-access';
 import { debounce } from '@mui/material/utils';
-import { useQuery } from '@tanstack/react-query';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+
 const KMS_RANGE: readonly number[] = [
   5000, 10000, 15000, 20000, 30000, 40000, 50000, 60000,
 ];
@@ -35,7 +34,7 @@ const PARKING_TYPE: Record<ParkingType, string> = {
   [ParkingType.collective_car_park_surveillance]: 'Guarded Collective garage',
 };
 
-interface IFormRiskObjectInputs {
+type FormRiskObjectInputs = {
   maker: string;
   model: string;
   version: string;
@@ -43,31 +42,28 @@ interface IFormRiskObjectInputs {
   fuelType: FuelType;
   power: number;
   purchaseDate: Date;
-  releaseDate: Date;
   plate: string;
-  retailPrice: number;
   kmsYear: number;
   parking: string;
-}
+  // releaseDate: Date;
+  // retailPrice: number;
+};
+export type FormRiskObjectOutput = {
+  riskObject: FormRiskObjectInputs;
+  versions: VersionDto[];
+};
 
-const FormRiskObject = () => {
+type Props = {
+  onSubmit: (data: FormRiskObjectOutput) => void;
+};
+
+const FormRiskObject = ({ onSubmit }: Props) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
-  } = useForm<IFormRiskObjectInputs>({
-    defaultValues: {
-      doorsNumber: null,
-      power: null,
-      purchaseDate: null,
-      releaseDate: null,
-      plate: '',
-      retailPrice: null,
-      kmsYear: null,
-      parking: '',
-    },
-  });
+  } = useForm<FormRiskObjectInputs>({ mode: 'onBlur' });
 
   const convertCapitalCase = (str: string) =>
     str?.charAt(0)?.toUpperCase() + str?.slice(1);
@@ -96,7 +92,8 @@ const FormRiskObject = () => {
 
   useEffect(() => {
     async function searchVersions(payload: GetVersionsPayload) {
-      const versions = await getVersions(payload);
+      const versions =
+        payload.maker && payload.model ? await getVersions(payload) : [];
       setVersionList(versions);
     }
     const subscription = watch(
@@ -117,20 +114,32 @@ const FormRiskObject = () => {
   }, [watch]);
 
   const onChangeMakerInput = debounce(searchMakers, 1000);
-
-  const onSubmit = (data) => console.log(data);
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Box
+      sx={{ width: '100%' }}
+      component="form"
+      onSubmit={handleSubmit((riskObject) =>
+        onSubmit({ riskObject, versions: versionList })
+      )}
+    >
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12}>
           <Controller
             name="plate"
             control={control}
+            defaultValue=""
+            rules={{
+              pattern: {
+                value: /^\d{4}[A-Za-z]{3}$/,
+                message: 'Invalid plate',
+              },
+              required: true,
+            }}
             render={({ field }) => (
               <TextField
                 {...field}
-                error={Boolean(errors.plate)}
+                inputProps={{ style: { textTransform: 'uppercase' } }}
+                error={!!errors.plate}
                 fullWidth
                 helperText={errors.plate?.message}
                 label="Plate"
@@ -142,6 +151,7 @@ const FormRiskObject = () => {
         <Grid item xs={12} sm={6}>
           <Controller
             control={control}
+            defaultValue={undefined}
             name="maker"
             render={({ field: { onChange, ...field } }) => (
               <Autocomplete
@@ -174,6 +184,7 @@ const FormRiskObject = () => {
           <Grid item xs={12} sm={6}>
             <Controller
               control={control}
+              defaultValue={undefined}
               name="model"
               render={({ field: { onChange, ...field } }) => (
                 <Autocomplete
@@ -206,6 +217,7 @@ const FormRiskObject = () => {
             <Grid item xs={12} sm={6}>
               <Controller
                 control={control}
+                defaultValue={undefined}
                 name="fuelType"
                 rules={{ required: true }}
                 render={({ field }) => (
@@ -300,7 +312,7 @@ const FormRiskObject = () => {
                 render={({ field }) => (
                   <FormControl fullWidth>
                     <InputLabel id="parking">Usual parking</InputLabel>
-                    <Select label="parking" {...field} fullWidth>
+                    <Select label="Usual Parking" {...field} fullWidth>
                       {Object.keys(PARKING_TYPE).map((option, idx) => (
                         <MenuItem key={option} value={option}>
                           {PARKING_TYPE[option]}
@@ -327,8 +339,8 @@ const FormRiskObject = () => {
                     openTo="year"
                     format="LL"
                     views={['year', 'month', 'day']}
-                    maxDate={dayjs().subtract(1, 'day')}
-                    minDate={dayjs().subtract(12, 'year')}
+                    maxDate={dayjs().subtract(1, 'day') as unknown as Date}
+                    minDate={dayjs().subtract(12, 'year') as unknown as Date}
                   />
                 )}
               />
@@ -337,12 +349,17 @@ const FormRiskObject = () => {
         )}
 
         <Grid item xs={12}>
-          <Button variant="contained" type="submit" fullWidth>
+          <Button
+            disabled={!isValid}
+            variant="contained"
+            type="submit"
+            fullWidth
+          >
             Submit
           </Button>
         </Grid>
       </Grid>
-    </form>
+    </Box>
   );
 };
 
