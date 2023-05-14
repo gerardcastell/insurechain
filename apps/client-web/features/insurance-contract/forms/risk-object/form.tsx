@@ -8,6 +8,7 @@ import {
   Grid,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   TextField,
 } from '@mui/material';
@@ -122,242 +123,246 @@ const FormRiskObject = ({ onSubmit }: Props) => {
         onSubmit({ riskObject, versions: versionList })
       )}
     >
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={12}>
-          <Controller
-            name="plate"
-            control={control}
-            defaultValue=""
-            rules={{
-              pattern: {
-                value: /^\d{4}[A-Za-z]{3}$/,
-                message: 'Invalid plate',
-              },
-              required: true,
-            }}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                inputProps={{ style: { textTransform: 'uppercase' } }}
-                error={!!errors.plate}
-                fullWidth
-                helperText={errors.plate?.message}
-                label="Plate"
-                placeholder="Ex. 1234BCD"
-              />
-            )}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            control={control}
-            defaultValue={undefined}
-            name="maker"
-            render={({ field: { onChange, ...field } }) => (
-              <Autocomplete
-                {...field}
-                freeSolo
-                onChange={(_, option: MakerDto) => {
-                  onChange(option?.maker);
-
-                  setModelList(option?.models || []);
-                }}
-                options={makerList}
-                // loading
-                placeholder="Write a maker to initiate search..."
-                loadingText="Searching makers..."
-                noOptionsText="No makers found"
-                clearOnBlur
-                filterOptions={(x) => x}
-                getOptionLabel={(option: MakerDto) =>
-                  convertCapitalCase(option.maker)
-                }
-                onInputChange={onChangeMakerInput}
-                renderInput={(params) => (
-                  <TextField {...params} label={'Maker'} variant="outlined" />
-                )}
-              />
-            )}
-          />
-        </Grid>
-        {modelList.length > 0 && (
+      <Paper elevation={8}>
+        <Grid container spacing={2} padding={2}>
+          <Grid item xs={12} sm={12}>
+            <Controller
+              name="plate"
+              control={control}
+              defaultValue=""
+              rules={{
+                pattern: {
+                  value: /^\d{4}[A-Za-z]{3}$/,
+                  message: 'Invalid plate',
+                },
+                required: true,
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  inputProps={{ style: { textTransform: 'uppercase' } }}
+                  error={!!errors.plate}
+                  fullWidth
+                  helperText={errors.plate?.message}
+                  label="Plate"
+                  placeholder="Ex. 1234BCD"
+                />
+              )}
+            />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
               control={control}
               defaultValue={undefined}
-              name="model"
+              name="maker"
               render={({ field: { onChange, ...field } }) => (
                 <Autocomplete
                   {...field}
-                  options={modelList}
-                  // loading
-                  onChange={(_, option: string) => {
-                    onChange(option);
+                  freeSolo
+                  onChange={(_, option: MakerDto) => {
+                    onChange(option?.maker);
+
+                    setModelList(option?.models || []);
                   }}
-                  placeholder="Type to search a model..."
-                  loadingText="Searching models..."
-                  noOptionsText="No models found"
-                  fullWidth
+                  options={makerList}
+                  // loading
+                  placeholder="Write a maker to initiate search..."
+                  loadingText="Searching makers..."
+                  noOptionsText="No makers found"
+                  clearOnBlur
+                  filterOptions={(x) => x}
+                  getOptionLabel={(option: MakerDto) =>
+                    convertCapitalCase(option.maker)
+                  }
+                  onInputChange={onChangeMakerInput}
                   renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      label={'Model'}
-                      variant="outlined"
-                    />
+                    <TextField {...params} label={'Maker'} variant="outlined" />
                   )}
                 />
               )}
             />
           </Grid>
-        )}
-        {versionList?.length > 0 && (
-          <>
-            {fuelTypeList?.length > 0}
+          {modelList.length > 0 && (
             <Grid item xs={12} sm={6}>
               <Controller
                 control={control}
                 defaultValue={undefined}
-                name="fuelType"
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <FormControl fullWidth>
-                    <InputLabel id="fuelType">Fuel Type</InputLabel>
-                    <Select label="Fuel Type" {...field} fullWidth>
-                      {watch('fuelType') && (
-                        <MenuItem value="">
-                          <em>See all</em>
-                        </MenuItem>
-                      )}
-                      {fuelTypeList.map((fuelType) => (
-                        <MenuItem key={fuelType} value={fuelType}>
-                          {convertCapitalCase(fuelType)}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                control={control}
-                name="power"
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <FormControl fullWidth>
-                    <InputLabel id="power">Power</InputLabel>
-                    <Select label="Power" {...field} fullWidth>
-                      {watch('power') && (
-                        <MenuItem value="">
-                          <em>See all</em>
-                        </MenuItem>
-                      )}
-                      {powerList
-                        .sort((a, b) => (a < b ? -1 : 1))
-                        .map((power) => (
-                          <MenuItem key={power} value={power}>
-                            {power}
-                          </MenuItem>
-                        ))}
-                    </Select>
-                  </FormControl>
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                control={control}
-                name="doorsNumber"
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <FormControl fullWidth>
-                    <InputLabel id="doorsNumber">Doors Number</InputLabel>
-                    <Select label="Doors Number" {...field} fullWidth>
-                      {numberDoorsList.map((option) => (
-                        <MenuItem key={option} value={option}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                name="kmsYear"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <FormControl fullWidth>
-                    <InputLabel id="kmsYear">Kms year</InputLabel>
-                    <Select label="Kms year" {...field} fullWidth>
-                      {KMS_RANGE.map((option, idx) => (
-                        <MenuItem key={option} value={option}>
-                          {idx === KMS_RANGE.length - 1 ? 'Until' : 'More than'}{' '}
-                          {option.toLocaleString()} km
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                name="parking"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <FormControl fullWidth>
-                    <InputLabel id="parking">Usual parking</InputLabel>
-                    <Select label="Usual Parking" {...field} fullWidth>
-                      {Object.keys(PARKING_TYPE).map((option, idx) => (
-                        <MenuItem key={option} value={option}>
-                          {PARKING_TYPE[option]}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                )}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                name="purchaseDate"
-                control={control}
-                rules={{ required: true }}
+                name="model"
                 render={({ field: { onChange, ...field } }) => (
-                  <DatePicker
+                  <Autocomplete
                     {...field}
-                    label="Purchase date"
-                    onChange={(e) => {
-                      console.log(dayjs(e).toDate());
-                      onChange(dayjs(e).toDate());
+                    options={modelList}
+                    // loading
+                    onChange={(_, option: string) => {
+                      onChange(option);
                     }}
-                    openTo="year"
-                    format="LL"
-                    views={['year', 'month', 'day']}
-                    maxDate={dayjs().subtract(1, 'day') as unknown as Date}
-                    minDate={dayjs().subtract(12, 'year') as unknown as Date}
+                    placeholder="Type to search a model..."
+                    loadingText="Searching models..."
+                    noOptionsText="No models found"
+                    fullWidth
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        label={'Model'}
+                        variant="outlined"
+                      />
+                    )}
                   />
                 )}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Button
-                disabled={!isValid}
-                variant="contained"
-                type="submit"
-                fullWidth
-              >
-                Submit
-              </Button>
-            </Grid>
-          </>
-        )}
-      </Grid>
+          )}
+          {versionList?.length > 0 && (
+            <>
+              {fuelTypeList?.length > 0}
+              <Grid item xs={12} sm={6}>
+                <Controller
+                  control={control}
+                  defaultValue={undefined}
+                  name="fuelType"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <FormControl fullWidth>
+                      <InputLabel id="fuelType">Fuel Type</InputLabel>
+                      <Select label="Fuel Type" {...field} fullWidth>
+                        {watch('fuelType') && (
+                          <MenuItem value="">
+                            <em>See all</em>
+                          </MenuItem>
+                        )}
+                        {fuelTypeList.map((fuelType) => (
+                          <MenuItem key={fuelType} value={fuelType}>
+                            {convertCapitalCase(fuelType)}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Controller
+                  control={control}
+                  name="power"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <FormControl fullWidth>
+                      <InputLabel id="power">Power</InputLabel>
+                      <Select label="Power" {...field} fullWidth>
+                        {watch('power') && (
+                          <MenuItem value="">
+                            <em>See all</em>
+                          </MenuItem>
+                        )}
+                        {powerList
+                          .sort((a, b) => (a < b ? -1 : 1))
+                          .map((power) => (
+                            <MenuItem key={power} value={power}>
+                              {power}
+                            </MenuItem>
+                          ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Controller
+                  control={control}
+                  name="doorsNumber"
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <FormControl fullWidth>
+                      <InputLabel id="doorsNumber">Doors Number</InputLabel>
+                      <Select label="Doors Number" {...field} fullWidth>
+                        {numberDoorsList.map((option) => (
+                          <MenuItem key={option} value={option}>
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Controller
+                  name="kmsYear"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <FormControl fullWidth>
+                      <InputLabel id="kmsYear">Kms year</InputLabel>
+                      <Select label="Kms year" {...field} fullWidth>
+                        {KMS_RANGE.map((option, idx) => (
+                          <MenuItem key={option} value={option}>
+                            {idx === KMS_RANGE.length - 1
+                              ? 'Until'
+                              : 'More than'}{' '}
+                            {option.toLocaleString()} km
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Controller
+                  name="parking"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <FormControl fullWidth>
+                      <InputLabel id="parking">Usual parking</InputLabel>
+                      <Select label="Usual Parking" {...field} fullWidth>
+                        {Object.keys(PARKING_TYPE).map((option, idx) => (
+                          <MenuItem key={option} value={option}>
+                            {PARKING_TYPE[option]}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Controller
+                  name="purchaseDate"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, ...field } }) => (
+                    <DatePicker
+                      {...field}
+                      label="Purchase date"
+                      onChange={(e) => {
+                        console.log(dayjs(e).toDate());
+                        onChange(dayjs(e).toDate());
+                      }}
+                      openTo="year"
+                      format="LL"
+                      views={['year', 'month', 'day']}
+                      maxDate={dayjs().subtract(1, 'day') as unknown as Date}
+                      minDate={dayjs().subtract(12, 'year') as unknown as Date}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  disabled={!isValid}
+                  variant="contained"
+                  type="submit"
+                  fullWidth
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </>
+          )}
+        </Grid>
+      </Paper>
     </Box>
   );
 };

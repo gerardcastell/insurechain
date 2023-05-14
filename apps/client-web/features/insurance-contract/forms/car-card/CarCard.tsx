@@ -1,16 +1,8 @@
 import { VersionDto } from '@insurechain/web/backend/data-access';
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  Paper,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import React from 'react';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCarOutlined';
-import PolicyIcon from '@mui/icons-material/PolicyOutlined';
+import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import BoltIcon from '@mui/icons-material/Bolt';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStationOutlined';
 import dayjs from 'dayjs';
@@ -18,21 +10,23 @@ import SensorDoorOutlinedIcon from '@mui/icons-material/SensorDoorOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import RotateLeftOutlinedIcon from '@mui/icons-material/RotateLeftOutlined';
+import { FuelType } from '@prisma/client';
+
 type ElementProps = {
   title: string;
   content: string | number;
-  renderIcon: () => JSX.Element;
+  icon: React.ReactNode;
 };
-const Element = ({ title, content, renderIcon }: ElementProps) => {
+const Element = ({ title, content, icon }: ElementProps) => {
   return (
-    <Box component="div">
-      <Box component="div">
-        {renderIcon()}
-        <Typography marginLeft={1} variant="caption" fontStyle={'italic'}>
-          {title}
-        </Typography>
+    <Box component="div" display={'flex'}>
+      <Box component={'div'} marginRight={1}>
+        {icon}
       </Box>
       <Box component="div">
+        <Typography variant="caption" fontStyle={'italic'}>
+          {title}
+        </Typography>
         <Typography
           sx={{ fontWeight: 'regular', textTransform: 'capitalize' }}
           variant="body1"
@@ -50,73 +44,77 @@ type Props = {
 };
 
 const CarCard = ({ data, onReset }: Props) => {
-  const { palette } = useTheme();
   return (
-    <Paper elevation={8}>
-      <Grid container display="flex" maxWidth={'sm'} spacing={1} margin={2}>
-        <Grid item xs={12}>
-          <Typography variant="subtitle1" color="primary">
-            Car Information
-          </Typography>
-          <Divider />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Element
-            title="Maker & Model"
-            content={`${data.maker} ${data.model}`}
-            renderIcon={() => <DirectionsCarIcon fontSize="inherit" />}
+    <Grid container display="flex" maxWidth={'sm'} spacing={1}>
+      <Grid item xs={12}>
+        <Typography variant="subtitle1" color="primary">
+          <DirectionsCarIcon
+            fontSize="medium"
+            sx={{ marginBottom: 1, marginRight: 1 }}
           />
-        </Grid>
-        <Grid item xs={12} sm={5}>
-          <Element
-            title="Version"
-            content={data.version}
-            renderIcon={() => <SellOutlinedIcon fontSize="inherit" />}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Element
-            title="Release Date"
-            content={dayjs(data.releaseDate).format('LL')}
-            renderIcon={() => <CalendarMonthOutlinedIcon fontSize="inherit" />}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <Element
-            title="Fuel Type"
-            content={data.fuelType}
-            renderIcon={() => <LocalGasStationIcon fontSize="inherit" />}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <Element
-            title="Power"
-            content={data.power}
-            renderIcon={() => <BoltIcon fontSize="inherit" />}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <Element
-            title="Doors"
-            content={data.numberDoors}
-            renderIcon={() => <SensorDoorOutlinedIcon fontSize="inherit" />}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Button
-            size="small"
-            variant="text"
-            sx={{ float: 'right' }}
-            color="warning"
-            onClick={onReset}
-            startIcon={<RotateLeftOutlinedIcon />}
-          >
-            Change car
-          </Button>
-        </Grid>
+          Car Information
+        </Typography>
+        <Divider />
       </Grid>
-    </Paper>
+      <Grid item xs={12} sm={3}>
+        <Element
+          title="Maker & Model"
+          content={`${data.maker} ${data.model}`}
+          icon={<DirectionsCarOutlinedIcon fontSize="inherit" />}
+        />
+      </Grid>
+      <Grid item xs={12} sm={5}>
+        <Element
+          title="Version"
+          content={data.version}
+          icon={<SellOutlinedIcon fontSize="inherit" />}
+        />
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <Element
+          title="Release Date"
+          content={dayjs(data.releaseDate).format('LL')}
+          icon={<CalendarMonthOutlinedIcon fontSize="inherit" />}
+        />
+      </Grid>
+      <Grid item xs={3}>
+        <Element
+          title="Power"
+          content={`${data.power} ${
+            data.fuelType === FuelType.electric ? 'kW' : 'HP'
+          }`}
+          icon={<BoltIcon fontSize="inherit" />}
+        />
+      </Grid>
+      <Grid item xs={5}>
+        <Element
+          title="Fuel Type"
+          content={data.fuelType}
+          icon={<LocalGasStationIcon fontSize="inherit" />}
+        />
+      </Grid>
+
+      <Grid item xs={4}>
+        <Element
+          title="Doors"
+          content={data.numberDoors}
+          icon={<SensorDoorOutlinedIcon fontSize="inherit" />}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <Button
+          size="small"
+          variant="text"
+          sx={{ float: 'right' }}
+          color="warning"
+          onClick={onReset}
+          startIcon={<RotateLeftOutlinedIcon />}
+        >
+          Change car
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 

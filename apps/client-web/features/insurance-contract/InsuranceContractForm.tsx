@@ -1,40 +1,50 @@
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import FormRiskObject from './forms/risk-object';
 import FormCarVersion from './forms/car-version';
-import { Grid } from '@mui/material';
+import { Box, Grid, Paper } from '@mui/material';
 import { FormRiskObjectOutput } from './forms/risk-object/form';
 import CardVersion from './forms/car-card';
 import { VersionDto } from '@insurechain/web/backend/data-access';
+import RiskSubject from './forms/risk-subject/RiskSubject';
+
+const FormElement = ({ children }: PropsWithChildren) => (
+  <Grid item width="100%">
+    <Paper elevation={8} sx={{ padding: 2 }}>
+      {children}{' '}
+    </Paper>
+  </Grid>
+);
+
 const InsuranceContractForm = () => {
   const [versions, setVersions] = useState([]);
-  const [carVersion, setCarVersion] = useState<VersionDto>({
-    fuelType: 'gasoline',
-    id: 39043,
-    maker: 'AUDI',
-    makerId: '00008',
-    model: 'A1',
-    modelId: '038',
-    version: '1.0 TFSI ADRENALIN2',
-    versionId: '0081',
-    releaseDate: '2015-03-01',
-    numberDoors: 3,
-    power: 95,
-    type: '100',
-    subtype: 'PO',
-    retailPrice: 22229,
-  });
+  const [carVersion, setCarVersion] = useState<VersionDto>();
 
   const onSetUpRiskObject = (data: FormRiskObjectOutput) => {
     setVersions(data.versions);
   };
 
   const onReset = (resetVersions = false) => {
+    console.log(resetVersions);
     setCarVersion(null);
     if (resetVersions) setVersions([]);
   };
+  console.log(versions.length);
 
   return carVersion ? (
-    <CardVersion onReset={onReset} data={carVersion} />
+    <Grid
+      maxWidth={'sm'}
+      container
+      direction="column"
+      alignItems={'center'}
+      rowSpacing={3}
+    >
+      <FormElement>
+        <CardVersion onReset={() => onReset()} data={carVersion} />
+      </FormElement>
+      <FormElement>
+        <RiskSubject></RiskSubject>
+      </FormElement>
+    </Grid>
   ) : (
     <Grid
       container
@@ -43,12 +53,7 @@ const InsuranceContractForm = () => {
       spacing={2}
       maxWidth="sm"
     >
-      <Grid
-        item
-        sx={{ width: '100%' }}
-        alignItems={'center'}
-        direction={'column'}
-      >
+      <Grid item sx={{ width: '100%' }}>
         {!Boolean(versions?.length).valueOf() && (
           <FormRiskObject onSubmit={onSetUpRiskObject}></FormRiskObject>
         )}
