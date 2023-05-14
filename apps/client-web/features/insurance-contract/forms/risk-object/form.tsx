@@ -345,19 +345,18 @@ const FormRiskObject = ({ onSubmit }: Props) => {
                 )}
               />
             </Grid>
+            <Grid item xs={12}>
+              <Button
+                disabled={!isValid}
+                variant="contained"
+                type="submit"
+                fullWidth
+              >
+                Submit
+              </Button>
+            </Grid>
           </>
         )}
-
-        <Grid item xs={12}>
-          <Button
-            disabled={!isValid}
-            variant="contained"
-            type="submit"
-            fullWidth
-          >
-            Submit
-          </Button>
-        </Grid>
       </Grid>
     </Box>
   );

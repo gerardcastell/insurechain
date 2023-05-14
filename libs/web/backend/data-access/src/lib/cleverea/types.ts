@@ -25,7 +25,7 @@ export interface VersionDto {
   modelId: string;
   numberDoors: number;
   power: number;
-  releaseDate: Date;
+  releaseDate: Date | string;
   retailPrice: number;
   subtype: string;
   type: string;
