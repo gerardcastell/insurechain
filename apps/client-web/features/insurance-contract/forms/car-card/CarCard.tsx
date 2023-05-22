@@ -11,7 +11,7 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import RotateLeftOutlinedIcon from '@mui/icons-material/RotateLeftOutlined';
 import { FuelType } from '@prisma/client';
-
+import PresenterCard from '../../components/Card';
 type ElementProps = {
   title: string;
   content: string | number;
@@ -45,76 +45,68 @@ type Props = {
 
 const CarCard = ({ data, onReset }: Props) => {
   return (
-    <Grid container display="flex" maxWidth={'sm'} spacing={1}>
-      <Grid item xs={12}>
-        <Typography variant="subtitle1" color="primary">
-          <DirectionsCarIcon
-            fontSize="medium"
-            sx={{ marginBottom: 1, marginRight: 1 }}
+    <PresenterCard title="Car Information" icon={DirectionsCarIcon}>
+      <Grid container display="flex" maxWidth={'sm'} spacing={1}>
+        <Grid item xs={12} sm={3}>
+          <Element
+            title="Maker & Model"
+            content={`${data.maker} ${data.model}`}
+            icon={<DirectionsCarOutlinedIcon fontSize="inherit" />}
           />
-          Car Information
-        </Typography>
-        <Divider />
-      </Grid>
-      <Grid item xs={12} sm={3}>
-        <Element
-          title="Maker & Model"
-          content={`${data.maker} ${data.model}`}
-          icon={<DirectionsCarOutlinedIcon fontSize="inherit" />}
-        />
-      </Grid>
-      <Grid item xs={12} sm={5}>
-        <Element
-          title="Version"
-          content={data.version}
-          icon={<SellOutlinedIcon fontSize="inherit" />}
-        />
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <Element
-          title="Release Date"
-          content={dayjs(data.releaseDate).format('LL')}
-          icon={<CalendarMonthOutlinedIcon fontSize="inherit" />}
-        />
-      </Grid>
-      <Grid item xs={3}>
-        <Element
-          title="Power"
-          content={`${data.power} ${
-            data.fuelType === FuelType.electric ? 'kW' : 'HP'
-          }`}
-          icon={<BoltIcon fontSize="inherit" />}
-        />
-      </Grid>
-      <Grid item xs={5}>
-        <Element
-          title="Fuel Type"
-          content={data.fuelType}
-          icon={<LocalGasStationIcon fontSize="inherit" />}
-        />
-      </Grid>
+        </Grid>
+        <Grid item xs={12} sm={5}>
+          <Element
+            title="Version"
+            content={data.version}
+            icon={<SellOutlinedIcon fontSize="inherit" />}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Element
+            title="Release Date"
+            content={dayjs(data.releaseDate).format('LL')}
+            icon={<CalendarMonthOutlinedIcon fontSize="inherit" />}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <Element
+            title="Power"
+            content={`${data.power} ${
+              data.fuelType === FuelType.electric ? 'kW' : 'HP'
+            }`}
+            icon={<BoltIcon fontSize="inherit" />}
+          />
+        </Grid>
+        <Grid item xs={5}>
+          <Element
+            title="Fuel Type"
+            content={data.fuelType}
+            icon={<LocalGasStationIcon fontSize="inherit" />}
+          />
+        </Grid>
 
-      <Grid item xs={4}>
-        <Element
-          title="Doors"
-          content={data.numberDoors}
-          icon={<SensorDoorOutlinedIcon fontSize="inherit" />}
-        />
-      </Grid>
+        <Grid item xs={4}>
+          <Element
+            title="Doors"
+            content={data.numberDoors}
+            icon={<SensorDoorOutlinedIcon fontSize="inherit" />}
+          />
+        </Grid>
 
-      <Grid item xs={12}>
-        <Button
-          size="small"
-          variant="text"
-          sx={{ float: 'right' }}
-          color="warning"
-          onClick={onReset}
-          startIcon={<RotateLeftOutlinedIcon />}
-        >
-          Change car
-        </Button>
+        <Grid item xs={12}>
+          <Button
+            size="small"
+            variant="text"
+            sx={{ float: 'right' }}
+            color="warning"
+            onClick={onReset}
+            startIcon={<RotateLeftOutlinedIcon />}
+          >
+            Change car
+          </Button>
+        </Grid>
       </Grid>
-    </Grid>
+    </PresenterCard>
   );
 };
 

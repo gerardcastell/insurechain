@@ -11,8 +11,11 @@ export const signUp = async (email: string, password: string) => {
 };
 
 export const getProposals = async () => {
-  const response = await axios.get(
-    'https://insurechain-backend.onrender.com/api/proposals/proposals'
-  );
+  const response = await axios.get('/proposals/proposals');
+  return response;
+};
+
+export const quote = async (data: any) => {
+  const response = await axios.post('/proposals/quote', data);
   return response;
 };

@@ -299,7 +299,7 @@ const FormRiskObject = ({ onSubmit }: Props) => {
                           <MenuItem key={option} value={option}>
                             {idx === KMS_RANGE.length - 1
                               ? 'Until'
-                              : 'More than'}{' '}
+                              : 'Less than '}
                             {option.toLocaleString()} km
                           </MenuItem>
                         ))}
@@ -336,10 +336,7 @@ const FormRiskObject = ({ onSubmit }: Props) => {
                     <DatePicker
                       {...field}
                       label="Purchase date"
-                      onChange={(e) => {
-                        console.log(dayjs(e).toDate());
-                        onChange(dayjs(e).toDate());
-                      }}
+                      onChange={(e) => onChange(dayjs(e).toDate())}
                       openTo="year"
                       format="LL"
                       views={['year', 'month', 'day']}

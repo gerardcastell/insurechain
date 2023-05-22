@@ -1,11 +1,12 @@
 import React, { PropsWithChildren, useState } from 'react';
 import FormRiskObject from './forms/risk-object';
 import FormCarVersion from './forms/car-version';
-import { Box, Grid, Paper } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { FormRiskObjectOutput } from './forms/risk-object/form';
 import CardVersion from './forms/car-card';
-import { VersionDto } from '@insurechain/web/backend/data-access';
-import RiskSubject from './forms/risk-subject/RiskSubject';
+import { VersionDto, quote } from '@insurechain/web/backend/data-access';
+import RiskSubject, { RiskSubjectData } from './forms/risk-subject/RiskSubject';
+import dayjs from 'dayjs';
 
 const FormElement = ({ children }: PropsWithChildren) => (
   <Grid item width="100%">
@@ -21,14 +22,26 @@ const InsuranceContractForm = () => {
 
   const onSetUpRiskObject = (data: FormRiskObjectOutput) => {
     setVersions(data.versions);
+    setCarVersion({ ...data.riskObject } as any);
   };
 
   const onReset = (resetVersions = false) => {
-    console.log(resetVersions);
     setCarVersion(null);
     if (resetVersions) setVersions([]);
   };
-  console.log(versions.length);
+
+  const onSetUpRiskSubject = async (data: RiskSubjectData) => {
+    console.log(data);
+    const response = await quote({
+      riskSubject: { ...data },
+      riskObject: {
+        ...carVersion,
+        doorsNumber: carVersion.numberDoors,
+        purchaseDate: new Date(),
+      },
+    });
+    console.log(response);
+  };
 
   return carVersion ? (
     <Grid
@@ -42,7 +55,7 @@ const InsuranceContractForm = () => {
         <CardVersion onReset={() => onReset()} data={carVersion} />
       </FormElement>
       <FormElement>
-        <RiskSubject></RiskSubject>
+        <RiskSubject onSubmit={onSetUpRiskSubject}></RiskSubject>
       </FormElement>
     </Grid>
   ) : (
@@ -64,7 +77,9 @@ const InsuranceContractForm = () => {
           <FormCarVersion
             versions={versions}
             onResetData={() => onReset(true)}
-            onSelectVersion={setCarVersion}
+            onSelectVersion={(val) =>
+              setCarVersion((prev) => ({ ...prev, ...val }))
+            }
           ></FormCarVersion>
         )}
       </Grid>
