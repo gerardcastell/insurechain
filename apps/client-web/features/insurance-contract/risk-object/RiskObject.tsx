@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import VersionForm from './VersionForm';
 import VersionList from './VersionList';
 import CarPresenter from './CarPresenter';
-import useProposalStore, { RiskObject } from '../../proposal-store';
+import useProposalStore, { RiskObject } from '../proposal-store';
 import { VersionDto } from '@insurechain/web/backend/data-access';
 import dayjs from 'dayjs';
 

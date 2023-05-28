@@ -9,33 +9,8 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
 import RotateLeftOutlinedIcon from '@mui/icons-material/RotateLeftOutlined';
 import { FuelType } from '@prisma/client';
-import { RiskObject } from '../../proposal-store';
-
-type ElementProps = {
-  title: string;
-  content: string | number;
-  icon: React.ReactNode;
-};
-const Element = ({ title, content, icon }: ElementProps) => {
-  return (
-    <Box component="div" display={'flex'}>
-      <Box component={'div'} marginRight={1}>
-        {icon}
-      </Box>
-      <Box component="div">
-        <Typography variant="caption" fontStyle={'italic'}>
-          {title}
-        </Typography>
-        <Typography
-          sx={{ fontWeight: 'regular', textTransform: 'capitalize' }}
-          variant="body1"
-        >
-          {content}
-        </Typography>
-      </Box>
-    </Box>
-  );
-};
+import { RiskObject } from '../proposal-store';
+import PresenterElement from '../components/PresenterElement';
 
 type Props = {
   data: RiskObject;
@@ -46,28 +21,28 @@ const CarPresenter = ({ data, onReset }: Props) => {
   return (
     <Grid container display="flex" maxWidth={'sm'} spacing={1}>
       <Grid item xs={12} sm={3}>
-        <Element
+        <PresenterElement
           title="Maker & Model"
           content={`${data.maker} ${data.model}`}
           icon={<DirectionsCarOutlinedIcon fontSize="inherit" />}
         />
       </Grid>
       <Grid item xs={12} sm={5}>
-        <Element
+        <PresenterElement
           title="Version"
           content={data.version}
           icon={<SellOutlinedIcon fontSize="inherit" />}
         />
       </Grid>
       <Grid item xs={12} sm={4}>
-        <Element
+        <PresenterElement
           title="Release Date"
           content={dayjs(data.releaseDate).format('LL')}
           icon={<CalendarMonthOutlinedIcon fontSize="inherit" />}
         />
       </Grid>
       <Grid item xs={3}>
-        <Element
+        <PresenterElement
           title="Power"
           content={`${data.power} ${
             data.fuelType === FuelType.electric ? 'kW' : 'HP'
@@ -76,7 +51,7 @@ const CarPresenter = ({ data, onReset }: Props) => {
         />
       </Grid>
       <Grid item xs={5}>
-        <Element
+        <PresenterElement
           title="Fuel Type"
           content={data.fuelType}
           icon={<LocalGasStationIcon fontSize="inherit" />}
@@ -84,7 +59,7 @@ const CarPresenter = ({ data, onReset }: Props) => {
       </Grid>
 
       <Grid item xs={4}>
-        <Element
+        <PresenterElement
           title="Doors"
           content={data.numberDoors}
           icon={<SensorDoorOutlinedIcon fontSize="inherit" />}

@@ -22,7 +22,7 @@ import {
 import { debounce } from '@mui/material/utils';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
-import { RiskObject } from '../../proposal-store';
+import { RiskObject } from '../proposal-store';
 
 const KMS_RANGE: readonly number[] = [
   5000, 10000, 15000, 20000, 30000, 40000, 50000, 60000,

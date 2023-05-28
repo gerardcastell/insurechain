@@ -1,26 +1,30 @@
 import { Box, Button, Grid, TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
+import { RiskSubject } from '../proposal-store';
+import useProposalStore from '../proposal-store/useProposalStore';
+import Presenter from './Presenter';
 
-export interface RiskSubjectData {
-  name: string;
-  birthDate: Date;
-  documentNumber: string;
-}
-
-const RiskSubject = ({
-  onSubmit,
-}: {
-  onSubmit: (data: RiskSubjectData) => void;
-}) => {
+const RiskSubject = () => {
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<RiskSubjectData>({ mode: 'onBlur' });
-  return (
+  } = useForm<RiskSubject>({ mode: 'onBlur' });
+  const [showPresenter, setShowPresenter] = useState<boolean>(false);
+
+  const [riskSubject, setRiskSubject] = useProposalStore((state) => [
+    state.riskSubject,
+    state.setRiskSubject,
+  ]);
+
+  const onSubmit = (data: RiskSubject) => {
+    setRiskSubject(data);
+  };
+
+  return showPresenter ? (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -111,6 +115,8 @@ const RiskSubject = ({
         </Grid>
       </Grid>
     </Box>
+  ) : (
+    <Presenter data={riskSubject} />
   );
 };
 

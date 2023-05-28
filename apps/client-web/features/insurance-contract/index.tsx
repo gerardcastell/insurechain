@@ -1,2 +1,1 @@
-// export { default } from './InsuranceContractForm';
-export { default } from './new/InsuranceContractFormV2';
+export { default } from './InsuranceContractForm';
