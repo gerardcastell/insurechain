@@ -58,7 +58,6 @@ const VersionForm = ({ defaultValues, onSubmit }: Props) => {
       ? { defaultValues: { ...defaultValues, purchaseDate: undefined } }
       : {}),
   });
-  console.log(defaultValues);
 
   const convertCapitalCase = (str: string) =>
     str?.charAt(0)?.toUpperCase() + str?.slice(1);

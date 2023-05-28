@@ -7,7 +7,6 @@ import useProposalStore from '../proposal-store';
 
 const InsuranceContractForm = () => {
   const state = useProposalStore((state) => state);
-  console.log(state);
   return (
     <Grid
       maxWidth={'sm'}
