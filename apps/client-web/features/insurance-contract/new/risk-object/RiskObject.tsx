@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useState } from 'react';
 import VersionForm from './VersionForm';
 import VersionList from './VersionList';
@@ -29,8 +29,8 @@ const RiskObject = () => {
     });
   };
 
-  const isVersionDefined = () =>
-    riskObject.version && riskObject.releaseDate && riskObject.retailPrice;
+  const isVersionDefined =
+    riskObject?.version && riskObject?.releaseDate && riskObject?.retailPrice;
 
   return (
     <Box>
