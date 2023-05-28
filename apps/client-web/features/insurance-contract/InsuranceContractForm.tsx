@@ -6,7 +6,6 @@ import { FormRiskObjectOutput } from './forms/risk-object/form';
 import CardVersion from './forms/car-card';
 import { VersionDto, quote } from '@insurechain/web/backend/data-access';
 import RiskSubject, { RiskSubjectData } from './forms/risk-subject/RiskSubject';
-import dayjs from 'dayjs';
 
 const FormElement = ({ children }: PropsWithChildren) => (
   <Grid item width="100%">
