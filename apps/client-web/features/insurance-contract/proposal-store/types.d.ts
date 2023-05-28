@@ -6,12 +6,14 @@ export type ProposalState = {
   coverages: CoverageType[];
   setRiskSubject: (riskSubject: RiskSubject) => void;
   setMakerAndModel: (
-    riskObject: Omit<
+    riskObject: Omit<RiskObject, 'version' | 'releaseDate' | 'retailPrice'>
+  ) => void;
+  setCarVersion: (
+    partialRiskObject: Pick<
       RiskObject,
-      'doorsNumber' | 'version' | 'releaseDate' | 'retailPrice'
+      'version' | 'releaseDate' | 'retailPrice'
     >
   ) => void;
-  setCarVersion: (partialRiskObject: Partial<RiskObject>) => void;
   defineCoverages: (coverages: CoverageType[]) => void;
   selectCoverages: (ids: number[]) => void;
 };
@@ -20,7 +22,7 @@ export type RiskObject = {
   maker: string;
   model: string;
   version: string;
-  doorsNumber: number;
+  numberDoors: number;
   fuelType: FuelType;
   power: number;
   purchaseDate: Date;

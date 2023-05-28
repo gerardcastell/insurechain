@@ -13,7 +13,7 @@ export class RiskObjectDto {
 
   @ApiProperty({ default: 3 })
   @IsNumber()
-  doorsNumber: number;
+  numberDoors: number;
 
   @ApiProperty({
     enum: FuelType,

@@ -35,7 +35,7 @@ const InsuranceContractForm = () => {
       riskSubject: { ...data },
       riskObject: {
         ...carVersion,
-        doorsNumber: carVersion.numberDoors,
+        numberDoors: carVersion.numberDoors,
         purchaseDate: new Date(),
       },
     });

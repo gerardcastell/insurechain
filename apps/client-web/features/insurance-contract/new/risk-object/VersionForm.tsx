@@ -8,11 +8,10 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
   TextField,
 } from '@mui/material';
-import { FuelType, ParkingType } from '@prisma/client';
+import { ParkingType } from '@prisma/client';
 import {
   getMakers,
   getVersions,
@@ -23,6 +22,7 @@ import {
 import { debounce } from '@mui/material/utils';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import { RiskObject } from '../../proposal-store';
 
 const KMS_RANGE: readonly number[] = [
   5000, 10000, 15000, 20000, 30000, 40000, 50000, 60000,
@@ -35,46 +35,30 @@ const PARKING_TYPE: Record<ParkingType, string> = {
   [ParkingType.collective_car_park_surveillance]: 'Guarded Collective garage',
 } as const;
 
-// const FUEL_TYPE: Record<FuelType, string> = {
-//   [ParkingType.garage]: 'Individual garage',
-//   [ParkingType.street]: 'Street',
-//   [ParkingType.collective_car_park]: 'Unguarded collective garage',
-//   [ParkingType.collective_car_park_surveillance]: 'Guarded Collective garage',
-// };
-
-type FormRiskObjectInputs = {
-  maker: string;
-  model: string;
-  version: string;
-  doorsNumber: number;
-  fuelType: FuelType;
-  power: number;
-  purchaseDate: Date;
-  plate: string;
-  kmsYear: number;
-  parking: string;
-  // releaseDate: Date;
-  // retailPrice: number;
-};
 export type Version = {
-  riskObject: FormRiskObjectInputs;
+  riskObject: Omit<RiskObject, 'releaseDate' | 'retailPrice'>;
   versions: VersionDto[];
 };
 
 type Props = {
+  defaultValues: Omit<RiskObject, 'version' | 'releaseDate' | 'retailPrice'>;
   onSubmit: (data: Version) => void;
 };
 
-const VersionForm = ({ onSubmit }: Props) => {
+const VersionForm = ({ defaultValues, onSubmit }: Props) => {
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
     watch,
     resetField,
-  } = useForm<FormRiskObjectInputs>({
+  } = useForm<Omit<RiskObject, 'releaseDate' | 'retailPrice'>>({
     mode: 'onBlur',
+    ...(defaultValues
+      ? { defaultValues: { ...defaultValues, purchaseDate: undefined } }
+      : {}),
   });
+  console.log(defaultValues);
 
   const convertCapitalCase = (str: string) =>
     str?.charAt(0)?.toUpperCase() + str?.slice(1);
@@ -93,8 +77,11 @@ const VersionForm = ({ onSubmit }: Props) => {
     )
     .map((list) => (list?.length ? [...new Set(list)] : []));
   const searchMakers = async (event) => {
-    if (!event.target.value || event.target.value?.length < 1) {
+    if (!event?.target?.value || event?.target?.value?.length < 1) {
       setMakerList([]);
+    } else if (typeof event === 'string') {
+      const makers = await getMakers(event);
+      setMakerList(makers);
     } else {
       const makers = await getMakers(event.target.value);
       setMakerList(makers);
@@ -104,7 +91,7 @@ const VersionForm = ({ onSubmit }: Props) => {
   const resetData = (modelIncluded = false) => {
     setVersionList([]);
 
-    resetField('doorsNumber');
+    resetField('numberDoors');
     resetField('fuelType');
     resetField('power');
     resetField('purchaseDate');
@@ -118,20 +105,29 @@ const VersionForm = ({ onSubmit }: Props) => {
   };
 
   useEffect(() => {
+    if (defaultValues) {
+      setMakerList([
+        { maker: defaultValues.maker, models: [defaultValues?.model] },
+      ]);
+      setModelList([defaultValues.model]);
+    }
+  }, [defaultValues]);
+
+  useEffect(() => {
     async function searchVersions(payload: GetVersionsPayload) {
       const versions =
         payload.maker && payload.model ? await getVersions(payload) : [];
       setVersionList(versions);
     }
     const subscription = watch(
-      ({ maker, model, doorsNumber, power, fuelType }) => {
+      ({ maker, model, numberDoors, power, fuelType }) => {
         if (model) {
           const payload: GetVersionsPayload = {
             maker: maker,
             model,
             fuelType: fuelType || null,
             power: power || null,
-            numberDoors: doorsNumber || null,
+            numberDoors: numberDoors || null,
           };
           searchVersions(payload);
         }
@@ -197,7 +193,9 @@ const VersionForm = ({ onSubmit }: Props) => {
                 clearOnBlur
                 filterOptions={(x) => x}
                 getOptionLabel={(option: MakerDto) =>
-                  convertCapitalCase(option.maker)
+                  convertCapitalCase(
+                    option.maker || (option as unknown as string)
+                  )
                 }
                 onInputChange={onChangeMakerInput}
                 renderInput={(params) => (
@@ -263,7 +261,7 @@ const VersionForm = ({ onSubmit }: Props) => {
                   )}
                   {fuelTypeList.map((fuelType) => (
                     <MenuItem key={fuelType} value={fuelType}>
-                      {convertCapitalCase(fuelType)}
+                      {convertCapitalCase(fuelType.replace(/_/g, ' '))}
                     </MenuItem>
                   ))}
                 </Select>
@@ -305,11 +303,11 @@ const VersionForm = ({ onSubmit }: Props) => {
         <Grid item xs={12} sm={6}>
           <Controller
             control={control}
-            name="doorsNumber"
+            name="numberDoors"
             rules={{ required: true }}
             render={({ field }) => (
               <FormControl fullWidth>
-                <InputLabel id="doorsNumber">Doors Number</InputLabel>
+                <InputLabel id="numberDoors">Doors Number</InputLabel>
                 <Select
                   disabled={!versionList?.length}
                   label="Doors Number"

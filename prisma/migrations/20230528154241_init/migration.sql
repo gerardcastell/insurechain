@@ -28,19 +28,19 @@ CREATE TABLE "Proposal" (
 -- CreateTable
 CREATE TABLE "RiskObject" (
     "id" SERIAL NOT NULL,
-    "maker" TEXT NOT NULL,
     "model" TEXT NOT NULL,
-    "doorsNumber" INTEGER NOT NULL,
-    "fuelType" "FuelType" NOT NULL,
     "power" INTEGER NOT NULL,
     "purchaseDate" TIMESTAMP(3) NOT NULL,
-    "releaseDate" TIMESTAMP(3) NOT NULL,
-    "version" TEXT NOT NULL,
-    "retailPrice" DOUBLE PRECISION NOT NULL,
     "plate" TEXT NOT NULL,
     "kmsYear" INTEGER NOT NULL,
-    "parking" "ParkingType" NOT NULL,
     "proposalId" INTEGER NOT NULL,
+    "numberDoors" INTEGER NOT NULL,
+    "maker" TEXT NOT NULL,
+    "releaseDate" TIMESTAMP(3) NOT NULL,
+    "retailPrice" DOUBLE PRECISION NOT NULL,
+    "version" TEXT NOT NULL,
+    "fuelType" "FuelType" NOT NULL,
+    "parking" "ParkingType" NOT NULL,
 
     CONSTRAINT "RiskObject_pkey" PRIMARY KEY ("id")
 );
@@ -50,8 +50,8 @@ CREATE TABLE "RiskSubject" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "documentNumber" TEXT NOT NULL,
-    "birthDate" TIMESTAMP(3) NOT NULL,
     "proposalId" INTEGER NOT NULL,
+    "birthDate" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "RiskSubject_pkey" PRIMARY KEY ("id")
 );

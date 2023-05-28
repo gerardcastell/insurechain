@@ -9,11 +9,10 @@ const useProposalStore = create<ProposalState>((set) => ({
     set((state) => ({
       ...state,
       riskObject: {
-        ...partialRiskObject,
-        doorsNumber: undefined,
         version: undefined,
         releaseDate: undefined,
         retailPrice: undefined,
+        ...partialRiskObject,
       },
     })),
   setCarVersion: (partialRiskObject) =>

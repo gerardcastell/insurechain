@@ -32,7 +32,7 @@ model RiskObject {
   plate        String
   kmsYear      Int
   proposalId   Int         @unique
-  doorsNumber  Int
+  numberDoors  Int
   maker        String
   releaseDate  DateTime
   retailPrice  Float

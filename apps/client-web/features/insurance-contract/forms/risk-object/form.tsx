@@ -39,7 +39,7 @@ type FormRiskObjectInputs = {
   maker: string;
   model: string;
   version: string;
-  doorsNumber: number;
+  numberDoors: number;
   fuelType: FuelType;
   power: number;
   purchaseDate: Date;
@@ -98,14 +98,14 @@ const FormRiskObject = ({ onSubmit }: Props) => {
       setVersionList(versions);
     }
     const subscription = watch(
-      ({ maker, model, doorsNumber, power, fuelType }) => {
+      ({ maker, model, numberDoors, power, fuelType }) => {
         if (model) {
           const payload: GetVersionsPayload = {
             maker: maker,
             model,
             fuelType: fuelType || null,
             power: power || null,
-            numberDoors: doorsNumber || null,
+            numberDoors: numberDoors || null,
           };
           searchVersions(payload);
         }
@@ -270,11 +270,11 @@ const FormRiskObject = ({ onSubmit }: Props) => {
               <Grid item xs={12} sm={6}>
                 <Controller
                   control={control}
-                  name="doorsNumber"
+                  name="numberDoors"
                   rules={{ required: true }}
                   render={({ field }) => (
                     <FormControl fullWidth>
-                      <InputLabel id="doorsNumber">Doors Number</InputLabel>
+                      <InputLabel id="numberDoors">Doors Number</InputLabel>
                       <Select label="Doors Number" {...field} fullWidth>
                         {numberDoorsList.map((option) => (
                           <MenuItem key={option} value={option}>

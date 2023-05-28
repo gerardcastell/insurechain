@@ -3,8 +3,11 @@ import { Grid } from '@mui/material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Step from './Step';
 import RiskObject from './risk-object';
+import useProposalStore from '../proposal-store';
 
 const InsuranceContractForm = () => {
+  const state = useProposalStore((state) => state);
+  console.log(state);
   return (
     <Grid
       maxWidth={'sm'}
