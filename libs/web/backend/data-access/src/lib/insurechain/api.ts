@@ -1,4 +1,6 @@
+import { AxiosResponse } from 'axios';
 import axios from '../axios';
+import { QuoteResponse, type QuoteBody } from './types';
 
 export const signIn = async (email: string, password: string) => {
   const response = await axios.post('/auth/login', { email, password });
@@ -15,7 +17,9 @@ export const getProposals = async () => {
   return response;
 };
 
-export const quote = async (data: any) => {
-  const response = await axios.post('/proposals/quote', data);
+export const quote = async (
+  data: QuoteBody
+): Promise<AxiosResponse<QuoteResponse>> => {
+  const response = await axios.post<QuoteResponse>('/proposals/quote', data);
   return response;
 };

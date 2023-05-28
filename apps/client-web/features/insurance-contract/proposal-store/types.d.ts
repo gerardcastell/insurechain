@@ -1,4 +1,4 @@
-import { Coverage } from '@prisma/client';
+import { Coverage, ParkingType } from '@prisma/client';
 
 export type ProposalState = {
   riskObject: RiskObject;
@@ -14,8 +14,8 @@ export type ProposalState = {
       'version' | 'releaseDate' | 'retailPrice'
     >
   ) => void;
-  defineCoverages: (coverages: CoverageType[]) => void;
-  selectCoverages: (ids: number[]) => void;
+  defineCoverages: (coverages: Omit<CoverageType, 'selected'>[]) => void;
+  switchCoverage: (id: number) => void;
 };
 
 export type RiskObject = {
@@ -28,14 +28,14 @@ export type RiskObject = {
   purchaseDate: Date;
   plate: string;
   kmsYear: number;
-  parking: string;
+  parking: ParkingType;
   releaseDate: Date;
   retailPrice: number;
 };
 
 export type RiskSubject = {
   name: string;
-  birdDate: Date;
+  birthDate: Date;
   documentNumber: string;
 };
 

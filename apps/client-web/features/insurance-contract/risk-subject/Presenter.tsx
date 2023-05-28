@@ -31,7 +31,7 @@ const Presenter = ({ data }: Props) => {
       <Grid item xs={12} sm={4}>
         <PresenterElement
           title="Birth date"
-          content={dayjs(data.birdDate).format('LL')}
+          content={dayjs(data.birthDate).format('LL')}
           icon={<CalendarMonthOutlinedIcon fontSize="inherit" />}
         />
       </Grid>

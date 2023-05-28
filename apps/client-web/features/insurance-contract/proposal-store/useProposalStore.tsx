@@ -25,12 +25,12 @@ const useProposalStore = create<ProposalState>((set) => ({
       ...state,
       coverages: coverages.map((cov) => ({ ...cov, selected: false })),
     })),
-  selectCoverages: (coverageIds: number[]) =>
+  switchCoverage: (id: number) =>
     set((state) => ({
       ...state,
       coverages: state.coverages.map((cov) => ({
         ...cov,
-        selected: coverageIds.includes(cov.id),
+        selected: id === cov.id ? !cov.selected : cov.selected,
       })),
     })),
 }));

@@ -1,11 +1,11 @@
 import { Coverage, RiskObject, RiskSubject } from '@prisma/client';
-export type quoteBody = {
-  riskObject: RiskObject;
-  riskSubject: RiskSubject;
+export type QuoteBody = {
+  riskObject: Omit<RiskObject, 'id' | 'proposalId'>;
+  riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>;
   coverages: Coverage[];
 };
 
-export type quoteResponse = CoverageProduct[];
+export type QuoteResponse = CoverageProduct[];
 
 export type CoverageProduct = {
   id: number;

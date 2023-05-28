@@ -1,6 +1,6 @@
 import { Box, Button, Grid, TextField } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { RiskSubject } from '../proposal-store';
@@ -13,18 +13,22 @@ const RiskSubject = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<RiskSubject>({ mode: 'onBlur' });
-  const [showPresenter, setShowPresenter] = useState<boolean>(false);
 
   const [riskSubject, setRiskSubject] = useProposalStore((state) => [
     state.riskSubject,
     state.setRiskSubject,
   ]);
 
+  const isRiskSubjectDefined =
+    riskSubject?.birthDate && riskSubject?.name && riskSubject?.documentNumber;
+
   const onSubmit = (data: RiskSubject) => {
     setRiskSubject(data);
   };
 
-  return showPresenter ? (
+  return isRiskSubjectDefined ? (
+    <Presenter data={riskSubject} />
+  ) : (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -115,8 +119,6 @@ const RiskSubject = () => {
         </Grid>
       </Grid>
     </Box>
-  ) : (
-    <Presenter data={riskSubject} />
   );
 };
 
