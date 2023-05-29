@@ -381,6 +381,7 @@ const VersionForm = ({ defaultValues, onSubmit }: Props) => {
               <DatePicker
                 {...field}
                 disabled={!versionList?.length}
+                sx={{ width: '100%' }}
                 label="Purchase date"
                 onChange={(e) => onChange(dayjs(e).toDate())}
                 openTo="year"

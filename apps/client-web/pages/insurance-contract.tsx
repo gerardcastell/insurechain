@@ -21,7 +21,9 @@ const InsuranceContract = () => {
       alignItems="center"
       justifyContent="center"
     >
-      <InsuranceContractForm />
+      <Grid item>
+        <InsuranceContractForm />
+      </Grid>
     </Grid>
   );
 };

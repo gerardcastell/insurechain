@@ -9,6 +9,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import { useMutation } from '@tanstack/react-query';
 import { type QuoteBody, quote } from '@insurechain/web/backend/data-access';
 import Coverages from './coverages/Coverages';
+import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
 import { Coverage } from '@prisma/client';
 const InsuranceContractForm = () => {
   const [riskObject, riskSubject, coverages, defineCoverages, switchCoverage] =
@@ -61,18 +62,22 @@ const InsuranceContractForm = () => {
       )}
 
       {isRiskObjectDefined && isRiskSubjectDefined && (
-        <Step title="Coverages" icon={BadgeIcon}>
-          {data && (
-            <>
+        <Step title="Coverages" icon={DataSaverOnIcon}>
+          <>
+            {data && (
               <Coverages
                 coverages={coverages}
                 onSwitchCoverage={onSwitchCoverage}
               />
-            </>
-          )}
-          <Button variant="contained" onClick={() => quoteData()}>
-            {isLoading ? 'Loading...' : 'Quote'}
-          </Button>
+            )}
+            <Button
+              variant="contained"
+              sx={{ float: 'right', marginTop: 2 }}
+              onClick={() => quoteData()}
+            >
+              {isLoading ? 'Loading...' : 'Quote'}
+            </Button>
+          </>
         </Step>
       )}
     </Grid>

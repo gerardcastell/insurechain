@@ -1,6 +1,6 @@
 import React from 'react';
 import { CoverageType } from '../proposal-store';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography, useTheme } from '@mui/material';
 import { green, grey } from '@mui/material/colors';
 
 const CoverageCard = ({
@@ -9,12 +9,13 @@ const CoverageCard = ({
   premium,
   selected,
 }: CoverageType) => {
+  const { palette } = useTheme();
   return (
     <Paper
       elevation={1}
       sx={{
         ':hover': { cursor: 'pointer' },
-        backgroundColor: selected ? green[400] : 'transparent',
+        backgroundColor: selected ? palette.secondary.light : 'transparent',
       }}
     >
       <Grid container sx={{ padding: 2 }}>
