@@ -1,6 +1,6 @@
 # Insurechain
 
-Insurechain is DAPP which consists on a technological ecosystem that pursuits to build the next generation of Web3 insurance.
+Insurechain is DAPP solution which consists on a technological ecosystem that builds the next generation of Web3 insurance.
 
 ## Stacks
 
