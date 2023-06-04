@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, PropsWithChildren } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { axios } from '../../lib/axios';
 import LinearProgress from '@mui/material/LinearProgress';
-
+import { axios } from '@insurechain/web/backend/data-access';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -20,13 +19,10 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-type BackendLauncherProviderProps = {
-  children: React.ReactNode;
-};
 
 export default function BackendLauncherProvider({
   children,
-}: BackendLauncherProviderProps) {
+}: PropsWithChildren) {
   const [open, setOpen] = useState(true);
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ['health'],
