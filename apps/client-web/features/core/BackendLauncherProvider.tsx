@@ -23,7 +23,7 @@ const style = {
 export default function BackendLauncherProvider({
   children,
 }: PropsWithChildren) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ['health'],
     queryFn: async () => await axios.get('health'),
@@ -34,11 +34,21 @@ export default function BackendLauncherProvider({
     modalTitle = 'Unexpected error has occurred';
   }
 
+  const [enableEffect, setEnableEffect] = useState(false);
+
   useEffect(() => {
-    if (data?.data?.status === 'ok') {
-      setOpen(false);
-    } else {
-      setOpen(true);
+    setTimeout(() => {
+      setEnableEffect(true);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    if (enableEffect) {
+      if (data?.data?.status === 'ok') {
+        setOpen(false);
+      } else {
+        setOpen(true);
+      }
     }
   }, [data]);
 
