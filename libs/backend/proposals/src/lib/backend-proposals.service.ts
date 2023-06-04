@@ -63,7 +63,12 @@ export class BackendProposalsService {
           create: riskObject,
         },
         riskSubject: {
-          create: riskSubject,
+          connectOrCreate: {
+            where: {
+              documentNumber: riskSubject.documentNumber,
+            },
+            create: riskSubject,
+          },
         },
         coverages: {
           create: coverages,

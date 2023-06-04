@@ -29,7 +29,7 @@ model RiskObject {
   model        String
   power        Int
   purchaseDate DateTime
-  plate        String
+  plate        String      @unique
   kmsYear      Int
   proposalId   Int         @unique
   numberDoors  Int

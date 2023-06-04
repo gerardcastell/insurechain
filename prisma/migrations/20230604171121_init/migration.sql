@@ -86,6 +86,9 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Proposal_smartContractAddress_key" ON "Proposal"("smartContractAddress");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "RiskObject_plate_key" ON "RiskObject"("plate");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "RiskObject_proposalId_key" ON "RiskObject"("proposalId");
 
 -- CreateIndex

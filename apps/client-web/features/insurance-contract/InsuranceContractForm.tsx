@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, Grid } from '@mui/material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Step from './components/Step';
@@ -6,11 +6,14 @@ import RiskObject from './risk-object';
 import useProposalStore from './proposal-store';
 import RiskSubject from './risk-subject/RiskSubject';
 import BadgeIcon from '@mui/icons-material/Badge';
-import { useMutation } from '@tanstack/react-query';
-import { type QuoteBody, quote } from '@insurechain/web/backend/data-access';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  type QuoteBody,
+  quote,
+  saveProposal,
+} from '@insurechain/web/backend/data-access';
 import Coverages from './coverages/Coverages';
 import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
-import { Coverage } from '@prisma/client';
 const InsuranceContractForm = () => {
   const [riskObject, riskSubject, coverages, defineCoverages, switchCoverage] =
     useProposalStore((state) => [
@@ -20,28 +23,42 @@ const InsuranceContractForm = () => {
       state.defineCoverages,
       state.switchCoverage,
     ]);
-  const { isLoading, data, mutate } = useMutation(
-    (data: QuoteBody) => quote(data),
-    { onSuccess: (data) => defineCoverages(data.data) }
-  );
 
-  const quoteData = useCallback(
-    (coverages: Coverage[] = []) =>
-      mutate({ riskObject, riskSubject, coverages }),
-    [mutate, riskObject, riskSubject]
-  );
+  const isRiskObjectDefined =
+    !!riskObject?.version && !!riskObject?.releaseDate;
+  const isRiskSubjectDefined: boolean =
+    !!riskSubject?.birthDate &&
+    !!riskSubject?.name &&
+    !!riskSubject?.documentNumber;
 
-  const isRiskObjectDefined = riskObject?.version && riskObject?.releaseDate;
-  const isRiskSubjectDefined =
-    riskSubject?.birthDate && riskSubject?.name && riskSubject?.documentNumber;
+  const { data: quoteData } = useQuery({
+    queryKey: ['quote', riskObject, riskSubject],
+    queryFn: () => quote({ riskObject, riskSubject, coverages: [] }),
+    enabled: isRiskObjectDefined && isRiskSubjectDefined,
+    onSuccess: (data) => defineCoverages(data.data),
+  });
+
+  const {
+    data: proposalData,
+    isLoading,
+    mutate,
+  } = useMutation((data: QuoteBody) => saveProposal(data));
+  const _saveProposal = () =>
+    mutate({
+      riskObject,
+      riskSubject,
+      coverages: coverages.reduce(
+        (acc, curr) => [...acc, ...(curr.selected ? [curr.id] : [])],
+        []
+      ),
+    });
 
   const onSwitchCoverage = (id) => switchCoverage(id);
-  // useEffect(() => {
-  //   console.log(isRiskObjectDefined, isRiskSubjectDefined);
-  //   if (isRiskObjectDefined && isRiskSubjectDefined) {
-  //     // quoteData();
-  //   }
-  // }, [isRiskObjectDefined, isRiskSubjectDefined]);
+
+  const hasCoverages =
+    coverages &&
+    coverages.length > 0 &&
+    coverages.find((coverage) => coverage.selected);
 
   return (
     <Grid
@@ -64,7 +81,7 @@ const InsuranceContractForm = () => {
       {isRiskObjectDefined && isRiskSubjectDefined && (
         <Step title="Coverages" icon={DataSaverOnIcon}>
           <>
-            {data && (
+            {quoteData && (
               <Coverages
                 coverages={coverages}
                 onSwitchCoverage={onSwitchCoverage}
@@ -72,10 +89,11 @@ const InsuranceContractForm = () => {
             )}
             <Button
               variant="contained"
+              disabled={!hasCoverages}
               sx={{ float: 'right', marginTop: 2 }}
-              onClick={() => quoteData()}
+              onClick={_saveProposal}
             >
-              {isLoading ? 'Loading...' : 'Quote'}
+              {isLoading ? 'Loading...' : 'Save Proposal'}
             </Button>
           </>
         </Step>
