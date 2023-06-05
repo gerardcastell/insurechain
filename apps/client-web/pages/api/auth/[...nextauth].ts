@@ -28,12 +28,13 @@ export const authOptions: NextAuthOptions = {
         // const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' };
         const { email, password } = credentials;
         const { data } = await signInBackend(email, password);
+        console.log(data);
         const user = {
           ...data,
           email,
           image: 'https://xsgames.co/randomusers/avatar.php?g=male',
         };
-        if (user) {
+        if (data) {
           // Any object returned will be saved in `user` property of the JWT
           return user;
         } else {
@@ -49,10 +50,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, account, user }) {
       // Persist the OAuth access_token to the token right after signin
       if (account) {
-        token.account = {
-          ...account,
-          access_token: user.access_token,
-        };
+        token.access_token = user.access_token;
       }
       return token;
     },

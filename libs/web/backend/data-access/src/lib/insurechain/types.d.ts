@@ -20,6 +20,12 @@ export type CoverageProduct = {
   title: string;
 };
 
+export type SaveProposalBody = {
+  riskObject: Omit<RiskObject, 'id' | 'proposalId'>;
+  riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>;
+  coverages: Omit<CoverageType, 'id' | 'proposalId'>[];
+};
+
 export type ProposalDto = {
   coverages: CoverageType[];
   id: number;

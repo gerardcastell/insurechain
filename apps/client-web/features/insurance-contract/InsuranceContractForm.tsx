@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Step from './components/Step';
 import RiskObject from './risk-object';
@@ -11,9 +11,11 @@ import {
   type QuoteBody,
   quote,
   saveProposal,
+  SaveProposalBody,
 } from '@insurechain/web/backend/data-access';
 import Coverages from './coverages/Coverages';
 import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
+import { useSession } from 'next-auth/react';
 const InsuranceContractForm = () => {
   const [riskObject, riskSubject, coverages, defineCoverages, switchCoverage] =
     useProposalStore((state) => [
@@ -42,17 +44,13 @@ const InsuranceContractForm = () => {
     data: proposalData,
     isLoading,
     mutate,
-  } = useMutation((data: QuoteBody) => saveProposal(data));
+  } = useMutation((data: SaveProposalBody) => saveProposal(data));
   const _saveProposal = () =>
     mutate({
       riskObject,
       riskSubject,
-      coverages: coverages.reduce(
-        (acc, curr) => [...acc, ...(curr.selected ? [curr.id] : [])],
-        []
-      ),
+      coverages: coverages.filter((coverage) => coverage.selected),
     });
-
   const onSwitchCoverage = (id) => switchCoverage(id);
 
   const hasCoverages =

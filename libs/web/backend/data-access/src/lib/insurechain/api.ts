@@ -4,6 +4,7 @@ import {
   QuoteResponse,
   type QuoteBody,
   ProposalDto as SaveProposalDto,
+  SaveProposalBody,
 } from './types';
 
 export const signIn = async (email: string, password: string) => {
@@ -29,7 +30,7 @@ export const quote = async (
 };
 
 export const saveProposal = async (
-  data: QuoteBody
+  data: SaveProposalBody
 ): Promise<AxiosResponse<SaveProposalDto>> => {
   const response = await axios.post<SaveProposalDto>(
     '/proposals/save-proposal',
