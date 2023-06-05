@@ -7,17 +7,21 @@ import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import LinearProgress from '@mui/material/LinearProgress';
 import { axios } from '@insurechain/web/backend/data-access';
+import { Grow } from '@mui/material';
 const style = {
   position: 'absolute',
+  textAlign: 'center',
   top: '50%',
   left: '50%',
-  transform: 'translate(-50%, -50%)',
+  transform: 'translate(-50%, -50%) !important',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  borderRadius: 2,
+  borderRadius: 3,
   boxShadow: 24,
   p: 4,
+  '&:focus-visible': {
+    outline: 'none',
+  },
 };
 
 export default function BackendLauncherProvider({
@@ -50,7 +54,7 @@ export default function BackendLauncherProvider({
         setOpen(true);
       }
     }
-  }, [data]);
+  }, [data, enableEffect]);
 
   return (
     <>
@@ -60,24 +64,26 @@ export default function BackendLauncherProvider({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            sx={{
-              marginBottom: 3,
-            }}
-          >
-            {modalTitle}
-          </Typography>
-          {isLoading && <LinearProgress />}
-          {isError && (
-            <Typography id="modal-modal-description" noWrap>
-              {error.message}
+        <Grow in={open} style={{ transformOrigin: '0 0 0' }}>
+          <Box sx={style}>
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              sx={{
+                marginBottom: 3,
+              }}
+            >
+              {modalTitle}
             </Typography>
-          )}
-        </Box>
+            {isLoading && <LinearProgress />}
+            {isError && (
+              <Typography id="modal-modal-description" noWrap>
+                {error.message}
+              </Typography>
+            )}
+          </Box>
+        </Grow>
       </Modal>
     </>
   );
