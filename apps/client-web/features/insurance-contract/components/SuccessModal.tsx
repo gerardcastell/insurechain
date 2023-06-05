@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Slide, Typography } from '@mui/material';
+import { Box, Button, Modal, Slide, Typography, useTheme } from '@mui/material';
 import React from 'react';
 
 type Props = {
@@ -7,6 +7,7 @@ type Props = {
   onClickLeft: () => void;
 };
 const SuccessModal = ({ open, onClickLeft, onClickRight }: Props) => {
+  const { breakpoints } = useTheme();
   return (
     <Modal
       disableEscapeKeyDown
@@ -22,9 +23,18 @@ const SuccessModal = ({ open, onClickLeft, onClickRight }: Props) => {
         },
       }}
     >
-      {/* <Grow in={open} style={{ transformOrigin: '0 0 0' }}> */}
       <Slide direction="up" in={open} mountOnEnter unmountOnExit>
-        <Box sx={style}>
+        <Box
+          sx={{
+            ...style,
+            [breakpoints.up('sm')]: {
+              width: 700,
+            },
+            [breakpoints.down('sm')]: {
+              width: '90vw',
+            },
+          }}
+        >
           <Typography
             id="keep-mounted-modal-title"
             variant="h5"
@@ -54,7 +64,6 @@ const SuccessModal = ({ open, onClickLeft, onClickRight }: Props) => {
             </Button>
           </Box>
         </Box>
-        {/* </Grow> */}
       </Slide>
     </Modal>
   );

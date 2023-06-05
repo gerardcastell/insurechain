@@ -15,19 +15,10 @@ import {
 } from '@insurechain/web/backend/data-access';
 import Coverages from './coverages/Coverages';
 import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
-import style from 'styled-jsx/style';
 import { useRouter } from 'next/router';
 import SuccessModal from './components/SuccessModal';
 import Confetti, { useConfetti } from '../../components/confetti';
 
-const canvasStyles = {
-  position: 'fixed' as const,
-  pointerEvents: 'none' as const,
-  width: '100%',
-  height: '100%',
-  top: 0,
-  left: 0,
-};
 const InsuranceContractForm = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [riskObject, riskSubject, coverages, defineCoverages, switchCoverage] =
@@ -60,6 +51,7 @@ const InsuranceContractForm = () => {
     mutate,
   } = useMutation((data: SaveProposalBody) => saveProposal(data), {
     onSuccess: () => {
+      stopAnimation();
       startAnimation();
       setOpenSuccessModal(true);
     },
