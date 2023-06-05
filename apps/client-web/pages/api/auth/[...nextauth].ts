@@ -2,6 +2,12 @@ import { signIn as signInBackend } from '@insurechain/web/backend/data-access';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+const add1hourToNow = (): Date => {
+  const now = new Date();
+  now.setHours(now.getHours() + 1);
+  return now;
+};
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -51,12 +57,15 @@ export const authOptions: NextAuthOptions = {
       // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.access_token = user.access_token;
+        token.expires_at = add1hourToNow().toISOString();
       }
       return token;
     },
     async session({ session, token, user }) {
       // Send properties to the client, like an access_token from a provider.
       session.access_token = token.access_token;
+      session.expires = token.expires_at as string;
+      session.error = token.error;
       return session;
     },
   },

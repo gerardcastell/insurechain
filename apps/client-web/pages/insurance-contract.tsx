@@ -3,11 +3,10 @@ import { Grid } from '@mui/material';
 const InsuranceContract = () => {
   return (
     <Grid
-      sx={{ height: 'calc(100vh - 56px)' }}
+      sx={{ height: 'calc(100vh - 65px)', paddingY: 10 }}
       container
       direction="column"
       alignItems="center"
-      justifyContent="center"
     >
       <Grid item>
         <InsuranceContractForm />
