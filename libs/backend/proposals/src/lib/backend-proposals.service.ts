@@ -32,7 +32,7 @@ export class BackendProposalsService {
   quote(
     riskObject: Omit<RiskObject, 'id' | 'proposalId'>,
     riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>,
-    coverages: Coverage[]
+    coverages: Coverage[] = []
   ): Promise<
     (Omit<CoverageProduct, 'basePriceFactor'> & { premium: number })[]
   > {

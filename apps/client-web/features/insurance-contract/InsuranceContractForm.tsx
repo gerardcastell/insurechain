@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, Grid, Modal, Typography } from '@mui/material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Step from './components/Step';
@@ -7,6 +7,7 @@ import useProposalStore from './proposal-store';
 import RiskSubject from './risk-subject/RiskSubject';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import ReactCanvasConfetti from 'react-canvas-confetti';
 import {
   quote,
   saveProposal,
@@ -17,6 +18,16 @@ import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
 import style from 'styled-jsx/style';
 import { useRouter } from 'next/router';
 import SuccessModal from './components/SuccessModal';
+import Confetti, { useConfetti } from '../../components/confetti';
+
+const canvasStyles = {
+  position: 'fixed' as const,
+  pointerEvents: 'none' as const,
+  width: '100%',
+  height: '100%',
+  top: 0,
+  left: 0,
+};
 const InsuranceContractForm = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [riskObject, riskSubject, coverages, defineCoverages, switchCoverage] =
@@ -48,10 +59,14 @@ const InsuranceContractForm = () => {
     error,
     mutate,
   } = useMutation((data: SaveProposalBody) => saveProposal(data), {
-    onSuccess: () => setOpenSuccessModal(true),
+    onSuccess: () => {
+      startAnimation();
+      setOpenSuccessModal(true);
+    },
   });
 
   const router = useRouter();
+  const { getInstance, startAnimation, stopAnimation } = useConfetti();
 
   const navigateToProposal = () => {
     setOpenSuccessModal(false);
@@ -70,9 +85,10 @@ const InsuranceContractForm = () => {
     coverages &&
     coverages.length > 0 &&
     coverages.find((coverage) => coverage.selected);
-  console.log(error);
+
   return (
     <>
+      <Confetti getInstance={getInstance} />
       <SuccessModal
         open={openSuccessModal}
         onClickRight={navigateToProposal}

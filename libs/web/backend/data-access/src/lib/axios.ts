@@ -15,8 +15,7 @@ axios.interceptors.request.use(async (request) => {
     if (request.data) {
       request.data = convertKeysToSnakecase(request.data, { deep: true });
     }
-  }
-  if (
+  } else if (
     request.url?.includes('insurechain') ||
     request.url?.includes('localhost') ||
     request.baseURL?.includes('insurechain') ||
