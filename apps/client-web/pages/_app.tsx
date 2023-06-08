@@ -40,10 +40,10 @@ function CustomApp({
             <ThemeProvider theme={theme}>
               {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
               <CssBaseline />
-              <BackendLauncherProvider>
-                <Header />
-                <Component {...pageProps} />
-              </BackendLauncherProvider>
+              {/* <BackendLauncherProvider> */}
+              <Header />
+              <Component {...pageProps} />
+              {/* </BackendLauncherProvider> */}
             </ThemeProvider>
           </LocalizationProvider>
         </CacheProvider>
