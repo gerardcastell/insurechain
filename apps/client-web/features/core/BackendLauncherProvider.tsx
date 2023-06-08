@@ -33,28 +33,16 @@ export default function BackendLauncherProvider({
     queryFn: async () => await axios.get('health'),
     onError: (err: AxiosError) => err,
   });
-  let modalTitle = 'Waiting for backend server going up.';
+  let modalTitle = 'Waiting for backend to launch up';
   if (isError) {
     modalTitle = 'Unexpected error has occurred';
   }
 
-  const [enableEffect, setEnableEffect] = useState(false);
-
   useEffect(() => {
     setTimeout(() => {
-      setEnableEffect(true);
+      setOpen(data?.data?.status !== 'ok');
     }, 2000);
-  }, []);
-
-  useEffect(() => {
-    if (enableEffect) {
-      if (data?.data?.status === 'ok') {
-        setOpen(false);
-      } else {
-        setOpen(true);
-      }
-    }
-  }, [data, enableEffect]);
+  }, [data]);
 
   return (
     <>
@@ -68,7 +56,7 @@ export default function BackendLauncherProvider({
           <Box sx={style}>
             <Typography
               id="modal-modal-title"
-              variant="h6"
+              variant="body1"
               component="h2"
               sx={{
                 marginBottom: 3,
