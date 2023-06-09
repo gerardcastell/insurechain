@@ -4,10 +4,14 @@ import { Box, Grid, Paper, Typography, useTheme } from '@mui/material';
 import { green, grey } from '@mui/material/colors';
 import Lottie, { useLottie } from 'lottie-react';
 import checkedAnimation from '../../../public/lottie/checked.json';
+import { dinero } from 'dinero.js';
+import { EUR } from '@dinero.js/currencies';
+import { useQuery } from '@tanstack/react-query';
+import { getSellPrice } from '@insurechain/web/backend/data-access';
 const CoverageCard = ({
   title,
   description,
-  premium,
+  monthlyPremium,
   selected,
 }: CoverageType) => {
   const { palette, breakpoints } = useTheme();
@@ -42,6 +46,15 @@ const CoverageCard = ({
   //     playSegments([0, 49], true);
   //   }
   // }, [selected, playSegments]);
+  // const price = dinero({ amount: monthlyPremium, currency: EUR });
+
+  const { isLoading, data: ethPrice } = useQuery({
+    queryKey: ['getCurrency'],
+    queryFn: () => getSellPrice(),
+    cacheTime: 1000 * 60,
+  });
+
+  const convertedPrice = monthlyPremium / ethPrice;
 
   return (
     <Paper
@@ -63,9 +76,20 @@ const CoverageCard = ({
             <Typography variant="body1">{title}</Typography>
           </Grid>
           <Grid display="flex" justifyContent="flex-end" item xs={4}>
-            <Typography variant="body1" fontWeight={400}>
-              {premium}€
-            </Typography>
+            {isLoading ? (
+              <Typography variant="body1" color="yellowgreen">
+                Converting to ETH
+              </Typography>
+            ) : (
+              <Box textAlign="right">
+                <Typography variant="body1" fontWeight={400}>
+                  {convertedPrice.toPrecision(6)} ETH
+                </Typography>
+                <Typography variant="body1" color={grey[500]}>
+                  {monthlyPremium.toFixed(2)}€
+                </Typography>
+              </Box>
+            )}
             {/* {View} */}
 
             {/* {selected && (

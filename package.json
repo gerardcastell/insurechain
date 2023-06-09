@@ -21,6 +21,7 @@
   },
   "private": true,
   "dependencies": {
+    "@dinero.js/currencies": "^2.0.0-alpha.14",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
@@ -40,6 +41,7 @@
     "axios": "^1.3.5",
     "camelcase-keys": "^8.0.2",
     "dayjs": "^1.11.7",
+    "dinero.js": "^2.0.0-alpha.14",
     "ethers": "^5.7.2",
     "lottie-react": "^2.4.0",
     "next": "13.1.1",

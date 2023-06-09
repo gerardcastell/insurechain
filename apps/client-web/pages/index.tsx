@@ -50,7 +50,7 @@ export function Index() {
           <CoverageCard
             title="Third party liability"
             description="Compulsory coverage to circulate. It covers the compensation she is responsible for to damages caused to third parties in a traffic accident, both material and personal damages."
-            monthlyPremium={691.51}
+            monthlyPremium={691}
             selected={state}
             id={1}
             identifier={Coverage.third_party_liability}
