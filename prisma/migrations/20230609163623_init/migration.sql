@@ -21,6 +21,7 @@ CREATE TABLE "Proposal" (
     "id" SERIAL NOT NULL,
     "policyHolderId" INTEGER NOT NULL,
     "smartContractAddress" TEXT,
+    "riskSubjectId" INTEGER NOT NULL,
 
     CONSTRAINT "Proposal_pkey" PRIMARY KEY ("id")
 );
@@ -50,7 +51,6 @@ CREATE TABLE "RiskSubject" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "documentNumber" TEXT NOT NULL,
-    "proposalId" INTEGER NOT NULL,
     "birthDate" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "RiskSubject_pkey" PRIMARY KEY ("id")
@@ -71,7 +71,7 @@ CREATE TABLE "CoverageProduct" (
 CREATE TABLE "CoverageType" (
     "id" SERIAL NOT NULL,
     "identifier" "Coverage" NOT NULL,
-    "premium" DOUBLE PRECISION NOT NULL,
+    "monthlyPremium" DOUBLE PRECISION NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "proposalId" INTEGER NOT NULL,
@@ -92,9 +92,6 @@ CREATE UNIQUE INDEX "RiskObject_proposalId_key" ON "RiskObject"("proposalId");
 CREATE UNIQUE INDEX "RiskSubject_documentNumber_key" ON "RiskSubject"("documentNumber");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "RiskSubject_proposalId_key" ON "RiskSubject"("proposalId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "CoverageProduct_identifier_key" ON "CoverageProduct"("identifier");
 
 -- CreateIndex
@@ -104,10 +101,10 @@ CREATE UNIQUE INDEX "CoverageType_proposalId_key" ON "CoverageType"("proposalId"
 ALTER TABLE "Proposal" ADD CONSTRAINT "Proposal_policyHolderId_fkey" FOREIGN KEY ("policyHolderId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "RiskObject" ADD CONSTRAINT "RiskObject_proposalId_fkey" FOREIGN KEY ("proposalId") REFERENCES "Proposal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Proposal" ADD CONSTRAINT "Proposal_riskSubjectId_fkey" FOREIGN KEY ("riskSubjectId") REFERENCES "RiskSubject"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "RiskSubject" ADD CONSTRAINT "RiskSubject_proposalId_fkey" FOREIGN KEY ("proposalId") REFERENCES "Proposal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "RiskObject" ADD CONSTRAINT "RiskObject_proposalId_fkey" FOREIGN KEY ("proposalId") REFERENCES "Proposal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CoverageType" ADD CONSTRAINT "CoverageType_proposalId_fkey" FOREIGN KEY ("proposalId") REFERENCES "Proposal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

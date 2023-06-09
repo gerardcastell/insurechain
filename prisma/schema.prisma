@@ -21,7 +21,8 @@ model Proposal {
   coverages            CoverageType[]
   policyHolder         User          @relation(fields: [policyHolderId], references: [id])
   riskObject           RiskObject?
-  riskSubject          RiskSubject?
+  riskSubject          RiskSubject   @relation(fields: [riskSubjectId], references: [id])
+  riskSubjectId        Int
 }
 
 model RiskObject {
@@ -46,9 +47,8 @@ model RiskSubject {
   id             Int      @id @default(autoincrement())
   name           String
   documentNumber String   @unique
-  proposalId     Int      @unique
   birthDate      DateTime
-  proposal       Proposal @relation(fields: [proposalId], references: [id])
+  proposals      Proposal[]
 }
 
 model CoverageProduct {
@@ -62,7 +62,7 @@ model CoverageProduct {
 model CoverageType {
   id          Int      @id @default(autoincrement())
   identifier  Coverage
-  premium     Float
+  monthlyPremium     Float
   title       String
   description String
   proposalId  Int      @unique

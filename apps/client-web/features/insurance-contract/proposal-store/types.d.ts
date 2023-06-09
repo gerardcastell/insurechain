@@ -44,6 +44,6 @@ export type CoverageType = {
   identifier: Coverage;
   title: string;
   description: string;
-  premium: number;
+  monthlyPremium: number;
   selected: boolean;
 };

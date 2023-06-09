@@ -16,7 +16,7 @@ export type CoverageProduct = {
   id: number;
   identifier: Coverage;
   description: string;
-  premium: number;
+  monthlyPremium: number;
   title: string;
 };
 

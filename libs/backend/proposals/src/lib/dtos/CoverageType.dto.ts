@@ -9,7 +9,7 @@ export class CoverageDto {
 
   @ApiProperty({ default: 10, required: true })
   @IsNumber()
-  premium: number;
+  monthlyPremium: number;
 
   @ApiProperty({ default: 'Theft' })
   @IsString()

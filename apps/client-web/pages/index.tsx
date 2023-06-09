@@ -5,6 +5,7 @@ import { signIn, signOut } from 'next-auth/react';
 import { Grid, Typography } from '@mui/material';
 import CoverageCard from '../features/insurance-contract/coverages/CoverageCard';
 import { Coverage } from '@prisma/client';
+import { useState } from 'react';
 
 export function Index() {
   const onClick = async () => {
@@ -22,6 +23,7 @@ export function Index() {
   const customSignOut = async () => {
     signOut();
   };
+  const [state, setState] = useState(false);
 
   return (
     <Grid container spacing={4} justifyContent={'center'}>
@@ -44,12 +46,12 @@ export function Index() {
         <Typography paddingBottom={4} variant="h4">
           Sandbox
         </Typography>
-        <Box margin={2}>
+        <Box margin={2} onClick={() => setState((prev) => !prev)}>
           <CoverageCard
             title="Third party liability"
             description="Compulsory coverage to circulate. It covers the compensation she is responsible for to damages caused to third parties in a traffic accident, both material and personal damages."
-            premium={691.51}
-            selected={false}
+            monthlyPremium={691.51}
+            selected={state}
             id={1}
             identifier={Coverage.third_party_liability}
           />

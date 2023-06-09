@@ -34,15 +34,15 @@ export class BackendProposalsService {
     riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>,
     coverages: Coverage[] = []
   ): Promise<
-    (Omit<CoverageProduct, 'basePriceFactor'> & { premium: number })[]
+    (Omit<CoverageProduct, 'basePriceFactor'> & { monthlyPremium: number })[]
   > {
-    const price = this.getPrice(riskObject, riskSubject);
+    const price = this.getPrice(riskObject);
     return this.getCoverageProducts(coverages).then((coverageTypes) =>
       coverageTypes.map((coverageType) => {
         const { basePriceFactor, ...rest } = coverageType;
         return {
           ...rest,
-          premium: Math.round(basePriceFactor * price * 100) / 100,
+          monthlyPremium: Math.round(basePriceFactor * price * 100) / 100,
         };
       })
     );
@@ -51,14 +51,18 @@ export class BackendProposalsService {
   async saveProposal(
     userId: number,
     riskObject: Omit<RiskObject, 'id' | 'proposalId'>,
-    riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>,
+    riskSubject: Omit<RiskSubject, 'id'>,
     coverages: Omit<CoverageType, 'id' | 'proposalId'>[]
   ) {
     const user = await this.userService.findOneById(userId);
+    // const riskSubjectId = await this.prisma.riskSubject.findUnique({
+    //   select: {
+    //     documentNumber: {},
+    //   },
+    // });
     if (!user) throw new NotFoundException('User not found');
     return this.prisma.proposal.create({
       data: {
-        policyHolderId: userId,
         riskObject: {
           create: riskObject,
         },
@@ -68,6 +72,11 @@ export class BackendProposalsService {
               documentNumber: riskSubject.documentNumber,
             },
             create: riskSubject,
+          },
+        },
+        policyHolder: {
+          connect: {
+            id: userId,
           },
         },
         coverages: {
@@ -101,10 +110,7 @@ export class BackendProposalsService {
     });
   }
 
-  private getPrice(
-    riskObject: Omit<RiskObject, 'id' | 'proposalId'>,
-    riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>
-  ): number {
-    return Math.random() * 100;
+  private getPrice(riskObject: Omit<RiskObject, 'id' | 'proposalId'>): number {
+    return riskObject.retailPrice / 1000 / 2;
   }
 }
