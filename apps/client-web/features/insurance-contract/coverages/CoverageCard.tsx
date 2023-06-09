@@ -82,10 +82,18 @@ const CoverageCard = ({
               </Typography>
             ) : (
               <Box textAlign="right">
-                <Typography variant="body1" fontWeight={400}>
+                <Typography
+                  variant="body1"
+                  fontWeight={400}
+                  fontStyle="oblique"
+                >
                   {convertedPrice.toPrecision(6)} ETH
                 </Typography>
-                <Typography variant="body1" color={grey[500]}>
+                <Typography
+                  variant="body2"
+                  color={grey[500]}
+                  fontStyle="oblique"
+                >
                   {monthlyPremium.toFixed(2)}€
                 </Typography>
               </Box>
@@ -133,8 +141,9 @@ const CoverageCard = ({
             sx={{ transform: 'rotate(90deg) ' }}
             variant="body2"
             color="white"
+            whiteSpace="nowrap"
           >
-            {selected ? 'Remove' : 'Add'}
+            Click to {selected ? 'remove' : 'add'}
           </Typography>
         </Box>
         {selected && (
