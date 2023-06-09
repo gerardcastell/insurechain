@@ -51,6 +51,7 @@
     "react-canvas-confetti": "^1.4.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
+    "react-lottie-player": "^1.5.4",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "snakecase-keys": "^5.4.5",

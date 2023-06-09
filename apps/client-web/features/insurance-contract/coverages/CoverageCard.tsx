@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CoverageType } from '../proposal-store';
 import { Box, Grid, Paper, Typography, useTheme } from '@mui/material';
 import { green, grey } from '@mui/material/colors';
-import Lottie from 'lottie-react';
+import Lottie, { useLottie } from 'lottie-react';
 import checkedAnimation from '../../../public/lottie/checked.json';
 const CoverageCard = ({
   title,
@@ -10,7 +10,39 @@ const CoverageCard = ({
   premium,
   selected,
 }: CoverageType) => {
-  const { palette, breakpoints, typography } = useTheme();
+  const { palette, breakpoints } = useTheme();
+  const animationRef = useRef<any>();
+  const [animationLoaded, setAnimationLoaded] = useState(true);
+
+  // const { View, playSegments } = useLottie(
+  //   {
+  //     animationData: checkedAnimation,
+  //     loop: false,
+  //     autoplay: false,
+  //   },
+  //   {
+  //     height: 50,
+  //   }
+  // );
+  // if (animationRef.current) {
+  //   animationRef.current.playSegments([0, 49], true);
+  // }
+
+  // useEffect(() => {
+  //   console.log(selected);
+  //   if (selected) {
+  //     animationRef.current.playSegments([0, 49], true);
+  //   }else{
+  //     animationRef.current.
+  //   }
+  // }, [selected]);
+
+  // useEffect(() => {
+  //   if (selected) {
+  //     playSegments([0, 49], true);
+  //   }
+  // }, [selected, playSegments]);
+
   return (
     <Paper
       elevation={1}
@@ -39,12 +71,18 @@ const CoverageCard = ({
               fontWeight={400}
             >
               {premium}€
-              <Lottie
-                animationData={checkedAnimation}
-                loop={1}
-                autoPlay={true}
-              />
             </Typography>
+            {/* {View} */}
+
+            {/* {selected && (
+              <Lottie
+                // onConfigReady={() => setAnimationLoaded(true)}
+                animationData={checkedAnimation}
+                lottieRef={animationRef}
+                autoPlay={false}
+                loop={false}
+              />
+            )} */}
           </Grid>
         </Grid>
         <Grid item xs={11} paddingTop={2}>
