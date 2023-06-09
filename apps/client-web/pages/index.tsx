@@ -18,7 +18,7 @@ export function Index() {
   };
 
   const customSignOut = async () => {
-    signOut();
+    signOut({ redirect: false });
   };
 
   return (

@@ -34,7 +34,6 @@ export const authOptions: NextAuthOptions = {
         // const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' };
         const { email, password } = credentials;
         const { data } = await signInBackend(email, password);
-        console.log(data);
         const user = {
           ...data,
           email,
