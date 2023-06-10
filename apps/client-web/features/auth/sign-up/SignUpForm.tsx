@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import { signIn } from 'next-auth/react';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 type FormValues = {
   email: string;
@@ -29,12 +30,16 @@ const SignUpForm = () => {
   const password = watch('password');
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    await signUp(data.email, data.password);
-    await signIn('credentials', {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
+    try {
+      await signUp(data.email, data.password);
+      await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+    } catch (err) {
+      toast.error('Sign up failed');
+    }
   };
 
   return (
