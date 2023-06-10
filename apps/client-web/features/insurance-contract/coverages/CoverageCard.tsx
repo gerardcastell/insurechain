@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { CoverageType } from '../proposal-store';
 import { Box, Grid, Paper, Typography, useTheme } from '@mui/material';
 import { green, grey } from '@mui/material/colors';
-import Lottie, { useLottie } from 'lottie-react';
+import Lottie from 'lottie-react';
 import checkedAnimation from '../../../public/lottie/checked.json';
-import { dinero } from 'dinero.js';
-import { EUR } from '@dinero.js/currencies';
 import { useQuery } from '@tanstack/react-query';
 import { getSellPrice } from '@insurechain/web/backend/data-access';
+import DismissAnimation from '../components/Dismiss';
 const CoverageCard = ({
   title,
   description,
@@ -16,37 +15,13 @@ const CoverageCard = ({
 }: CoverageType) => {
   const { palette, breakpoints } = useTheme();
   const animationRef = useRef<any>();
-  const [animationLoaded, setAnimationLoaded] = useState(true);
+  const [firstLoad, setFirstLoad] = useState(true);
 
-  // const { View, playSegments } = useLottie(
-  //   {
-  //     animationData: checkedAnimation,
-  //     loop: false,
-  //     autoplay: false,
-  //   },
-  //   {
-  //     height: 50,
-  //   }
-  // );
-  // if (animationRef.current) {
-  //   animationRef.current.playSegments([0, 49], true);
-  // }
-
-  // useEffect(() => {
-  //   console.log(selected);
-  //   if (selected) {
-  //     animationRef.current.playSegments([0, 49], true);
-  //   }else{
-  //     animationRef.current.
-  //   }
-  // }, [selected]);
-
-  // useEffect(() => {
-  //   if (selected) {
-  //     playSegments([0, 49], true);
-  //   }
-  // }, [selected, playSegments]);
-  // const price = dinero({ amount: monthlyPremium, currency: EUR });
+  useEffect(() => {
+    if (firstLoad) {
+      setFirstLoad(false);
+    }
+  }, [firstLoad]);
 
   const { isLoading, data: ethPrice } = useQuery({
     queryKey: ['getCurrency'],
@@ -78,7 +53,7 @@ const CoverageCard = ({
           <Grid display="flex" justifyContent="flex-end" item xs={4}>
             {isLoading ? (
               <Typography variant="body1" color="yellowgreen">
-                Converting to ETH
+                Converting to ETH...
               </Typography>
             ) : (
               <Box textAlign="right">
@@ -98,17 +73,6 @@ const CoverageCard = ({
                 </Typography>
               </Box>
             )}
-            {/* {View} */}
-
-            {/* {selected && (
-              <Lottie
-                // onConfigReady={() => setAnimationLoaded(true)}
-                animationData={checkedAnimation}
-                lottieRef={animationRef}
-                autoPlay={false}
-                loop={false}
-              />
-            )} */}
           </Grid>
         </Grid>
         <Grid item xs={11} paddingTop={2}>
@@ -177,6 +141,27 @@ const CoverageCard = ({
             </Typography>
           </Box>
         )}
+
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translateX(-50%) translateY(-50%)',
+          }}
+        >
+          {selected && (
+            <Lottie
+              // onConfigReady={() => setAnimationLoaded(true)}
+              style={{ height: '120px', width: '120px' }}
+              animationData={checkedAnimation}
+              lottieRef={animationRef}
+              autoPlay={true}
+              loop={false}
+            />
+          )}
+          {!selected && !firstLoad && <DismissAnimation />}
+        </Box>
       </Grid>
     </Paper>
   );

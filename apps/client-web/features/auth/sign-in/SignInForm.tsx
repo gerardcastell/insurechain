@@ -1,10 +1,9 @@
-import { Box, Button, Icon, InputAdornment, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { signIn } from 'next-auth/react';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import PasswordIcon from '@mui/icons-material/Password';
 import { toast } from 'react-toastify';
 type FormValues = {
   email: string;
@@ -93,9 +92,11 @@ const SignInForm = () => {
             />
           )}
         />
-        <Button variant="contained" type="submit">
-          Login
-        </Button>
+        <Box>
+          <Button variant="contained" type="submit" sx={{ width: '100%' }}>
+            Login
+          </Button>
+        </Box>
       </Stack>
     </Box>
   );

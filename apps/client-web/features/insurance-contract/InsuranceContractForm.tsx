@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Button, Grid, Modal, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Button, Grid } from '@mui/material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Step from './components/Step';
 import RiskObject from './risk-object';
@@ -7,7 +7,7 @@ import useProposalStore from './proposal-store';
 import RiskSubject from './risk-subject/RiskSubject';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import ReactCanvasConfetti from 'react-canvas-confetti';
+
 import {
   quote,
   saveProposal,
@@ -18,9 +18,22 @@ import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
 import { useRouter } from 'next/router';
 import SuccessModal from './components/SuccessModal';
 import Confetti, { useConfetti } from '../../components/confetti';
+import { LoginModal } from '../auth';
+import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
+import { useSession } from 'next-auth/react';
 
 const InsuranceContractForm = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (openLoginModal && status === 'authenticated') {
+      setOpenLoginModal(false);
+    }
+  }, [status, setOpenLoginModal, openLoginModal]);
+
   const [riskObject, riskSubject, coverages, defineCoverages, switchCoverage] =
     useProposalStore((state) => [
       state.riskObject,
@@ -47,13 +60,15 @@ const InsuranceContractForm = () => {
   const {
     data: proposalData,
     isLoading,
-    error,
     mutate,
   } = useMutation((data: SaveProposalBody) => saveProposal(data), {
     onSuccess: () => {
       stopAnimation();
       startAnimation();
       setOpenSuccessModal(true);
+    },
+    onError: (error: AxiosError) => {
+      toast.error(error.message);
     },
   });
 
@@ -65,13 +80,17 @@ const InsuranceContractForm = () => {
     router.push('/proposals');
   };
 
-  const _saveProposal = () =>
-    mutate({
-      riskObject,
-      riskSubject,
-      coverages: coverages.filter((coverage) => coverage.selected),
-    });
-  const onSwitchCoverage = (id) => switchCoverage(id);
+  const _saveProposal = () => {
+    if (status === 'authenticated') {
+      mutate({
+        riskObject,
+        riskSubject,
+        coverages: coverages.filter((coverage) => coverage.selected),
+      });
+    } else {
+      setOpenLoginModal(true);
+    }
+  };
 
   const hasCoverages =
     coverages &&
@@ -86,6 +105,7 @@ const InsuranceContractForm = () => {
         onClickRight={navigateToProposal}
         onClickLeft={() => router.push('/dashboard')}
       />
+      <LoginModal open={openLoginModal} />
       <Grid
         maxWidth={'sm'}
         container
@@ -109,7 +129,7 @@ const InsuranceContractForm = () => {
               {quoteData && (
                 <Coverages
                   coverages={coverages}
-                  onSwitchCoverage={onSwitchCoverage}
+                  onSwitchCoverage={switchCoverage}
                 />
               )}
               <Button
