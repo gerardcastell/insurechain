@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import PasswordIcon from '@mui/icons-material/Password';
+import { toast } from 'react-toastify';
 type FormValues = {
   email: string;
   password: string;
@@ -23,11 +24,16 @@ const SignInForm = () => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    await signIn('credentials', {
+    const result = await signIn('credentials', {
       email: data.email,
       password: data.password,
       redirect: false,
     });
+    if (!result.ok) {
+      toast.error('Login failed');
+    } else {
+      toast.success('Login success');
+    }
   };
 
   return (

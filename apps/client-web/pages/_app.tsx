@@ -11,9 +11,10 @@ import { SessionProvider } from 'next-auth/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../lib/react-query';
 import BackendLauncherProvider from '../features/core/BackendLauncherProvider';
-
+import 'react-toastify/dist/ReactToastify.css';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ToastContainer } from 'react-toastify';
 
 const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
@@ -43,6 +44,7 @@ function CustomApp({
               {/* <BackendLauncherProvider> */}
               <Header />
               <Component {...pageProps} />
+              <ToastContainer autoClose={3000} />
               {/* </BackendLauncherProvider> */}
             </ThemeProvider>
           </LocalizationProvider>
