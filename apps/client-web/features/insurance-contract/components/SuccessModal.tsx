@@ -1,5 +1,7 @@
 import { Box, Button, Modal, Slide, Typography, useTheme } from '@mui/material';
+import Lottie from 'lottie-react';
 import React from 'react';
+import animationData from '../../../public/lottie/135475-profile-created.json';
 
 type Props = {
   open: boolean;
@@ -35,6 +37,13 @@ const SuccessModal = ({ open, onClickLeft, onClickRight }: Props) => {
             },
           }}
         >
+          <Lottie
+            // onConfigReady={() => setAnimationLoaded(true)}
+            style={{ height: '120px', width: '120px', margin: 'auto' }}
+            animationData={animationData}
+            autoPlay={true}
+            loop={false}
+          />
           <Typography
             id="keep-mounted-modal-title"
             variant="h5"
@@ -54,7 +63,7 @@ const SuccessModal = ({ open, onClickLeft, onClickRight }: Props) => {
             </Typography>
           </Typography>
           <Box
-            sx={{ marginTop: 4 }}
+            sx={{ marginTop: 6 }}
             display={'flex'}
             justifyContent={'space-between'}
           >

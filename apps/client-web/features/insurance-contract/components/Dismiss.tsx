@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 import React, { useRef, useState } from 'react';
-import checkedAnimation from '../../../public/lottie/93122-dismiss.json';
+import checkedAnimation from '../../../public/lottie/108969-delete.json';
 
 const DismissAnimation = () => {
   const animationRef = useRef();

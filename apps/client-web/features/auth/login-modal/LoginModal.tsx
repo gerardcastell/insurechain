@@ -3,6 +3,7 @@ import Modal, { ModalProps } from '@mui/material/Modal';
 import React from 'react';
 import Login from '../login/Login';
 import { style } from './style';
+import Slide from '@mui/material/Slide';
 
 const LoginModal = (props: Omit<ModalProps, 'children'>) => {
   return (
@@ -11,9 +12,11 @@ const LoginModal = (props: Omit<ModalProps, 'children'>) => {
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
-      <Box sx={style}>
-        <Login />
-      </Box>
+      <Slide direction="up" in={props.open} mountOnEnter unmountOnExit>
+        <Box sx={style}>
+          <Login />
+        </Box>
+      </Slide>
     </Modal>
   );
 };
