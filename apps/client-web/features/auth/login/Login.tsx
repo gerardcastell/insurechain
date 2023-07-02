@@ -6,9 +6,19 @@ import Button from '@mui/material/Button';
 import { Divider, Typography } from '@mui/material';
 import Lottie from 'lottie-react';
 import animationData from '../../../public/lottie/83168-login-success.json';
+import { useRouter } from 'next/navigation';
 
-const Login = () => {
+type LoginProps = {
+  redirect?: string;
+};
+
+const Login = ({ redirect }: LoginProps) => {
   const [modeSignIn, setModeSignIn] = useState<boolean>(true);
+  const router = useRouter();
+
+  const handleOnSuccess = () => {
+    router.push(redirect ?? '/dashboard');
+  };
   return (
     <>
       <Lottie
@@ -25,7 +35,11 @@ const Login = () => {
             ? 'Welcome back!'
             : 'Welcome to the Insurechain community'}
         </Typography>
-        {modeSignIn ? <SignInForm /> : <SignUpForm />}
+        {modeSignIn ? (
+          <SignInForm onSuccess={handleOnSuccess} />
+        ) : (
+          <SignUpForm onSuccess={handleOnSuccess} />
+        )}
 
         <Divider />
         <Button onClick={() => setModeSignIn((prev) => !prev)}>

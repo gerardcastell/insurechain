@@ -6,14 +6,13 @@ import { signIn } from 'next-auth/react';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-
 type FormValues = {
   email: string;
   password: string;
   confirmPassword: string;
 };
 
-const SignUpForm = () => {
+const SignUpForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const {
     control,
     handleSubmit,
@@ -37,6 +36,8 @@ const SignUpForm = () => {
         password: data.password,
         redirect: false,
       });
+      toast.success('Sign up successful');
+      onSuccess();
     } catch (err) {
       toast.error('Sign up failed');
     }

@@ -10,7 +10,11 @@ type FormValues = {
   password: string;
 };
 
-const SignInForm = () => {
+type SignInFormProps = {
+  onSuccess: () => void;
+};
+
+const SignInForm = ({ onSuccess }: SignInFormProps) => {
   const {
     control,
     handleSubmit,
@@ -32,6 +36,7 @@ const SignInForm = () => {
       toast.error('Login failed');
     } else {
       toast.success('Login success');
+      onSuccess();
     }
   };
 
