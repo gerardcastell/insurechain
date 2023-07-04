@@ -17,7 +17,7 @@ import Coverages from './coverages/Coverages';
 import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
 import { useRouter } from 'next/router';
 import SuccessModal from './components/SuccessModal';
-import Confetti, { useConfetti } from '../../components/confetti';
+import Confetti, { useConfetti } from '../../components/Confetti';
 import { LoginModal } from '../auth';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
@@ -77,7 +77,7 @@ const InsuranceContractForm = () => {
 
   const navigateToProposal = () => {
     setOpenSuccessModal(false);
-    router.push('/proposals');
+    router.push('/dashboard/proposals');
   };
 
   const _saveProposal = () => {
