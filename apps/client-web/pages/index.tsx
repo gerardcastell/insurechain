@@ -1,15 +1,9 @@
-import { axios } from '@insurechain/web/backend/data-access';
 import Button from '@mui/material/Button';
 import { signIn, signOut } from 'next-auth/react';
 import { Grid, Typography } from '@mui/material';
 import Login from '../features/auth';
-
+import Link from '../components/Link';
 export function Index() {
-  const onClick = async () => {
-    const res = await axios.get('/auth/profile');
-    console.log(res);
-  };
-
   const customSignIn = async () => {
     signIn('credentials', {
       email: 'gerard@email.com',
@@ -33,11 +27,10 @@ export function Index() {
           Sign Out
         </Button>
       </Grid>
-      <Grid item>
-        <Button variant="outlined" onClick={onClick}>
-          Get Profile
-        </Button>
+      <Grid>
+        <Link href="/dashboard">Dashboard</Link>
       </Grid>
+
       <Grid item xs={12} maxWidth={300}>
         <Typography paddingBottom={4} variant="h4">
           Sandbox

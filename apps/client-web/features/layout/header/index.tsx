@@ -27,15 +27,6 @@ const pages = [
 export function Header() {
   const { data: session } = useSession();
   const [isDrawerOpened, setIsDrawerOpened] = React.useState(false);
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
   return (
     <>
       <AppBar position="sticky">
