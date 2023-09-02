@@ -16,13 +16,13 @@ model User {
 
 model Proposal {
   id                   Int           @id @default(autoincrement())
-  policyHolderId       Int
-  smartContractAddress String?       @unique
-  coverages            CoverageType[]
   policyHolder         User          @relation(fields: [policyHolderId], references: [id])
+  policyHolderId       Int
   riskObject           RiskObject?
   riskSubject          RiskSubject   @relation(fields: [riskSubjectId], references: [id])
   riskSubjectId        Int
+  coverages            CoverageType[]
+  smartContractAddress String?       @unique
 }
 
 model RiskObject {
@@ -32,7 +32,6 @@ model RiskObject {
   purchaseDate DateTime
   plate        String
   kmsYear      Int
-  proposalId   Int         @unique
   numberDoors  Int
   maker        String
   releaseDate  DateTime
@@ -41,6 +40,7 @@ model RiskObject {
   fuelType     FuelType
   parking      ParkingType
   proposal     Proposal    @relation(fields: [proposalId], references: [id])
+  proposalId   Int         @unique
 }
 
 model RiskSubject {
@@ -65,8 +65,8 @@ model CoverageType {
   monthlyPremium     Float
   title       String
   description String
-  proposalId  Int      @unique
   proposal    Proposal @relation(fields: [proposalId], references: [id])
+  proposalId  Int
 }
 
 enum Coverage {

@@ -55,14 +55,15 @@ export class BackendProposalsService {
     coverages: Omit<CoverageType, 'id' | 'proposalId'>[]
   ) {
     const user = await this.userService.findOneById(userId);
-    // const riskSubjectId = await this.prisma.riskSubject.findUnique({
-    //   select: {
-    //     documentNumber: {},
-    //   },
-    // });
+
     if (!user) throw new NotFoundException('User not found');
     return this.prisma.proposal.create({
       data: {
+        policyHolder: {
+          connect: {
+            id: userId,
+          },
+        },
         riskObject: {
           create: riskObject,
         },
@@ -72,11 +73,6 @@ export class BackendProposalsService {
               documentNumber: riskSubject.documentNumber,
             },
             create: riskSubject,
-          },
-        },
-        policyHolder: {
-          connect: {
-            id: userId,
           },
         },
         coverages: {

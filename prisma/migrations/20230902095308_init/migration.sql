@@ -20,8 +20,8 @@ CREATE TABLE "User" (
 CREATE TABLE "Proposal" (
     "id" SERIAL NOT NULL,
     "policyHolderId" INTEGER NOT NULL,
-    "smartContractAddress" TEXT,
     "riskSubjectId" INTEGER NOT NULL,
+    "smartContractAddress" TEXT,
 
     CONSTRAINT "Proposal_pkey" PRIMARY KEY ("id")
 );
@@ -34,7 +34,6 @@ CREATE TABLE "RiskObject" (
     "purchaseDate" TIMESTAMP(3) NOT NULL,
     "plate" TEXT NOT NULL,
     "kmsYear" INTEGER NOT NULL,
-    "proposalId" INTEGER NOT NULL,
     "numberDoors" INTEGER NOT NULL,
     "maker" TEXT NOT NULL,
     "releaseDate" TIMESTAMP(3) NOT NULL,
@@ -42,6 +41,7 @@ CREATE TABLE "RiskObject" (
     "version" TEXT NOT NULL,
     "fuelType" "FuelType" NOT NULL,
     "parking" "ParkingType" NOT NULL,
+    "proposalId" INTEGER NOT NULL,
 
     CONSTRAINT "RiskObject_pkey" PRIMARY KEY ("id")
 );
@@ -93,9 +93,6 @@ CREATE UNIQUE INDEX "RiskSubject_documentNumber_key" ON "RiskSubject"("documentN
 
 -- CreateIndex
 CREATE UNIQUE INDEX "CoverageProduct_identifier_key" ON "CoverageProduct"("identifier");
-
--- CreateIndex
-CREATE UNIQUE INDEX "CoverageType_proposalId_key" ON "CoverageType"("proposalId");
 
 -- AddForeignKey
 ALTER TABLE "Proposal" ADD CONSTRAINT "Proposal_policyHolderId_fkey" FOREIGN KEY ("policyHolderId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

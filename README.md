@@ -57,7 +57,7 @@ In order to use a production database you just have to define the .env.productio
 setting the `DATABASE_URL` variable you may run the same commands with the prod config:
 
 ```bash
-npm run db:up:prod
+npm run db:up:dev
 npm run db:migrate:prod
 npm run db:studio:prod
 ```
