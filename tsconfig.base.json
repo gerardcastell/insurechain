@@ -22,7 +22,6 @@
       "@insurechain/backend/users": ["libs/backend/users/src/index.ts"],
       "@insurechain/backend/utils": ["libs/backend/utils/src/index.ts"],
       "@insurechain/blockchain": ["libs/blockchain/src/index.ts"],
-      "@insurechain/core/feature": ["libs/core/feature/src/index.ts"],
       "@insurechain/web/backend/data-access": [
         "libs/web/backend/data-access/src/index.ts"
       ]

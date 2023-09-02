@@ -17,7 +17,7 @@ import Coverages from './coverages/Coverages';
 import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
 import { useRouter } from 'next/router';
 import SuccessModal from './components/SuccessModal';
-import Confetti, { useConfetti } from '../../components/Confetti';
+import Confetti, { useConfetti } from '../../components/confetti';
 import { LoginModal } from '../auth';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
