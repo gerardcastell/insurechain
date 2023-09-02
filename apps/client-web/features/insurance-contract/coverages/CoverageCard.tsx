@@ -6,7 +6,7 @@ import Lottie from 'lottie-react';
 import checkedAnimation from '../../../public/lottie/checked.json';
 import { useQuery } from '@tanstack/react-query';
 import { getSellPrice } from '@insurechain/web/backend/data-access';
-import DismissAnimation from '../components/Dismiss';
+import DismissAnimation from '../components/DismissAnimation';
 const CoverageCard = ({
   title,
   description,
@@ -16,6 +16,7 @@ const CoverageCard = ({
   const { palette, breakpoints } = useTheme();
   const animationRef = useRef<any>();
   const [firstLoad, setFirstLoad] = useState(true);
+  const clicked = useRef(false);
 
   useEffect(() => {
     if (firstLoad) {
@@ -33,6 +34,7 @@ const CoverageCard = ({
 
   return (
     <Paper
+      onClick={() => (clicked.current = true)}
       elevation={1}
       sx={{
         maxWidth: breakpoints.values.md,
@@ -69,7 +71,7 @@ const CoverageCard = ({
                   color={grey[500]}
                   fontStyle="oblique"
                 >
-                  {monthlyPremium.toFixed(2)}€
+                  {monthlyPremium.toLocaleString('es-ES')}€
                 </Typography>
               </Box>
             )}
@@ -160,7 +162,7 @@ const CoverageCard = ({
               loop={false}
             />
           )}
-          {!selected && !firstLoad && <DismissAnimation />}
+          {!selected && clicked.current && <DismissAnimation />}
         </Box>
       </Grid>
     </Paper>
