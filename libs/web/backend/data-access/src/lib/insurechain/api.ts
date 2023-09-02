@@ -1,10 +1,11 @@
 import { AxiosResponse } from 'axios';
 import axios from '../axios';
 import {
+  ProposalDto,
   QuoteResponse,
-  type QuoteBody,
-  ProposalDto as SaveProposalDto,
   SaveProposalBody,
+  ProposalDto as SaveProposalDto,
+  type QuoteBody,
 } from './types';
 
 export const signIn = async (email: string, password: string) => {
@@ -17,9 +18,12 @@ export const signUp = async (email: string, password: string) => {
   return response;
 };
 
-export const getProposals = async () => {
-  const response = await axios.get('/proposals/proposals');
-  return response;
+export const getProposals = (
+  accessToken?: string
+): Promise<AxiosResponse<ProposalDto[]>> => {
+  return axios.get('/proposals', {
+    headers: accessToken ? { authorization: `Bearer ${accessToken}` } : {},
+  });
 };
 
 export const quote = async (
