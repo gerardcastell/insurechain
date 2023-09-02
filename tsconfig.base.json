@@ -25,8 +25,7 @@
       "@insurechain/core/feature": ["libs/core/feature/src/index.ts"],
       "@insurechain/web/backend/data-access": [
         "libs/web/backend/data-access/src/index.ts"
-      ],
-      "@insurechain/web/core/feature": ["libs/web/core/feature/src/index.ts"]
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

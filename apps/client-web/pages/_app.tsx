@@ -6,7 +6,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../config/theme';
 import createEmotionCache from '../config/createEmotionCache';
-import { Header } from '@insurechain/web/core/feature';
+import { Header } from '../features/layout/header';
 import { SessionProvider } from 'next-auth/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../lib/react-query';
