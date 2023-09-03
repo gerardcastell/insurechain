@@ -3,17 +3,48 @@ import {
   getProposal,
   getSellPrice,
 } from '@insurechain/web/backend/data-access';
-import { Box, Grid, Paper, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Container,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  SxProps,
+  Theme,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 // import PopoverOnHover from './PopoverOnHover';
 import { useQuery } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../api/auth/[...nextauth]';
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import PopoverOnHover from '../../../../features/proposal/PopoverOnHover';
+import grey from '@mui/material/colors/grey';
+import { ParkingType } from '@prisma/client';
 
-export const getServerSideProps: GetServerSideProps<{
-  proposal: ProposalDto;
-}> = async ({ req, res, params }) => {
+const DataPresenter = ({
+  title,
+  value,
+  sx,
+}: {
+  title: string;
+  value: string;
+  sx?: SxProps<Theme>;
+}) => {
+  return (
+    <Box>
+      <Typography variant="body2" mr={1} color={grey[500]}>
+        {title}
+      </Typography>
+      <Typography variant="body1" sx={sx} noWrap>
+        {value}
+      </Typography>
+    </Box>
+  );
+};
+
+export const getServerSideProps = async ({ req, res, params }) => {
   const session = await getServerSession(req, res, authOptions);
   const proposalId = params?.id as string;
   if (!session?.access_token) {
@@ -33,7 +64,6 @@ export const getServerSideProps: GetServerSideProps<{
     };
   }
 
-  console.log(proposalId);
   try {
     const response = await getProposal(
       proposalId,
@@ -42,7 +72,6 @@ export const getServerSideProps: GetServerSideProps<{
     const proposal = response.data;
     return { props: { proposal } };
   } catch (e) {
-    console.log(e);
     return {
       redirect: {
         destination: '/dashboard/proposals',
@@ -52,70 +81,140 @@ export const getServerSideProps: GetServerSideProps<{
   }
 };
 
-const ProposalPage = ({
-  proposal,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
   console.log(proposal);
-  const { isLoading, data: ethPrice } = useQuery({
+  const { data: ethPrice } = useQuery({
     queryKey: ['getCurrency'],
     queryFn: () => getSellPrice(),
     cacheTime: 1000 * 60,
   });
+  const purchaseDate = new Date(proposal.riskObject.purchaseDate);
+  const riskObject = `${proposal.riskObject.maker} ${proposal.riskObject.model} ${proposal.riskObject.version}`;
+  const PARKING_TYPE: Record<ParkingType, string> = {
+    [ParkingType.garage]: 'Individual garage',
+    [ParkingType.street]: 'Street',
+    [ParkingType.collective_car_park]: 'Unguarded collective garage',
+    [ParkingType.collective_car_park_surveillance]: 'Guarded Collective garage',
+  } as const;
+
   return (
-    <Paper>
-      <Grid container spacing={1} p={2} sx={{ width: '100%' }}>
-        <Grid item xs={12}>
+    <Container maxWidth="md" sx={{ marginY: 4 }}>
+      <Paper component={Box} padding={2}>
+        <Stack spacing={3} direction="column">
           <Typography fontWeight={500}>Proposal ID: {proposal.id}</Typography>
-        </Grid>
-        <Grid container item xs={12}>
-          <Grid item xs={6}>
-            <Typography variant="body2" fontStyle={'oblique'}>
-              Coverages
-            </Typography>
+          <Grid container rowGap={1}>
+            <Grid item xs={12}>
+              <Typography variant="body2" fontStyle={'oblique'}>
+                Risk Object
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <DataPresenter title="Maker & Model" value={riskObject} />
+            </Grid>
+            <Grid item xs={4} sm={2}>
+              <DataPresenter title="Plate" value={proposal.riskObject.plate} />
+            </Grid>
+            <Grid item xs={4} sm={2}>
+              <DataPresenter
+                title="Fuel Type"
+                value={proposal.riskObject.fuelType}
+                sx={{ textTransform: 'capitalize' }}
+              />
+            </Grid>
+            <Grid item xs={2} sm={1}>
+              <DataPresenter
+                title="Power"
+                value={proposal.riskObject.power.toString()}
+              />
+            </Grid>
+            <Grid item xs={2} sm={1}>
+              <DataPresenter
+                title="Doors"
+                value={proposal.riskObject.numberDoors.toString()}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <DataPresenter
+                title="Version"
+                value={proposal.riskObject.version}
+              />
+            </Grid>
+            <Grid item xs={4} sm={4}>
+              <DataPresenter
+                title="Parking"
+                value={PARKING_TYPE[proposal.riskObject.parking]}
+              />
+            </Grid>
+            <Grid item xs={4} sm={2}>
+              <DataPresenter
+                title="Kms per year"
+                value={proposal.riskObject.kmsYear.toString()}
+              />
+            </Grid>
+            <Grid item xs={4} sm={2}>
+              <DataPresenter
+                title="Purchase date"
+                value={purchaseDate.toLocaleDateString('en-GB')}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={2}>
-            <Typography
-              variant="body2"
-              fontStyle={'oblique'}
-              textAlign={'right'}
-            >
-              Monthly premium
-            </Typography>
+          <Divider />
+          <Typography variant="body2" fontStyle={'oblique'}>
+            Risk Subject
+          </Typography>
+          <Grid container>
+            <Grid item xs={12}></Grid>
           </Grid>
-          <Grid item xs={2}>
-            <Typography
-              variant="body2"
-              fontStyle={'oblique'}
-              textAlign={'right'}
-            >
-              Ethers
-            </Typography>
+          <Divider />
+          <Grid container>
+            <Grid item xs={6} marginBottom={1}>
+              <Typography variant="body2" fontStyle={'oblique'}>
+                Coverages
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography
+                variant="body2"
+                fontStyle={'oblique'}
+                textAlign={'right'}
+              >
+                Monthly premium
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography
+                variant="body2"
+                fontStyle={'oblique'}
+                textAlign={'right'}
+              >
+                Ethers
+              </Typography>
+            </Grid>
+
+            {proposal.coverages.map((coverage) => (
+              <React.Fragment key={coverage.id}>
+                <Grid item xs={6}>
+                  <PopoverOnHover
+                    text={coverage.title}
+                    popoverText={coverage.description}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <Typography variant="body1" textAlign={'right'}>
+                    {coverage.monthlyPremium.toLocaleString('es-ES')}€
+                  </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <Typography variant="body1" textAlign={'right'}>
+                    {(coverage.monthlyPremium / ethPrice).toFixed(5)}
+                  </Typography>
+                </Grid>
+              </React.Fragment>
+            ))}
           </Grid>
-        </Grid>
-        <Grid container item xs={12}>
-          {proposal.coverages.map((coverage) => (
-            <>
-              <Grid item xs={6}>
-                {/* <PopoverOnHover
-                  text={coverage.title}
-                  popoverText={coverage.description}
-                /> */}
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="body2" textAlign={'right'}>
-                  {coverage.monthlyPremium.toLocaleString('es-ES')}€
-                </Typography>
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="body2" textAlign={'right'}>
-                  {(coverage.monthlyPremium / ethPrice).toFixed(5)}
-                </Typography>
-              </Grid>
-            </>
-          ))}
-        </Grid>
-      </Grid>
-    </Paper>
+        </Stack>
+      </Paper>
+    </Container>
   );
 };
 

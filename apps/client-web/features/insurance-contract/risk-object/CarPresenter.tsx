@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import React from 'react';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
 import BoltIcon from '@mui/icons-material/Bolt';

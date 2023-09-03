@@ -2,21 +2,18 @@ import {
   ProposalDto,
   getSellPrice,
 } from '@insurechain/web/backend/data-access';
-import { Box, Divider, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Box, Divider, Paper, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import PriceChangeIcon from '@mui/icons-material/PriceChange';
-import PaymentsIcon from '@mui/icons-material/Payments';
-import Link from '../../components/Link';
 import { useRouter } from 'next/router';
 type ProposalCardProps = {
   proposal: ProposalDto;
 };
 
 const ProposalCard = ({ proposal }: ProposalCardProps) => {
-  console.log(proposal);
   const { data: ethPrice } = useQuery({
     queryKey: ['getCurrency'],
     queryFn: () => getSellPrice(),
@@ -32,7 +29,6 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
   const router = useRouter();
   const handleClick = (e) => {
     e.preventDefault();
-    console.log('The link was clicked.');
     router.push(`/dashboard/proposals/${proposal.id}`);
   };
 

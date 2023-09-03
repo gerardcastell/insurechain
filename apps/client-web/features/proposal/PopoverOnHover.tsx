@@ -40,6 +40,7 @@ export default function PopoverOnHover({
         id="mouse-over-popover"
         sx={{
           pointerEvents: 'none',
+          maxWidth: 'md',
         }}
         open={open}
         anchorEl={anchorEl}
