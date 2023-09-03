@@ -29,6 +29,22 @@ export class BackendProposalsService {
     });
   }
 
+  async getProposal(userId: number, proposalId: number) {
+    try {
+      const proposal = await this.prisma.proposal.findFirstOrThrow({
+        where: { id: proposalId, policyHolderId: userId },
+        include: {
+          coverages: true,
+          riskObject: true,
+          riskSubject: true,
+        },
+      });
+      return proposal;
+    } catch (err) {
+      throw new NotFoundException('Proposal not found');
+    }
+  }
+
   quote(
     riskObject: Omit<RiskObject, 'id' | 'proposalId'>,
     riskSubject: Omit<RiskSubject, 'id' | 'proposalId'>,

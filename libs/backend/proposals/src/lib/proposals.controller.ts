@@ -1,17 +1,17 @@
+import { JwtAuthGuard } from '@insurechain/backend/users';
 import {
   Body,
   Controller,
-  Post,
-  UseGuards,
-  Request,
   Get,
-  Patch,
   Param,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
-import { QuoteDto } from './dtos/Quote.dto';
 import { BackendProposalsService } from './backend-proposals.service';
-import { JwtAuthGuard } from '@insurechain/backend/users';
+import { QuoteDto } from './dtos/Quote.dto';
 import { SaveProposalDto } from './dtos/SaveProposal.dto';
 import { UploadToBlockchainDto } from './dtos/UploadToBlockchain.dto';
 
@@ -25,6 +25,16 @@ export class ProposalsController {
   @Get('')
   getProposals(@Request() req) {
     return this.proposalsService.getProposals(req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get(':id')
+  getProposal(@Request() req, @Param('id') proposalId: string) {
+    return this.proposalsService.getProposal(
+      req.user.userId,
+      parseInt(proposalId)
+    );
   }
 
   @Post('quote')
