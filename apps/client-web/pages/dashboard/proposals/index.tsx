@@ -8,7 +8,7 @@ import {
   getProposals,
 } from '@insurechain/web/backend/data-access';
 import { getServerSession } from 'next-auth/next';
-import { Stack, Typography } from '@mui/material';
+import { Box, Fade, Stack, Typography } from '@mui/material';
 
 export const getServerSideProps: GetServerSideProps<{
   proposals: ProposalDto[];
@@ -30,7 +30,6 @@ export const getServerSideProps: GetServerSideProps<{
 const Proposals = ({
   proposals,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(proposals);
   return (
     <Grid
       container
@@ -41,10 +40,29 @@ const Proposals = ({
       maxWidth="md"
     >
       <Grid item xs={3} marginX={3}>
-        <Typography variant="h5">List of proposals</Typography>
-        <Stack spacing={2}>
-          {proposals.map((proposal) => (
-            <ProposalCard key={proposal.id} proposal={proposal} />
+        <Typography mb={4} variant="h5">
+          List of proposals
+        </Typography>
+        <Stack
+          spacing={2}
+          direction="row"
+          useFlexGap
+          flexWrap="wrap"
+          justifyContent="space-between"
+        >
+          {proposals.map((proposal, index) => (
+            <Fade
+              in={true}
+              key={proposal.id}
+              style={{
+                transitionDelay: `${index * 400}ms`,
+                transitionDuration: '500ms',
+              }}
+            >
+              <Box>
+                <ProposalCard proposal={proposal} />
+              </Box>
+            </Fade>
           ))}
         </Stack>
       </Grid>
