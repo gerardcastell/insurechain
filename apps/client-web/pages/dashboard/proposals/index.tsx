@@ -41,7 +41,7 @@ const Proposals = ({
     >
       <Grid item xs={3} marginX={3}>
         <Typography mb={4} variant="h5">
-          List of proposals
+          Your proposals
         </Typography>
         <Stack
           spacing={2}
@@ -59,7 +59,7 @@ const Proposals = ({
                 transitionDuration: '500ms',
               }}
             >
-              <Box>
+              <Box width={{ xs: '100%', sm: '320px', md: '270px' }}>
                 <ProposalCard proposal={proposal} />
               </Box>
             </Fade>

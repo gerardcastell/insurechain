@@ -9,6 +9,7 @@ import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined
 import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
 import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import Link from '../../components/Link';
 type ProposalCardProps = {
   proposal: ProposalDto;
 };
@@ -31,7 +32,6 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
     <Paper
       elevation={3}
       component={Box}
-      width={'270px'}
       sx={{
         '&:hover': {
           cursor: 'pointer',
@@ -85,18 +85,31 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
             </Typography>
           </Box>
         </Box>
-        <Box display="flex">
-          <Box mr={1}>
+        <Divider />
+        <Box display="flex" alignItems={'center'}>
+          <Box mr={3} sx={{ alignSelf: 'flex-start' }}>
             <PriceChangeIcon fontSize="small" />
           </Box>
-          <Box>
-            <Typography fontWeight={500}>
-              {monthlyPremium.toLocaleString('es-ES')}€/month
+          <Box mr={3}>
+            <Typography
+              className="accentOnHover"
+              fontWeight={600}
+              variant="body1"
+              color="secondary.main"
+            >
+              {monthlyPremiumEth.toFixed(5)} ETH
             </Typography>
-            <Typography fontWeight={500}>
-              {monthlyPremiumEth.toFixed(5)} ETH/month
+            <Typography variant="body2" fontStyle="oblique">
+              Equivalent to {monthlyPremium.toLocaleString('es-ES')}€
             </Typography>
           </Box>
+          <Typography
+            className="accentOnHover"
+            typography="body2"
+            fontStyle="oblique"
+          >
+            per month
+          </Typography>
         </Box>
       </Stack>
     </Paper>
