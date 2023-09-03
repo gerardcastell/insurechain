@@ -6,7 +6,7 @@ import { Box, Divider, Paper, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
-import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatReclineNormal';
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import { useRouter } from 'next/router';
 type ProposalCardProps = {
@@ -70,7 +70,7 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
         </Box>
         <Box display="flex">
           <Box mr={1}>
-            <AirlineSeatReclineNormalIcon fontSize="small" />
+            <EmojiPeopleIcon fontSize="small" />
           </Box>
           <Box>
             <Typography variant="body2" noWrap>

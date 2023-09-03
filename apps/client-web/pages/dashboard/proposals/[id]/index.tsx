@@ -20,9 +20,13 @@ import { useQuery } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../api/auth/[...nextauth]';
 import PopoverOnHover from '../../../../features/proposal/PopoverOnHover';
-import grey from '@mui/material/colors/grey';
 import { ParkingType } from '@prisma/client';
-
+import { grey } from '@mui/material/colors';
+import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
+import PriceChangeIcon from '@mui/icons-material/PriceChange';
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import PaymentsIcon from '@mui/icons-material/Payments';
 const DataPresenter = ({
   title,
   value,
@@ -96,6 +100,11 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
     [ParkingType.collective_car_park]: 'Unguarded collective garage',
     [ParkingType.collective_car_park_surveillance]: 'Guarded Collective garage',
   } as const;
+  const monthlyPremium = proposal.coverages.reduce(
+    (acc, coverage) => acc + coverage.monthlyPremium,
+    0
+  );
+  const monthlyPremiumEth = monthlyPremium / ethPrice;
 
   return (
     <Container maxWidth="md" sx={{ marginY: 4 }}>
@@ -103,7 +112,10 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
         <Stack spacing={3} direction="column">
           <Typography fontWeight={500}>Proposal ID: {proposal.id}</Typography>
           <Grid container rowGap={1}>
-            <Grid item xs={12}>
+            <Grid item xs={12} display={'flex'} alignItems={'flex-end'}>
+              <Box mr={1}>
+                <DirectionsCarOutlinedIcon fontSize="small" />
+              </Box>
               <Typography variant="body2" fontStyle={'oblique'}>
                 Risk Object
               </Typography>
@@ -159,15 +171,45 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
             </Grid>
           </Grid>
           <Divider />
-          <Typography variant="body2" fontStyle={'oblique'}>
-            Risk Subject
-          </Typography>
-          <Grid container>
-            <Grid item xs={12}></Grid>
+          <Grid container rowGap={1}>
+            <Grid item xs={12} display={'flex'} alignItems={'flex-end'}>
+              <Box mr={1}>
+                <EmojiPeopleIcon fontSize="small" />
+              </Box>
+              <Typography variant="body2" fontStyle={'oblique'}>
+                Risk Subject
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <DataPresenter title="Name" value={proposal.riskSubject.name} />
+            </Grid>
+            <Grid item xs={6} sm={4}>
+              <DataPresenter
+                title="Document Number"
+                value={proposal.riskSubject.documentNumber}
+              />
+            </Grid>
+            <Grid item xs={6} sm={4}>
+              <DataPresenter
+                title="Birth date"
+                value={new Date(
+                  proposal.riskSubject.birthDate
+                ).toLocaleDateString('en-GB')}
+              />
+            </Grid>
           </Grid>
           <Divider />
           <Grid container>
-            <Grid item xs={6} marginBottom={1}>
+            <Grid
+              item
+              xs={6}
+              marginBottom={1}
+              display={'flex'}
+              alignItems={'flex-end'}
+            >
+              <Box mr={1}>
+                <VerifiedUserIcon fontSize="small" />
+              </Box>
               <Typography variant="body2" fontStyle={'oblique'}>
                 Coverages
               </Typography>
@@ -199,18 +241,37 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
                     popoverText={coverage.description}
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3} sm={2}>
                   <Typography variant="body1" textAlign={'right'}>
                     {coverage.monthlyPremium.toLocaleString('es-ES')}€
                   </Typography>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3} sm={2}>
                   <Typography variant="body1" textAlign={'right'}>
                     {(coverage.monthlyPremium / ethPrice).toFixed(5)}
                   </Typography>
                 </Grid>
               </React.Fragment>
             ))}
+          </Grid>
+          <Divider />
+          <Grid container>
+            <Grid item xs={6} display={'flex'} alignItems={'flex-end'}>
+              <Box mr={1}>
+                <PaymentsIcon fontSize="small" />
+              </Box>
+              <Typography variant="body2">Total monthly premium</Typography>
+            </Grid>
+            <Grid item xs={3} sm={2}>
+              <Typography variant="body1" textAlign={'right'}>
+                {monthlyPremium.toLocaleString('es-ES')}€
+              </Typography>
+            </Grid>
+            <Grid item xs={3} sm={2}>
+              <Typography variant="body1" textAlign={'right'}>
+                {monthlyPremiumEth.toFixed(5)} ETH
+              </Typography>
+            </Grid>
           </Grid>
         </Stack>
       </Paper>
