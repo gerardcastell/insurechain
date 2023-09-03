@@ -10,6 +10,7 @@ import AirlineSeatReclineNormalIcon from '@mui/icons-material/AirlineSeatRecline
 import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import Link from '../../components/Link';
+import { useRouter } from 'next/router';
 type ProposalCardProps = {
   proposal: ProposalDto;
 };
@@ -28,10 +29,17 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
     0
   );
   const monthlyPremiumEth = monthlyPremium / ethPrice;
+  const router = useRouter();
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log('The link was clicked.');
+    router.push(`/dashboard/proposals/${proposal.id}`);
+  };
+
   return (
     <Paper
       elevation={3}
-      component={Box}
+      onClick={handleClick}
       sx={{
         '&:hover': {
           cursor: 'pointer',

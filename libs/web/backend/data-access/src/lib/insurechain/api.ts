@@ -18,6 +18,15 @@ export const signUp = async (email: string, password: string) => {
   return response;
 };
 
+export const getProposal = (
+  proposalId: string,
+  accessToken?: string
+): Promise<AxiosResponse<ProposalDto[]>> => {
+  return axios.get(`/proposals/${proposalId}`, {
+    headers: accessToken ? { authorization: `Bearer ${accessToken}` } : {},
+  });
+};
+
 export const getProposals = (
   accessToken?: string
 ): Promise<AxiosResponse<ProposalDto[]>> => {

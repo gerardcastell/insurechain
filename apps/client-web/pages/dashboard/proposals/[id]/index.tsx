@@ -1,17 +1,60 @@
 import {
   ProposalDto,
+  getProposal,
   getSellPrice,
 } from '@insurechain/web/backend/data-access';
 import { Box, Grid, Paper, Stack, Typography } from '@mui/material';
 import React from 'react';
 // import PopoverOnHover from './PopoverOnHover';
 import { useQuery } from '@tanstack/react-query';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../../../api/auth/[...nextauth]';
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
-type ProposalPageProps = {
+export const getServerSideProps: GetServerSideProps<{
   proposal: ProposalDto;
+}> = async ({ req, res, params }) => {
+  const session = await getServerSession(req, res, authOptions);
+  const proposalId = params?.id as string;
+  if (!session?.access_token) {
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
+      },
+    };
+  }
+  if (!proposalId) {
+    return {
+      redirect: {
+        destination: '/dashboard/proposals',
+        permanent: false,
+      },
+    };
+  }
+
+  console.log(proposalId);
+  try {
+    const response = await getProposal(
+      proposalId,
+      session.access_token as string
+    );
+    const proposal = response.data;
+    return { props: { proposal } };
+  } catch (e) {
+    console.log(e);
+    return {
+      redirect: {
+        destination: '/dashboard/proposals',
+        permanent: false,
+      },
+    };
+  }
 };
 
-const ProposalPage = ({ proposal }: ProposalPageProps) => {
+const ProposalPage = ({
+  proposal,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   console.log(proposal);
   const { isLoading, data: ethPrice } = useQuery({
     queryKey: ['getCurrency'],
