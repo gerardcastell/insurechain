@@ -5,9 +5,11 @@ import {
 } from '@insurechain/web/backend/data-access';
 import {
   Box,
+  Button,
   Container,
   Divider,
   Grid,
+  IconButton,
   Paper,
   Stack,
   SxProps,
@@ -23,10 +25,11 @@ import PopoverOnHover from '../../../../features/proposal/PopoverOnHover';
 import { ParkingType } from '@prisma/client';
 import { grey } from '@mui/material/colors';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
-import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+
 const DataPresenter = ({
   title,
   value,
@@ -86,7 +89,6 @@ export const getServerSideProps = async ({ req, res, params }) => {
 };
 
 const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
-  console.log(proposal);
   const { data: ethPrice } = useQuery({
     queryKey: ['getCurrency'],
     queryFn: () => getSellPrice(),
@@ -105,7 +107,9 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
     0
   );
   const monthlyPremiumEth = monthlyPremium / ethPrice;
-
+  const onClickPurchaseProposal = async () => {
+    console.log('purchase proposal');
+  };
   return (
     <Container maxWidth="md" sx={{ marginY: 4 }}>
       <Paper component={Box} padding={2}>
@@ -246,9 +250,9 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
                     {coverage.monthlyPremium.toLocaleString('es-ES')}€
                   </Typography>
                 </Grid>
-                <Grid item xs={3} sm={2}>
+                <Grid item xs={3}>
                   <Typography variant="body1" textAlign={'right'}>
-                    {(coverage.monthlyPremium / ethPrice).toFixed(5)}
+                    {(coverage.monthlyPremium / ethPrice).toFixed(8)} ETH
                   </Typography>
                 </Grid>
               </React.Fragment>
@@ -267,14 +271,27 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
                 {monthlyPremium.toLocaleString('es-ES')}€
               </Typography>
             </Grid>
-            <Grid item xs={3} sm={2}>
-              <Typography variant="body1" textAlign={'right'}>
-                {monthlyPremiumEth.toFixed(5)} ETH
+            <Grid item xs={3}>
+              <Typography variant="body1" fontWeight={600} textAlign={'right'}>
+                {monthlyPremiumEth.toFixed(8)} ETH
               </Typography>
             </Grid>
           </Grid>
         </Stack>
       </Paper>
+      <Box display={'flex'} justifyContent={'center'} my={3}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={onClickPurchaseProposal}
+        >
+          <Box mr={1}>
+            <HandshakeIcon />
+          </Box>
+          Purchase proposal
+        </Button>
+      </Box>
     </Container>
   );
 };
