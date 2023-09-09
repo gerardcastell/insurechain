@@ -15,11 +15,25 @@ import 'react-toastify/dist/ReactToastify.css';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ToastContainer } from 'react-toastify';
-
+import { WagmiConfig, configureChains, createConfig, sepolia } from 'wagmi';
+import { createPublicClient, http } from 'viem';
+import { InjectedConnector } from 'wagmi/connectors/injected';
+import { publicProvider } from 'wagmi/providers/public';
 const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
+
+export const { chains, publicClient } = configureChains(
+  [sepolia],
+  [publicProvider()]
+);
+
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  publicClient,
+  connectors: [new InjectedConnector({ chains })],
+});
 
 function CustomApp({
   Component,
@@ -28,28 +42,30 @@ function CustomApp({
 }: MyAppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionProvider session={session}>
-        <CacheProvider value={emotionCache}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Head>
-              <meta
-                name="viewport"
-                content="initial-scale=1, width=device-width"
-              />
-              <title>Insurechain</title>
-            </Head>
-            <ThemeProvider theme={theme}>
-              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-              <CssBaseline />
-              {/* <BackendLauncherProvider> */}
-              <Header />
-              <Component {...pageProps} />
-              <ToastContainer autoClose={3000} />
-              {/* </BackendLauncherProvider> */}
-            </ThemeProvider>
-          </LocalizationProvider>
-        </CacheProvider>
-      </SessionProvider>
+      <WagmiConfig config={wagmiConfig}>
+        <SessionProvider session={session}>
+          <CacheProvider value={emotionCache}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Head>
+                <meta
+                  name="viewport"
+                  content="initial-scale=1, width=device-width"
+                />
+                <title>Insurechain</title>
+              </Head>
+              <ThemeProvider theme={theme}>
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                {/* <BackendLauncherProvider> */}
+                <Header />
+                <Component {...pageProps} />
+                <ToastContainer autoClose={3000} />
+                {/* </BackendLauncherProvider> */}
+              </ThemeProvider>
+            </LocalizationProvider>
+          </CacheProvider>
+        </SessionProvider>
+      </WagmiConfig>
     </QueryClientProvider>
   );
 }

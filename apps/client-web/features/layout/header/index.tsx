@@ -19,14 +19,17 @@ import ListItemText from '@mui/material/ListItemText';
 import NextLink from 'next/link';
 import MuiLink from '@mui/material/Link';
 import Container from '@mui/material/Container';
+import { useDisconnect } from 'wagmi';
 const pages = [
   { link: '/dashboard', name: 'Dashboard' },
   { link: '/insurance-contract', name: 'Insurance Contract' },
 ];
 
 export function Header() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [isDrawerOpened, setIsDrawerOpened] = React.useState(false);
+  const loading = status === 'loading';
+  const { disconnect } = useDisconnect();
   return (
     <>
       <AppBar position="sticky">
@@ -109,7 +112,15 @@ export function Header() {
         >
           <List>
             {['Logout'].map((text, index) => (
-              <ListItem key={text} disablePadding onClick={() => signOut()}>
+              <ListItem
+                key={text}
+                disablePadding
+                onClick={(e) => {
+                  e.preventDefault();
+                  disconnect();
+                  signOut();
+                }}
+              >
                 <ListItemButton>
                   <ListItemIcon>
                     <LogoutIcon />
