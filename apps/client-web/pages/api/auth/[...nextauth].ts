@@ -1,7 +1,6 @@
+import { authenticateWithNonce } from '@insurechain/web/backend/data-access';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { getCsrfToken } from 'next-auth/react';
-import { SiweMessage } from 'siwe';
 
 const add1hourToNow = (): Date => {
   const now = new Date();
@@ -27,25 +26,17 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         try {
-          const siwe = new SiweMessage(
-            JSON.parse(credentials?.message || '{}')
-          );
-          const nextAuthUrl = new URL(process.env.NEXTAUTH_URL);
+          const result = await authenticateWithNonce(credentials);
 
-          const result = await siwe.verify({
-            signature: credentials?.signature || '',
-            domain: nextAuthUrl.host,
-            nonce: await getCsrfToken({ req }),
-          });
-
-          if (result.success) {
+          if (result?.address) {
             return {
-              id: siwe.address,
+              id: result.address,
               image: 'https://xsgames.co/randomusers/avatar.php?g=male',
             };
           }
           return null;
         } catch (e) {
+          console.log('ERROR', e);
           return null;
         }
       },
@@ -56,14 +47,6 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    // async jwt({ token, account, user }) {
-    //   // Persist the OAuth access_token to the token right after signin
-    //   if (account) {
-    //     token.access_token = user.access_token;
-    //     token.expires_at = add1hourToNow().toISOString();
-    //   }
-    //   return token;
-    // },
     async session({ session, token }: { session: any; token: any }) {
       session.address = token.sub;
       session.user.name = token.sub;

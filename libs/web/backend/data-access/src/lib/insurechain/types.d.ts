@@ -34,3 +34,8 @@ export type ProposalDto = {
   riskSubject: RiskSubject;
   smartContractAddress: string;
 };
+
+export type AuthenticateWithNonceResponse = {
+  result: string;
+  address: string;
+};

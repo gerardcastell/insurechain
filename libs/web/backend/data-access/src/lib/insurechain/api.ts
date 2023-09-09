@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import axios from '../axios';
 import {
+  AuthenticateWithNonceResponse,
   ProposalDto,
   QuoteResponse,
   SaveProposalBody,
@@ -50,4 +51,20 @@ export const saveProposal = async (
     data
   );
   return response;
+};
+
+export const generateNonce = async (): Promise<string> => {
+  const response = await axios.post<string>('/auth/generate-nonce');
+  return response.data;
+};
+
+export const authenticateWithNonce = async (data: {
+  message: string;
+  signature: string;
+}): Promise<AuthenticateWithNonceResponse> => {
+  const response = await axios.post<AuthenticateWithNonceResponse>(
+    '/auth/authenticate',
+    data
+  );
+  return response.data;
 };

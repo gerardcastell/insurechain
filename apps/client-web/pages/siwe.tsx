@@ -1,22 +1,30 @@
 import { getCsrfToken, signIn, useSession } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
-import { useAccount, useConnect, useNetwork, useSignMessage } from 'wagmi';
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useNetwork,
+  useSignMessage,
+} from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Box, Button } from '@mui/material';
+import { generateNonce } from '@insurechain/web/backend/data-access';
 
 function Siwe() {
   const { signMessageAsync } = useSignMessage();
   const { chain } = useNetwork();
   const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
   const { connect } = useConnect({
     connector: new InjectedConnector(),
   });
   const { data: session, status } = useSession();
 
-  const handleLogin = async () => {
+  const handleLogin = useCallback(async () => {
     try {
-      const callbackUrl = '/protected';
+      const callbackUrl = '/';
       const message = new SiweMessage({
         domain: window.location.host,
         address: address,
@@ -24,7 +32,7 @@ function Siwe() {
         uri: window.location.origin,
         version: '1',
         chainId: chain?.id,
-        nonce: await getCsrfToken(),
+        nonce: await generateNonce(),
       });
       const signature = await signMessageAsync({
         message: message.prepareMessage(),
@@ -38,14 +46,14 @@ function Siwe() {
     } catch (error) {
       window.alert(error);
     }
-  };
+  }, [address, chain, signMessageAsync]);
 
   useEffect(() => {
     console.log({ isConnected });
     if (isConnected && !session) {
       handleLogin();
     }
-  }, [isConnected]);
+  }, [isConnected, session, handleLogin]);
 
   return (
     <Box>
@@ -61,6 +69,16 @@ function Siwe() {
       >
         Sign-in
       </Button>
+      {isConnected && (
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            disconnect();
+          }}
+        >
+          Disconnect
+        </Button>
+      )}
     </Box>
   );
 }

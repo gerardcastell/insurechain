@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { generateNonce as generateNonceSiwe } from 'siwe';
+import { SiweMessage, generateNonce as generateNonceSiwe } from 'siwe';
 import { UserDto } from './dtos/CreateUser.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/passport-auth.guard';
@@ -73,14 +73,29 @@ export class UsersController {
   }
 
   @Post('authenticate')
-  authenticateWithNonce(nonce: string): string {
-    // Validate and remove the nonce from the store
-    const isValid = this.nonceService.validateAndRemoveNonce(nonce);
-    if (isValid) {
-      // Proceed with authentication logic
-      return 'Authentication successful';
-    } else {
-      throw new UnauthorizedException('Authentication failed');
+  async authenticateWithNonce(@Body() body) {
+    const { message, signature } = body;
+    console.log({ message, signature });
+    const siweMessage = new SiweMessage(JSON.parse(message));
+    console.log(siweMessage);
+    try {
+      // Verify the signature using the public key
+      await siweMessage.verify({ signature });
+      // Validate and remove the nonce from the store
+      const isValid = this.nonceService.validateAndRemoveNonce(
+        siweMessage.nonce
+      );
+      if (isValid) {
+        const address = siweMessage.address;
+        // Proceed with authentication logic
+        return { result: 'Authentication successful', address };
+      } else {
+        throw new UnauthorizedException('Authentication failed: Nonce invalid');
+      }
+    } catch {
+      throw new UnauthorizedException(
+        'Authentication failed: Signature invalid'
+      );
     }
   }
 }
