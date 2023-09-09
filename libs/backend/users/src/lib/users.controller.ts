@@ -75,9 +75,7 @@ export class UsersController {
   @Post('authenticate')
   async authenticateWithNonce(@Body() body) {
     const { message, signature } = body;
-    console.log({ message, signature });
     const siweMessage = new SiweMessage(JSON.parse(message));
-    console.log(siweMessage);
     try {
       // Verify the signature using the public key
       await siweMessage.verify({ signature });
