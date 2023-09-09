@@ -8,10 +8,13 @@ import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NonceService } from '@insurechain/backend/users';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const nonceService = app.get(NonceService);
+  nonceService.cleanupExpiredNoncesPeriodically();
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);

@@ -7,22 +7,25 @@ import {
   Param,
   Post,
   Request,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { generateNonce as generateNonceSiwe } from 'siwe';
 import { UserDto } from './dtos/CreateUser.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/passport-auth.guard';
 import { AuthService } from './services/auth/auth.service';
+import { NonceService } from './services/nonce/nonce.service';
 import { BackendUsersService } from './services/users/backend-users.service';
-
 @ApiTags('Users')
 @Controller('auth')
 export class UsersController {
   constructor(
     private authService: AuthService,
     private usersService: BackendUsersService,
-    private utilsService: BackendUtilsService
+    private utilsService: BackendUtilsService,
+    private readonly nonceService: NonceService
   ) {}
 
   @Post('/signup')
@@ -58,5 +61,26 @@ export class UsersController {
       throw new NotFoundException('User not found');
     }
     return user;
+  }
+
+  @Post('generate-nonce')
+  generateNonce(): string {
+    // Generate a unique nonce (e.g., using a UUID library)
+    const nonce = generateNonceSiwe();
+    // Add the nonce to the store
+    this.nonceService.addNonce(nonce);
+    return nonce;
+  }
+
+  @Post('authenticate')
+  authenticateWithNonce(nonce: string): string {
+    // Validate and remove the nonce from the store
+    const isValid = this.nonceService.validateAndRemoveNonce(nonce);
+    if (isValid) {
+      // Proceed with authentication logic
+      return 'Authentication successful';
+    } else {
+      throw new UnauthorizedException('Authentication failed');
+    }
   }
 }
