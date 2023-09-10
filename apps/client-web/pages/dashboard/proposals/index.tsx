@@ -9,6 +9,7 @@ import {
 } from '@insurechain/web/backend/data-access';
 import { getServerSession } from 'next-auth/next';
 import { Box, Fade, Stack, Typography } from '@mui/material';
+import EmptyState from '../../../features/proposal/empty-state';
 
 export const getServerSideProps: GetServerSideProps<{
   proposals: ProposalDto[];
@@ -22,6 +23,7 @@ export const getServerSideProps: GetServerSideProps<{
       },
     };
   }
+  console.log(session);
   const response = await getProposals(session.access_token as string);
   const proposals = response.data;
   return { props: { proposals } };
@@ -43,28 +45,33 @@ const Proposals = ({
         <Typography mb={4} variant="h5">
           Your proposals
         </Typography>
-        <Stack
-          spacing={2}
-          direction="row"
-          useFlexGap
-          flexWrap="wrap"
-          justifyContent="space-between"
-        >
-          {proposals.map((proposal, index) => (
-            <Fade
-              in={true}
-              key={proposal.id}
-              style={{
-                transitionDelay: `${index * 400}ms`,
-                transitionDuration: '500ms',
-              }}
-            >
-              <Box width={{ xs: '100%', sm: '320px', md: '270px' }}>
-                <ProposalCard proposal={proposal} />
-              </Box>
-            </Fade>
-          ))}
-        </Stack>
+
+        {proposals.length ? (
+          <Stack
+            spacing={2}
+            direction="row"
+            useFlexGap
+            flexWrap="wrap"
+            justifyContent="space-between"
+          >
+            {proposals.map((proposal, index) => (
+              <Fade
+                in={true}
+                key={proposal.id}
+                style={{
+                  transitionDelay: `${index * 400}ms`,
+                  transitionDuration: '500ms',
+                }}
+              >
+                <Box width={{ xs: '100%', sm: '320px', md: '270px' }}>
+                  <ProposalCard proposal={proposal} />
+                </Box>
+              </Fade>
+            ))}
+          </Stack>
+        ) : (
+          <EmptyState />
+        )}
       </Grid>
     </Grid>
   );

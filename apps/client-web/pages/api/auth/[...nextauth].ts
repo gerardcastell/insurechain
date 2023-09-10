@@ -27,10 +27,10 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         try {
           const result = await authenticateWithNonce(credentials);
-
-          if (result?.address) {
+          if (result) {
             return {
-              id: result.address,
+              id: result.access_token,
+              access_token: result.access_token,
               image: 'https://xsgames.co/randomusers/avatar.php?g=male',
             };
           }
@@ -44,13 +44,20 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 20, // 20 minutes
+    maxAge: 60 * 60, // 60 minutes
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
+    async jwt({ token, account, user }) {
+      // Persist the OAuth access_token to the token right after signin
+      if (account) {
+        token.sub = user.id;
+        token.expires_at = add1hourToNow().toISOString();
+      }
+      return token;
+    },
     async session({ session, token }: { session: any; token: any }) {
-      session.address = token.sub;
-      session.user.name = token.sub;
+      session.access_token = token.sub;
       return session;
     },
   },

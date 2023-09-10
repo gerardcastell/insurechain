@@ -85,9 +85,8 @@ export class UsersController {
         siweMessage.nonce
       );
       if (isValid) {
-        const address = siweMessage.address;
         // Proceed with authentication logic
-        return { result: 'Authentication successful', address };
+        return this.authService.signIn(siweMessage.address);
       } else {
         throw new UnauthorizedException('Authentication failed: Nonce invalid');
       }

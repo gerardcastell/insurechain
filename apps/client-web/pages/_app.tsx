@@ -16,7 +16,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ToastContainer } from 'react-toastify';
 import { WagmiConfig, configureChains, createConfig, sepolia } from 'wagmi';
-import { createPublicClient, http } from 'viem';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { publicProvider } from 'wagmi/providers/public';
 const clientSideEmotionCache = createEmotionCache();

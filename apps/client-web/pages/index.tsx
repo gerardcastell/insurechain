@@ -6,16 +6,6 @@ import Link from '../components/Link';
 import { useConnect, useAccount, useDisconnect, useNetwork } from 'wagmi';
 import { getChainId } from 'viem/dist/types/actions/public/getChainId';
 export function Index() {
-  const customSignIn = async () => {
-    signIn('credentials', {
-      email: 'gerard@email.com',
-      password: '12345',
-    });
-  };
-
-  const customSignOut = async () => {
-    signOut({ redirect: false });
-  };
   const { connect, data: connectData, connectors, error } = useConnect();
   const { data: session, status } = useSession();
   console.log({ session, status });
@@ -44,12 +34,12 @@ export function Index() {
   return (
     <Grid container spacing={4} justifyContent={'center'}>
       <Grid item>
-        <Button variant="contained" onClick={customSignIn}>
+        <Button variant="contained" onClick={handleLogin}>
           Sign In
         </Button>
       </Grid>
       <Grid item>
-        <Button variant="text" onClick={customSignOut}>
+        <Button variant="text" onClick={() => signOut({ redirect: false })}>
           Sign Out
         </Button>
       </Grid>
@@ -83,13 +73,6 @@ export function Index() {
             </>
           ))}
         </Stack>
-      </Grid>
-
-      <Grid item xs={12} maxWidth={300}>
-        <Typography paddingBottom={4} variant="h4">
-          Sandbox
-        </Typography>
-        <Login />G
       </Grid>
     </Grid>
   );

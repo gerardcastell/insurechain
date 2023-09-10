@@ -36,6 +36,5 @@ export type ProposalDto = {
 };
 
 export type AuthenticateWithNonceResponse = {
-  result: string;
-  address: string;
+  access_token: string;
 };
