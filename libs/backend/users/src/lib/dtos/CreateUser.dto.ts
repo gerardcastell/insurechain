@@ -1,11 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
+import { IsHexadecimal } from 'class-validator';
 export class UserDto {
-  @ApiProperty({ example: 'gerard@email.com' })
-  @IsEmail()
-  email: string;
-
-  @ApiProperty({ example: '12345' })
-  @IsString()
-  password: string;
+  @ApiProperty({ example: '0xbf3E4a304b2156832e842eebF677D029a2C61325' })
+  @IsHexadecimal()
+  address: string;
 }

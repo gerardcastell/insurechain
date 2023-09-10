@@ -9,9 +9,14 @@ datasource db {
 
 model User {
   id        Int        @id @default(autoincrement())
+  address     String     @unique
+  proposals Proposal[]
+}
+
+model UserLegacy {
+  id        Int        @id @default(autoincrement())
   email     String     @unique
   password  String
-  proposals Proposal[]
 }
 
 model Proposal {

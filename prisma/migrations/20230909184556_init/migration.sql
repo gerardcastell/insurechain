@@ -10,10 +10,18 @@ CREATE TYPE "ParkingType" AS ENUM ('street', 'collective_car_park', 'collective_
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
+    "address" TEXT NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UserLegacy" (
+    "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "UserLegacy_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -80,7 +88,10 @@ CREATE TABLE "CoverageType" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "User_address_key" ON "User"("address");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserLegacy_email_key" ON "UserLegacy"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Proposal_smartContractAddress_key" ON "Proposal"("smartContractAddress");

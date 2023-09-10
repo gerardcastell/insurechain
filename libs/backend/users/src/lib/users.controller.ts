@@ -3,6 +3,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   NotFoundException,
   Param,
   Post,
@@ -13,7 +15,6 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SiweMessage, generateNonce as generateNonceSiwe } from 'siwe';
 import { UserDto } from './dtos/CreateUser.dto';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/passport-auth.guard';
 import { AuthService } from './services/auth/auth.service';
 import { NonceService } from './services/nonce/nonce.service';
@@ -30,9 +31,8 @@ export class UsersController {
 
   @Post('/signup')
   async createUser(@Body() body: UserDto) {
-    const user = await this.authService.signup(body.email, body.password);
-    const userWoPassword = this.utilsService.exclude(user, 'password');
-    return userWoPassword;
+    const user = await this.authService.signUp(body.address);
+    return user;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -42,10 +42,11 @@ export class UsersController {
     return req.user;
   }
 
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
+  @HttpCode(HttpStatus.OK)
   @Post('login')
-  async signIn(@Body() body: UserDto, @Request() req) {
-    return this.authService.signIn(req.user);
+  async signIn(@Body() body: UserDto) {
+    return this.authService.signIn(body.address);
   }
 
   /**

@@ -10,22 +10,42 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@insurechain/backend/health": ["libs/backend/health/src/index.ts"],
-      "@insurechain/backend/policies": ["libs/backend/policies/src/index.ts"],
-      "@insurechain/backend/prisma": ["libs/backend/prisma/src/index.ts"],
-      "@insurechain/backend/proposals": ["libs/backend/proposals/src/index.ts"],
-      "@insurechain/backend/users": ["libs/backend/users/src/index.ts"],
-      "@insurechain/backend/utils": ["libs/backend/utils/src/index.ts"],
-      "@insurechain/blockchain": ["libs/blockchain/src/index.ts"],
+      "@insurechain/backend/health": [
+        "libs/backend/health/src/index.ts"
+      ],
+      "@insurechain/backend/policies": [
+        "libs/backend/policies/src/index.ts"
+      ],
+      "@insurechain/backend/prisma": [
+        "libs/backend/prisma/src/index.ts"
+      ],
+      "@insurechain/backend/proposals": [
+        "libs/backend/proposals/src/index.ts"
+      ],
+      "@insurechain/backend/users": [
+        "libs/backend/users/src/index.ts"
+      ],
+      "@insurechain/backend/utils": [
+        "libs/backend/utils/src/index.ts"
+      ],
+      "@insurechain/blockchain": [
+        "libs/blockchain/src/index.ts"
+      ],
       "@insurechain/web/backend/data-access": [
         "libs/web/backend/data-access/src/index.ts"
       ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

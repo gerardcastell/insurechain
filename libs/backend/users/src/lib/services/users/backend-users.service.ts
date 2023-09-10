@@ -6,36 +6,31 @@ import { User } from '@prisma/client';
 export class BackendUsersService {
   constructor(private prisma: PrismaService) {}
 
-  create(
-    email: string,
-    password: string
-  ): Promise<Pick<User, 'email' | 'password'>> {
+  create(address: string): Promise<Pick<User, 'address' | 'id'>> {
     return this.prisma.user.create({
-      data: { email, password },
-      select: { email: true, password: true },
+      data: { address },
+      select: { address: true, id: true },
     });
   }
 
-  findOneByEmail(
-    email: string
-  ): Promise<Pick<User, 'email' | 'password' | 'id'>> {
-    return this.prisma.user.findUnique({
-      where: { email },
-      select: { email: true, password: true, id: true },
-    });
-  }
-
-  findByEmail(email: string): Promise<Pick<User, 'email' | 'password'>[]> {
+  findByAddress(address: string): Promise<Pick<User, 'address'>[]> {
     return this.prisma.user.findMany({
-      where: { email },
-      select: { email: true, password: true },
+      where: { address },
+      select: { address: true },
     }) as unknown as Promise<User[]>;
   }
 
-  findOneById(id: number): Promise<Pick<User, 'email' | 'password'>> {
+  findOneById(id: number): Promise<Pick<User, 'address'>> {
     return this.prisma.user.findUnique({
       where: { id },
-      select: { email: true, password: true },
+      select: { address: true },
     });
+  }
+
+  findOneByAddress(address: string): Promise<Pick<User, 'address' | 'id'>> {
+    return this.prisma.user.findUnique({
+      where: { address },
+      select: { address: true, id: true },
+    }) as unknown as Promise<User>;
   }
 }
