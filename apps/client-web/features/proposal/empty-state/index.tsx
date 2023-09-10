@@ -1,8 +1,6 @@
 import { Button, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import React from 'react';
-import MuiLink from '@mui/material/Link';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
 const EmptyState = () => {

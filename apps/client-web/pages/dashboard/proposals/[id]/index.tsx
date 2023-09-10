@@ -9,7 +9,6 @@ import {
   Container,
   Divider,
   Grid,
-  IconButton,
   Paper,
   Stack,
   SxProps,
@@ -29,6 +28,7 @@ import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import HandshakeIcon from '@mui/icons-material/Handshake';
+import PurchaseButton from '../../../../features/proposal/purchase-button/PurchaseButton';
 
 const DataPresenter = ({
   title,
@@ -280,17 +280,7 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
         </Stack>
       </Paper>
       <Box display={'flex'} justifyContent={'center'} my={3}>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={onClickPurchaseProposal}
-        >
-          <Box mr={1}>
-            <HandshakeIcon />
-          </Box>
-          Purchase proposal
-        </Button>
+        <PurchaseButton onClick={onClickPurchaseProposal} />
       </Box>
     </Container>
   );
