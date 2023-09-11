@@ -20,6 +20,7 @@ import NextLink from 'next/link';
 import MuiLink from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import { useDisconnect } from 'wagmi';
+
 const pages = [
   { link: '/dashboard', name: 'Dashboard' },
   { link: '/insurance-contract', name: 'Insurance Contract' },

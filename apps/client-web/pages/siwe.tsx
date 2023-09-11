@@ -11,9 +11,14 @@ import { InjectedConnector } from 'wagmi/connectors/injected';
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Button } from '@mui/material';
 import { generateNonce } from '@insurechain/web/backend/data-access';
+import { toast } from 'react-toastify';
 
 function Siwe() {
-  const { signMessageAsync } = useSignMessage();
+  const { signMessageAsync } = useSignMessage({
+    onSuccess: () => {
+      toast.success('Successfully logged in');
+    },
+  });
   const { chain } = useNetwork();
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
@@ -28,7 +33,7 @@ function Siwe() {
       const message = new SiweMessage({
         domain: window.location.host,
         address: address,
-        statement: 'Sign in with Ethereum to the Insurechain.',
+        statement: 'Sign in with Ethereum to Insurechain.',
         uri: window.location.origin,
         version: '1',
         chainId: chain?.id,
@@ -44,12 +49,12 @@ function Siwe() {
         callbackUrl,
       });
     } catch (error) {
-      window.alert(error);
+      console.log(error);
+      toast.error(error.shortMessage || 'Something went wrong');
     }
   }, [address, chain, signMessageAsync]);
 
   useEffect(() => {
-    console.log({ isConnected });
     if (isConnected && !session) {
       handleLogin();
     }
