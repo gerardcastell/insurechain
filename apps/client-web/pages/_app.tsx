@@ -15,24 +15,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ToastContainer } from 'react-toastify';
-import { WagmiConfig, configureChains, createConfig, sepolia } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { publicProvider } from 'wagmi/providers/public';
+import WagmiConfigProvider from '../config/WagmiConfigProvider';
 const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
-
-export const { chains, publicClient } = configureChains(
-  [sepolia],
-  [publicProvider()]
-);
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  publicClient,
-  connectors: [new InjectedConnector({ chains })],
-});
 
 function CustomApp({
   Component,
@@ -41,7 +28,7 @@ function CustomApp({
 }: MyAppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <WagmiConfig config={wagmiConfig}>
+      <WagmiConfigProvider>
         <SessionProvider session={session}>
           <CacheProvider value={emotionCache}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -64,7 +51,7 @@ function CustomApp({
             </LocalizationProvider>
           </CacheProvider>
         </SessionProvider>
-      </WagmiConfig>
+      </WagmiConfigProvider>
     </QueryClientProvider>
   );
 }
