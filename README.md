@@ -51,6 +51,8 @@ We can use the Prisma Studio to visualize the data of our database:
 npm run db:studio:dev
 ```
 
+---
+
 ### Production Database
 
 In order to use a production database you just have to define the .env.production file
@@ -73,3 +75,43 @@ By contrast, if we want to pull the production schema and tables to our local we
 ```bash
 prisma db pull
 ```
+
+## Blockchain Commands
+
+### Local Blockchain with Hardhat
+
+To init the local blockchain we have to run:
+
+```bash
+npm run hh:network
+```
+
+This will run a node server on port 8545 to simulate the blockchain.
+It will provide 20 accounts with 10000 ETH each one which you can import to your wallet or DAPP.
+If you want to import them to your Metamask wallet you can follow this [tutorial](https://medium.com/@kaishinaw/connecting-metamask-with-a-local-hardhat-network-7d8cea604dc6).
+
+---
+
+To deploy contracts we must use the deploy script located at _"scripts/deploy.ts"_. We must modify such script to add our contracts. Take into account that local network server must be running. Then, we can deploy our contracts running:
+
+```bash
+npm run hh:deploy
+```
+
+---
+
+To write tests we should locate them at _"test/"_. Then, we can run them with:
+
+```bash
+npm run hh:test
+```
+
+---
+
+To compile contracts we must ensure they are located at _"contracts/"_. Then, we can compile them running:
+
+```bash
+npm run hh:compile
+```
+
+---

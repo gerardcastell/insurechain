@@ -17,7 +17,11 @@
     "db:studio:dev": "dotenv -e .env.development -- prisma studio",
     "db:seed:dev": "dotenv -e .env.development  prisma db seed",
     "db:seed:prod": "dotenv -e .env.production  prisma db seed",
-    "sc:compile": "node libs/blockchain/src/lib/scripts/compile.js"
+    "sc:compile": "node libs/blockchain/src/lib/scripts/compile.js",
+    "hh:network": "hardhat node",
+    "hh:deploy": "hardhat run scripts/deploy.ts --network localhost",
+    "hh:compile": "hardhat compile",
+    "hh:test": "REPORT_GAS=true hardhat  test --parallel"
   },
   "private": true,
   "dependencies": {
