@@ -45,3 +45,14 @@ Thumbs.db
 
 # Next.js
 .next
+
+# Hardhat
+coverage
+coverage.json
+typechain
+typechain-types
+
+# Hardhat files
+cache
+artifacts
+
