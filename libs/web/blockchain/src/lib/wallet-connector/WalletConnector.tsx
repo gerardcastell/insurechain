@@ -17,8 +17,9 @@ export function WalletConnector() {
       setIsClientSide(false);
     }
   }, []);
+  console.log(address);
   if (!isClientSide) {
-    return <Typography>Please connect your wallet</Typography>;
+    return <Typography color={'red'}>Please install a wallet</Typography>;
   }
   return (
     <Stack spacing={2}>

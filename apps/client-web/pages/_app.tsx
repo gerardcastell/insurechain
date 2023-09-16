@@ -15,15 +15,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ToastContainer } from 'react-toastify';
 import WagmiConfigProvider from '../config/WagmiConfigProvider';
-import Header from '../features/layout/header/header-v2';
 import dynamic from 'next/dynamic';
 const clientSideEmotionCache = createEmotionCache();
-const DynamicHeader = dynamic(
-  () => import('../features/layout/header/header-v2'),
-  {
-    loading: () => <p>Loading...</p>,
-  }
-);
+const DynamicHeader = dynamic(() => import('../features/layout/header'), {
+  loading: () => <p>Loading...</p>,
+});
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }

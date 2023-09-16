@@ -52,17 +52,13 @@ export function Index() {
         <Button variant="contained" onClick={handleLogin}>
           Sign In
         </Button>
-        3T
       </Grid>
       <Grid item>
         <Button variant="text" onClick={() => signOut({ redirect: false })}>
           Sign Out
         </Button>
       </Grid>
-      <Grid>
-        <Link href="/dashboard">Dashboard</Link>
-      </Grid>
-      <Grid item xs={4} maxWidth={300}>
+      <Grid item xs={12}>
         <Stack spacing={2}>
           {connectors?.map((connectorInstance) => (
             <Button
@@ -73,16 +69,16 @@ export function Index() {
               Connect with {connectorInstance.name}
             </Button>
           ))}
-          {isConnected ? (
+          {isConnected && connector ? (
             <>
               <Typography>Connected to {chain?.name}</Typography>
               <Typography>Account: {address}</Typography>
               <Button
-                key={connector.name + 'disconnect'}
+                key={connector?.name + 'disconnect'}
                 variant="outlined"
                 onClick={() => disconnect()}
               >
-                Disconnect from {connector.name}
+                Disconnect from {connector?.name}
               </Button>
             </>
           ) : null}

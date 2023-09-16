@@ -20,7 +20,7 @@ const DisconnectButton = () => {
       sx={{
         textTransform: 'none',
         background:
-          'linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(216, 25, 101) 100%)',
+          'linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%)',
       }}
       color="inherit"
     >

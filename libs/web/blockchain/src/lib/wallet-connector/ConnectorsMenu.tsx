@@ -5,11 +5,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Box, Menu, MenuItem, keyframes } from '@mui/material';
-const iconsMap: Record<string, string> = {
-  MetaMask: '/icons/metamask.svg',
-  default: '/icons/bitcoin.png',
-} as const;
+import { Box, IconButton, Menu, MenuItem, keyframes } from '@mui/material';
+import { ICONS_MAP } from './contants';
 
 const pulse = keyframes`
   0% {
@@ -17,7 +14,7 @@ const pulse = keyframes`
   }
 
   50% {
-    opacity: 1;
+    opacity: 0.8;
   }
 
   100% {
@@ -50,7 +47,7 @@ export function ConnectorsMenu() {
         color="inherit"
         onClick={handleOpenMenu}
         sx={{
-          // height: '20px',
+          display: { xs: 'none', md: 'block' },
           textTransform: 'none',
           backgroundImage: 'linear-gradient(160deg, #0093E9 0%, #80D0C7 100%)',
           border: 'none',
@@ -70,7 +67,6 @@ export function ConnectorsMenu() {
             zIndex: -1,
             borderRadius: '1em',
             filter: 'blur(20px)',
-            opacity: 1,
             animation: `${pulse} 3s linear infinite`,
           },
         }}
@@ -85,6 +81,41 @@ export function ConnectorsMenu() {
       >
         Connect wallet
       </Button>
+      <IconButton
+        onClick={handleOpenMenu}
+        sx={{
+          width: '50px',
+          height: '50px',
+          display: { xs: 'block', md: 'none' },
+          textTransform: 'none',
+          border: 'none',
+          color: 'white',
+          position: 'relative',
+          zIndex: 1,
+          '::before': {
+            backgroundImage:
+              'linear-gradient(160deg, #0093E9 0%, #80D0C7 100%)',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            content: '""',
+            width: '110%',
+            height: '110%',
+            position: 'absolute',
+            zIndex: -1,
+            borderRadius: '1em',
+            filter: 'blur(20px)',
+            animation: `${pulse} 3s linear infinite`,
+          },
+        }}
+      >
+        <Image
+          src={'/icons/wallet-border.png'}
+          width={30}
+          height={30}
+          alt={'Wallet Icon'}
+        />
+      </IconButton>
       <Menu
         sx={{ mt: '45px' }}
         id="wallet-connectors-menu"
@@ -111,7 +142,7 @@ export function ConnectorsMenu() {
           >
             <Stack spacing={2} direction={'row'} alignItems={'center'}>
               <Image
-                src={iconsMap[connector.name] || iconsMap.default}
+                src={ICONS_MAP[connector.name] || ICONS_MAP.default}
                 width={30}
                 height={30}
                 alt={connector.name}
