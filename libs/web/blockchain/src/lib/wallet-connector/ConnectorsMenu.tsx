@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Box, IconButton, Menu, MenuItem, keyframes } from '@mui/material';
 import { ICONS_MAP } from './contants';
+import { useSiweAuth } from './useSiweAuth';
 
 const pulse = keyframes`
   0% {
@@ -24,6 +25,7 @@ const pulse = keyframes`
 export function ConnectorsMenu() {
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect();
+  const { loginWithSiwe } = useSiweAuth();
 
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
 
@@ -137,7 +139,8 @@ export function ConnectorsMenu() {
             key={connector.id}
             onClick={() => {
               handleCloseMenu();
-              connect({ connector });
+              // connect({ connector });
+              loginWithSiwe();
             }}
           >
             <Stack spacing={2} direction={'row'} alignItems={'center'}>

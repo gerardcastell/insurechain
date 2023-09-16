@@ -1,11 +1,9 @@
 import Button from '@mui/material/Button';
 import Image from 'next/image';
-import React from 'react';
-import { useDisconnect } from 'wagmi';
+import { useSiweAuth } from './useSiweAuth';
 
 const DisconnectButton = () => {
-  const { disconnect } = useDisconnect();
-
+  const { logout } = useSiweAuth();
   return (
     <Button
       endIcon={
@@ -16,7 +14,10 @@ const DisconnectButton = () => {
           alt={'Disconnect plugin'}
         />
       }
-      onClick={() => disconnect()}
+      onClick={(e) => {
+        e.preventDefault();
+        logout();
+      }}
       sx={{
         textTransform: 'none',
         background:

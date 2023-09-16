@@ -32,7 +32,6 @@ export class AuthService {
 
   async validateUser(address: string): Promise<Pick<User, 'address'>> {
     const user = await this.usersService.findOneByAddress(address);
-    console.log({ user });
     if (!user) {
       throw new Error('User not found');
     }

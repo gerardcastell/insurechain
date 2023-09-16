@@ -27,7 +27,6 @@ import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import HandshakeIcon from '@mui/icons-material/Handshake';
 import PurchaseButton from '../../../../features/proposal/purchase-button/PurchaseButton';
 
 const DataPresenter = ({
