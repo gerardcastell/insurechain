@@ -16,6 +16,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ToastContainer } from 'react-toastify';
 import WagmiConfigProvider from '../config/WagmiConfigProvider';
+import AppBar from '../features/layout/header/header-v2';
 const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -43,7 +44,8 @@ function CustomApp({
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
                 {/* <BackendLauncherProvider> */}
-                <Header />
+                {/* <Header /> */}
+                <AppBar />
                 <Component {...pageProps} />
                 <ToastContainer autoClose={3000} />
                 {/* </BackendLauncherProvider> */}
