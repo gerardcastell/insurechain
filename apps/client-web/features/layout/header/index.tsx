@@ -15,7 +15,7 @@ import { WalletConnector } from '@insurechain/web/blockchain';
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const pages = [
   { link: '/dashboard', name: 'Dashboard' },
-  { link: '/insurance-contract', name: 'Take out Insurance' },
+  { link: '/insurance-contract', name: 'Car insurance' },
 ];
 function HeaderV2() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -59,7 +59,7 @@ function HeaderV2() {
             component="a"
             href="/"
             sx={{
-              mr: 2,
+              mr: 4,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'BlinkMacSystemFont',
               fontWeight: 700,
@@ -107,6 +107,7 @@ function HeaderV2() {
                     href={page?.link}
                     sx={{
                       textDecoration: 'none',
+                      textTransform: 'uppercase',
                       color: 'inherit',
                       '&:hover': {
                         textDecoration: 'none',

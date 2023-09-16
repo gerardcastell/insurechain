@@ -47,7 +47,7 @@ export function ConnectorsMenu() {
         color="inherit"
         onClick={handleOpenMenu}
         sx={{
-          display: { xs: 'none', md: 'block' },
+          display: { xs: 'none', md: 'flex' },
           textTransform: 'none',
           backgroundImage: 'linear-gradient(160deg, #0093E9 0%, #80D0C7 100%)',
           border: 'none',
