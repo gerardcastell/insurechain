@@ -6,7 +6,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../config/theme';
 import createEmotionCache from '../config/createEmotionCache';
-import { Header } from '../features/layout/header';
 import { SessionProvider } from 'next-auth/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../lib/react-query';
@@ -16,8 +15,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ToastContainer } from 'react-toastify';
 import WagmiConfigProvider from '../config/WagmiConfigProvider';
-import AppBar from '../features/layout/header/header-v2';
+import Header from '../features/layout/header/header-v2';
+import dynamic from 'next/dynamic';
 const clientSideEmotionCache = createEmotionCache();
+const DynamicHeader = dynamic(
+  () => import('../features/layout/header/header-v2'),
+  {
+    loading: () => <p>Loading...</p>,
+  }
+);
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
@@ -44,8 +50,7 @@ function CustomApp({
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
                 {/* <BackendLauncherProvider> */}
-                {/* <Header /> */}
-                <AppBar />
+                <DynamicHeader />
                 <Component {...pageProps} />
                 <ToastContainer autoClose={3000} />
                 {/* </BackendLauncherProvider> */}

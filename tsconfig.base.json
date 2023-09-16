@@ -24,6 +24,10 @@
       "@insurechain/blockchain": ["libs/blockchain/src/index.ts"],
       "@insurechain/web/backend/data-access": [
         "libs/web/backend/data-access/src/index.ts"
+      ],
+      "@insurechain/web/blockchain": ["libs/web/blockchain/src/index.ts"],
+      "@insurechain/web/blockchain/server": [
+        "libs/web/blockchain/src/server.ts"
       ]
     }
   },

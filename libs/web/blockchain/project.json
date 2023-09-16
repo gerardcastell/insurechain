@@ -1,0 +1,16 @@
+{
+  "name": "web-blockchain",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/blockchain/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/web/blockchain/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

@@ -7,14 +7,11 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import MuiLink from '@mui/material/Link';
-
+import { WalletConnector } from '@insurechain/web/blockchain';
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const pages = [
   { link: '/dashboard', name: 'Dashboard' },
@@ -175,7 +172,8 @@ function HeaderV2() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <WalletConnector />
+            {/* <Tooltip title="Open options">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
@@ -201,7 +199,7 @@ function HeaderV2() {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
         </Toolbar>
       </Container>

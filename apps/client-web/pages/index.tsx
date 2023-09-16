@@ -5,15 +5,22 @@ import Login from '../features/auth';
 import Link from '../components/Link';
 import { useConnect, useAccount, useDisconnect, useNetwork } from 'wagmi';
 import { getChainId } from 'viem/dist/types/actions/public/getChainId';
+import { useEffect, useState } from 'react';
 export function Index() {
   const { connect, data: connectData, connectors, error } = useConnect();
   const { data: session, status } = useSession();
   console.log({ session, status });
   const { chain } = useNetwork();
   const { disconnect } = useDisconnect();
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, connector } = useAccount();
   console.log({ connectData, address });
-
+  const [isClientSide, setIsClientSide] = useState(false);
+  useEffect(() => {
+    setIsClientSide(true);
+  }, []);
+  if (!isClientSide) {
+    return <Typography>Please connect your wallet</Typography>;
+  }
   const handleLogin = async () => {
     try {
       const callbackUrl = '/protected';
@@ -57,21 +64,19 @@ export function Index() {
       </Grid>
       <Grid item xs={4} maxWidth={300}>
         <Stack spacing={2}>
-          {connectors?.map((connector) => (
+          {connectors?.map((connectorInstance) => (
+            <Button
+              key={connectorInstance.name + 'connect'}
+              variant="contained"
+              onClick={() => connect({ connector: connectorInstance })}
+            >
+              Connect with {connectorInstance.name}
+            </Button>
+          ))}
+          {isConnected ? (
             <>
-              <Button
-                key={connector.name + 'connect'}
-                variant="contained"
-                onClick={() => connect({ connector })}
-              >
-                Connect with {connector.name}
-              </Button>
-              {isConnected ? (
-                <>
-                  <Typography>Connected to {chain?.name}</Typography>
-                  <Typography>Account: {address}</Typography>
-                </>
-              ) : null}
+              <Typography>Connected to {chain?.name}</Typography>
+              <Typography>Account: {address}</Typography>
               <Button
                 key={connector.name + 'disconnect'}
                 variant="outlined"
@@ -80,7 +85,7 @@ export function Index() {
                 Disconnect from {connector.name}
               </Button>
             </>
-          ))}
+          ) : null}
         </Stack>
       </Grid>
     </Grid>
