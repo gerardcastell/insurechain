@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const StyledButton = styled(Button)(({ theme }) => ({
+  width: '110px',
   backgroundColor: 'white',
   display: 'flex',
   flexDirection: 'column',

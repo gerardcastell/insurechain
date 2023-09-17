@@ -2,23 +2,17 @@ import Button from '@mui/material/Button';
 import Image from 'next/image';
 import { useSiweAuth } from './useSiweAuth';
 import Tooltip from '@mui/material/Tooltip';
-import { CONNECTOR_ICON_MAP } from './contants';
 import { useState } from 'react';
 import AccountModal from './AccountModal';
 
 const ConnectedSection = () => {
-  const {
-    logout,
-    connectorImageSrc,
-    connectorName,
-    balance,
-    addressShortFormat,
-  } = useSiweAuth();
+  const { connectorImageSrc, balance, addressShortFormat } = useSiweAuth();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <>
+      <AccountModal open={open} handleClose={handleClose} />
       <Tooltip title="Click to open options">
         <Button
           startIcon={
@@ -32,7 +26,6 @@ const ConnectedSection = () => {
           onClick={(e) => {
             e.preventDefault();
             handleOpen();
-            // logout();
           }}
           sx={{
             textTransform: 'none',
@@ -44,7 +37,6 @@ const ConnectedSection = () => {
           {`${balance?.formatted} ${balance?.symbol}`} {addressShortFormat}
         </Button>
       </Tooltip>
-      <AccountModal open={open} handleClose={handleClose} />
     </>
   );
 };
