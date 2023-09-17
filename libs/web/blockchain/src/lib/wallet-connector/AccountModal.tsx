@@ -1,4 +1,4 @@
-import { Button, Stack, Tooltip, useTheme } from '@mui/material';
+import { Button, Chip, Stack, Tooltip, styled, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Slide from '@mui/material/Slide';
@@ -9,6 +9,18 @@ import Image from 'next/image';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { toast } from 'react-toastify';
 import LogoutIcon from '@mui/icons-material/Logout';
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  backgroundColor: 'white',
+  display: 'flex',
+  flexDirection: 'column',
+  color: 'text.primary',
+  textTransform: 'capitalize',
+  '&& > span': {
+    margin: '0 !important',
+  },
+}));
+
 type Props = {
   open: boolean;
   handleClose: () => void;
@@ -32,6 +44,8 @@ const AccountModal = ({ open, handleClose }: Props) => {
     toast.success('Copied to clipboard');
   };
 
+  const { typography } = useTheme();
+
   return (
     <Modal
       open={open}
@@ -48,7 +62,7 @@ const AccountModal = ({ open, handleClose }: Props) => {
     >
       <Slide direction="up" in={open} mountOnEnter unmountOnExit>
         <Stack
-          spacing={2}
+          spacing={3}
           sx={{
             ...style,
             [breakpoints.up('sm')]: {
@@ -78,23 +92,39 @@ const AccountModal = ({ open, handleClose }: Props) => {
             </Tooltip>
           </Box>
           <Box>
-            <Typography
-              display={{ xs: 'none', sm: 'block' }}
-              fontWeight={800}
-              variant="h6"
-            >
-              {address}
-            </Typography>
-            <Typography
-              display={{ xs: 'block', sm: 'none' }}
-              fontWeight={800}
-              variant="h6"
-            >
-              {addressShortFormat}
-            </Typography>
-            <Typography fontWeight={500}>
-              {balance?.formatted} {balance?.symbol}
-            </Typography>
+            <Tooltip title="Your address" placement="top">
+              <Typography
+                display={{ xs: 'none', sm: 'block' }}
+                fontWeight={800}
+                mb={1}
+                variant="h6"
+              >
+                {address}
+              </Typography>
+            </Tooltip>
+            <Tooltip title="Your address" placement="top">
+              <Typography
+                mb={2}
+                display={{ xs: 'block', sm: 'none' }}
+                fontWeight={800}
+                variant="h6"
+              >
+                {addressShortFormat}
+              </Typography>
+            </Tooltip>
+            <Tooltip title="Your balance">
+              <Chip
+                variant="filled"
+                color="primary"
+                sx={{
+                  fontWeight: 600,
+                  fontSize: typography.body1.fontSize,
+                  background:
+                    'linear-gradient(160deg, #f4f269 0%, #80D0C7 50%, #5cb270 100%)',
+                }}
+                label={`${balance?.formatted} ${balance?.symbol}`}
+              />
+            </Tooltip>
           </Box>
 
           <Stack
@@ -103,30 +133,16 @@ const AccountModal = ({ open, handleClose }: Props) => {
             display={'flex'}
             justifyContent={'center'}
           >
-            <Button
-              sx={{
-                backgroundColor: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                color: 'text.primary',
-                textTransform: 'capitalize',
-              }}
+            <StyledButton
               startIcon={<ContentCopyIcon />}
               onClick={() => {
                 copyToClipboard();
               }}
             >
               Copy address
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                color: 'text.primary',
-                textTransform: 'capitalize',
-              }}
-              startIcon={<LogoutIcon />}
+            </StyledButton>
+            <StyledButton
+              startIcon={<LogoutIcon sx={{}} />}
               onClick={(e) => {
                 e.preventDefault();
                 logout();
@@ -134,7 +150,7 @@ const AccountModal = ({ open, handleClose }: Props) => {
               }}
             >
               Disconnect
-            </Button>
+            </StyledButton>
           </Stack>
         </Stack>
       </Slide>

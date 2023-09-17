@@ -82,6 +82,7 @@ export const useSiweAuth = () => {
   const logout = useCallback(() => {
     signOut();
     disconnect();
+    toast.info('Successfully logged out');
   }, [disconnect]);
 
   return {
