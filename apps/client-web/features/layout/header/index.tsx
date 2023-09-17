@@ -12,7 +12,8 @@ import Image from 'next/image';
 import NextLink from 'next/link';
 import MuiLink from '@mui/material/Link';
 import { WalletConnector } from '@insurechain/web/blockchain';
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { StyledLink } from '@insurechain/web/ui-elements';
+
 const pages = [
   { link: '/dashboard', name: 'Dashboard' },
   { link: '/insurance-contract', name: 'Car insurance' },
@@ -21,23 +22,13 @@ function HeaderV2() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -56,7 +47,7 @@ function HeaderV2() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
+            component={StyledLink}
             href="/"
             sx={{
               mr: 4,
