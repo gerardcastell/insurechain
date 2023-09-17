@@ -6,12 +6,14 @@ import { toast } from 'react-toastify';
 import { SiweMessage } from 'siwe';
 import {
   useAccount,
+  useBalance,
   useConnect,
   useDisconnect,
   useNetwork,
   useSignMessage,
 } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
+import { CHAIN_ICON_MAP, CONNECTOR_ICON_MAP } from './contants';
 
 export const useSiweAuth = () => {
   const { signMessageAsync } = useSignMessage({
@@ -19,12 +21,17 @@ export const useSiweAuth = () => {
       toast.success('Successfully logged in');
     },
   });
+  const { status } = useSession();
+  const isAuthenticated = status === 'authenticated';
   const { isConnected, address, connector } = useAccount();
+  const { data: balance } = useBalance({ address });
   const { chain } = useNetwork();
   const { connect } = useConnect({
     connector: new InjectedConnector(),
     onSuccess: (data) => {
-      signMessage(data);
+      if (!isAuthenticated) {
+        signMessage(data);
+      }
     },
     onError: (error) => onError(error),
   });
@@ -33,7 +40,6 @@ export const useSiweAuth = () => {
       signOut();
     },
   });
-  const { status } = useSession();
 
   const onError = useCallback(
     (error: any) => {
@@ -81,9 +87,17 @@ export const useSiweAuth = () => {
   return {
     loginWithSiwe: connect,
     logout,
-    isAuthenticated: isConnected && status === 'authenticated',
+    isAuthenticated: isConnected && isAuthenticated,
     connectorName: connector?.name,
     chainName: chain?.name,
+    balance,
     address,
+    addressShortFormat:
+      address &&
+      `${address?.substring(0, 4)}...${address?.substring(address.length - 4)}`,
+    connectorImageSrc:
+      CONNECTOR_ICON_MAP[connector?.name || 'default'] ||
+      CONNECTOR_ICON_MAP['default'],
+    chainImageSrc: CHAIN_ICON_MAP[chain?.name || 'Ethereum'],
   };
 };

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Box, IconButton, Menu, MenuItem, keyframes } from '@mui/material';
-import { ICONS_MAP } from './contants';
+import { CONNECTOR_ICON_MAP } from './contants';
 import { useSiweAuth } from './useSiweAuth';
 
 const pulse = keyframes`
@@ -51,14 +51,15 @@ export function ConnectorsMenu() {
         sx={{
           display: { xs: 'none', md: 'flex' },
           textTransform: 'none',
-          backgroundImage: 'linear-gradient(160deg, #0093E9 0%, #80D0C7 100%)',
+          backgroundImage:
+            'linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%)',
           border: 'none',
           color: 'white',
           position: 'relative',
           zIndex: 1,
           '::before': {
             backgroundImage:
-              'linear-gradient(160deg, #0093E9 0%, #80D0C7 100%)',
+              'linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%)',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
@@ -145,7 +146,10 @@ export function ConnectorsMenu() {
           >
             <Stack spacing={2} direction={'row'} alignItems={'center'}>
               <Image
-                src={ICONS_MAP[connector.name] || ICONS_MAP.default}
+                src={
+                  CONNECTOR_ICON_MAP[connector.name] ||
+                  CONNECTOR_ICON_MAP.default
+                }
                 width={30}
                 height={30}
                 alt={connector.name}
