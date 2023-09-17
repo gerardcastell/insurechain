@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSession } from 'next-auth/react';
-import Link from '../../components/Link';
+import { StyledLink } from '@insurechain/web/ui-elements';
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -24,7 +24,7 @@ export async function getServerSideProps(context) {
 const Dashboard = () => {
   return (
     <div>
-      <Link href="/dashboard/proposals">Proposals</Link>
+      <StyledLink href="/dashboard/proposals">Proposals</StyledLink>
     </div>
   );
 };

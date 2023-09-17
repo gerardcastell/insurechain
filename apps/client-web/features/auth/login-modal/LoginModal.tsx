@@ -5,7 +5,11 @@ import Login from '../login/Login';
 import { style } from './style';
 import Slide from '@mui/material/Slide';
 
-const LoginModal = (props: Omit<ModalProps, 'children'>) => {
+const LoginModal = (
+  props: Omit<ModalProps, 'children'> & {
+    handleClose: () => void;
+  }
+) => {
   return (
     <Modal
       {...props}
@@ -14,7 +18,7 @@ const LoginModal = (props: Omit<ModalProps, 'children'>) => {
     >
       <Slide direction="up" in={props.open} mountOnEnter unmountOnExit>
         <Box sx={style}>
-          <Login />
+          <Login handleClose={props.handleClose} />
         </Box>
       </Slide>
     </Modal>

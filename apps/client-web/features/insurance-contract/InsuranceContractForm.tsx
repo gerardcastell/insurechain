@@ -22,17 +22,19 @@ import { LoginModal } from '../auth';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { useSession } from 'next-auth/react';
+import { useSiweAuth } from '@insurechain/web/blockchain';
 
 const InsuranceContractForm = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(true);
   const { status } = useSession();
+  const { isAuthenticated } = useSiweAuth();
 
   useEffect(() => {
-    if (openLoginModal && status === 'authenticated') {
+    if (openLoginModal && isAuthenticated) {
       setOpenLoginModal(false);
     }
-  }, [status, setOpenLoginModal, openLoginModal]);
+  }, [isAuthenticated, setOpenLoginModal, openLoginModal]);
 
   const [riskObject, riskSubject, coverages, defineCoverages, switchCoverage] =
     useProposalStore((state) => [
@@ -105,7 +107,10 @@ const InsuranceContractForm = () => {
         onClickRight={navigateToProposal}
         onClickLeft={() => router.push('/dashboard')}
       />
-      <LoginModal open={openLoginModal} />
+      <LoginModal
+        open={openLoginModal}
+        handleClose={() => setOpenLoginModal(false)}
+      />
       <Grid
         maxWidth={'sm'}
         container

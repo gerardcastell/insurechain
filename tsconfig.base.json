@@ -28,6 +28,10 @@
       "@insurechain/web/blockchain": ["libs/web/blockchain/src/index.ts"],
       "@insurechain/web/blockchain/server": [
         "libs/web/blockchain/src/server.ts"
+      ],
+      "@insurechain/web/ui-elements": ["libs/web/ui-elements/src/index.ts"],
+      "@insurechain/web/ui-elements/server": [
+        "libs/web/ui-elements/src/server.ts"
       ]
     }
   },

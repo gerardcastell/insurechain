@@ -23,8 +23,7 @@ const pulse = keyframes`
 }`;
 
 export function ConnectorsMenu() {
-  const { connect, connectors, error, isLoading, pendingConnector } =
-    useConnect();
+  const { connectors, error, isLoading, pendingConnector } = useConnect();
   const { loginWithSiwe } = useSiweAuth();
 
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
