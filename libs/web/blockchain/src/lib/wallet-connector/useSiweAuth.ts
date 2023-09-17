@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { generateNonce } from '@insurechain/web/backend/data-access';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { SiweMessage } from 'siwe';
 import {
@@ -85,10 +85,18 @@ export const useSiweAuth = () => {
     toast.info('Successfully logged out');
   }, [disconnect]);
 
+  useEffect(() => {
+    if (isAuthenticated && !isConnected) {
+      connect();
+    }
+  }, [isAuthenticated, isConnected, connect]);
+
   return {
     loginWithSiwe: connect,
     logout,
-    isAuthenticated: isConnected && isAuthenticated,
+    isAuthConnected: isConnected && isAuthenticated,
+    isAuthenticated,
+    isConnected,
     connectorName: connector?.name,
     chainName: chain?.name,
     balance,

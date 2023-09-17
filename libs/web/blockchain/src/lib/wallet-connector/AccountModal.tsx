@@ -74,7 +74,7 @@ const AccountModal = ({ open, handleClose }: Props) => {
             },
           }}
         >
-          <Box>
+          <Stack direction={'row'} justifyContent={'center'} spacing={4}>
             <Tooltip title={`Connected with ${connectorName}`}>
               <Image
                 src={connectorImageSrc}
@@ -91,12 +91,12 @@ const AccountModal = ({ open, handleClose }: Props) => {
                 height={50}
               />
             </Tooltip>
-          </Box>
+          </Stack>
           <Box>
             <Tooltip title="Your address" placement="top">
               <Typography
                 display={{ xs: 'none', sm: 'block' }}
-                fontWeight={800}
+                fontWeight={600}
                 mb={1}
                 variant="h6"
               >
@@ -107,7 +107,7 @@ const AccountModal = ({ open, handleClose }: Props) => {
               <Typography
                 mb={2}
                 display={{ xs: 'block', sm: 'none' }}
-                fontWeight={800}
+                fontWeight={600}
                 variant="h6"
               >
                 {addressShortFormat}
@@ -130,7 +130,7 @@ const AccountModal = ({ open, handleClose }: Props) => {
 
           <Stack
             direction={'row'}
-            spacing={4}
+            spacing={2}
             display={'flex'}
             justifyContent={'center'}
           >

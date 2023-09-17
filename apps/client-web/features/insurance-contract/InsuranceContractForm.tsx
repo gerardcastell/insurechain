@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Grid } from '@mui/material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Step from './components/Step';
@@ -26,15 +26,15 @@ import { useSiweAuth } from '@insurechain/web/blockchain';
 
 const InsuranceContractForm = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [openLoginModal, setOpenLoginModal] = useState(true);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
   const { status } = useSession();
-  const { isAuthenticated } = useSiweAuth();
+  const { isAuthConnected } = useSiweAuth();
 
   useEffect(() => {
-    if (openLoginModal && isAuthenticated) {
+    if (openLoginModal && isAuthConnected) {
       setOpenLoginModal(false);
     }
-  }, [isAuthenticated, setOpenLoginModal, openLoginModal]);
+  }, [isAuthConnected, setOpenLoginModal, openLoginModal]);
 
   const [riskObject, riskSubject, coverages, defineCoverages, switchCoverage] =
     useProposalStore((state) => [
@@ -79,7 +79,11 @@ const InsuranceContractForm = () => {
 
   const navigateToProposal = () => {
     setOpenSuccessModal(false);
-    router.push('/dashboard/proposals');
+    router.push(
+      `/dashboard/proposals${
+        proposalData.data.id ? '/' + proposalData.data.id : ''
+      }`
+    );
   };
 
   const _saveProposal = () => {

@@ -8,8 +8,10 @@ import {
   Button,
   Container,
   Divider,
+  Fade,
   Grid,
   Paper,
+  Slide,
   Stack,
   SxProps,
   Theme,
@@ -28,7 +30,8 @@ import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import PurchaseButton from '../../../../features/proposal/purchase-button/PurchaseButton';
-
+import { StyledLink } from '@insurechain/web/ui-elements';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 const DataPresenter = ({
   title,
   value,
@@ -111,176 +114,202 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
   };
   return (
     <Container maxWidth="md" sx={{ marginY: 4 }}>
-      <Paper component={Box} padding={2}>
-        <Stack spacing={3} direction="column">
-          <Typography fontWeight={500}>Proposal ID: {proposal.id}</Typography>
-          <Grid container rowGap={1}>
-            <Grid item xs={12} display={'flex'} alignItems={'flex-end'}>
-              <Box mr={1}>
-                <DirectionsCarOutlinedIcon fontSize="small" />
-              </Box>
-              <Typography variant="body2" fontStyle={'oblique'}>
-                Risk Object
+      <StyledLink
+        textTransform={'capitalize'}
+        color={'primary'}
+        href="/dashboard/proposals"
+      >
+        <Stack direction={'row'} spacing={1}>
+          <ArrowBackIcon fontSize="small" />
+          <Typography variant="body2">Back to proposals</Typography>
+        </Stack>
+      </StyledLink>
+      <Slide direction="up" in={true}>
+        <Box sx={{ marginY: 4 }}>
+          <Paper component={Box} padding={2}>
+            <Stack spacing={3} direction="column">
+              <Typography fontWeight={500}>
+                Proposal ID: {proposal.id}
               </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <DataPresenter title="Maker & Model" value={riskObject} />
-            </Grid>
-            <Grid item xs={4} sm={2}>
-              <DataPresenter title="Plate" value={proposal.riskObject.plate} />
-            </Grid>
-            <Grid item xs={4} sm={2}>
-              <DataPresenter
-                title="Fuel Type"
-                value={proposal.riskObject.fuelType}
-                sx={{ textTransform: 'capitalize' }}
-              />
-            </Grid>
-            <Grid item xs={2} sm={1}>
-              <DataPresenter
-                title="Power"
-                value={proposal.riskObject.power.toString()}
-              />
-            </Grid>
-            <Grid item xs={2} sm={1}>
-              <DataPresenter
-                title="Doors"
-                value={proposal.riskObject.numberDoors.toString()}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <DataPresenter
-                title="Version"
-                value={proposal.riskObject.version}
-              />
-            </Grid>
-            <Grid item xs={4} sm={4}>
-              <DataPresenter
-                title="Parking"
-                value={PARKING_TYPE[proposal.riskObject.parking]}
-              />
-            </Grid>
-            <Grid item xs={4} sm={2}>
-              <DataPresenter
-                title="Kms per year"
-                value={proposal.riskObject.kmsYear.toString()}
-              />
-            </Grid>
-            <Grid item xs={4} sm={2}>
-              <DataPresenter
-                title="Purchase date"
-                value={purchaseDate.toLocaleDateString('en-GB')}
-              />
-            </Grid>
-          </Grid>
-          <Divider />
-          <Grid container rowGap={1}>
-            <Grid item xs={12} display={'flex'} alignItems={'flex-end'}>
-              <Box mr={1}>
-                <EmojiPeopleIcon fontSize="small" />
-              </Box>
-              <Typography variant="body2" fontStyle={'oblique'}>
-                Risk Subject
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <DataPresenter title="Name" value={proposal.riskSubject.name} />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <DataPresenter
-                title="Document Number"
-                value={proposal.riskSubject.documentNumber}
-              />
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <DataPresenter
-                title="Birth date"
-                value={new Date(
-                  proposal.riskSubject.birthDate
-                ).toLocaleDateString('en-GB')}
-              />
-            </Grid>
-          </Grid>
-          <Divider />
-          <Grid container>
-            <Grid
-              item
-              xs={6}
-              marginBottom={1}
-              display={'flex'}
-              alignItems={'flex-end'}
-            >
-              <Box mr={1}>
-                <VerifiedUserIcon fontSize="small" />
-              </Box>
-              <Typography variant="body2" fontStyle={'oblique'}>
-                Coverages
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography
-                variant="body2"
-                fontStyle={'oblique'}
-                textAlign={'right'}
-              >
-                Monthly premium
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography
-                variant="body2"
-                fontStyle={'oblique'}
-                textAlign={'right'}
-              >
-                Ethers
-              </Typography>
-            </Grid>
-
-            {proposal.coverages.map((coverage) => (
-              <React.Fragment key={coverage.id}>
-                <Grid item xs={6}>
-                  <PopoverOnHover
-                    text={coverage.title}
-                    popoverText={coverage.description}
+              <Grid container rowGap={1}>
+                <Grid item xs={12} display={'flex'} alignItems={'flex-end'}>
+                  <Box mr={1}>
+                    <DirectionsCarOutlinedIcon fontSize="small" />
+                  </Box>
+                  <Typography variant="body2" fontStyle={'oblique'}>
+                    Risk Object
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <DataPresenter title="Maker & Model" value={riskObject} />
+                </Grid>
+                <Grid item xs={4} sm={2}>
+                  <DataPresenter
+                    title="Plate"
+                    value={proposal.riskObject.plate}
                   />
+                </Grid>
+                <Grid item xs={4} sm={2}>
+                  <DataPresenter
+                    title="Fuel Type"
+                    value={proposal.riskObject.fuelType}
+                    sx={{ textTransform: 'capitalize' }}
+                  />
+                </Grid>
+                <Grid item xs={2} sm={1}>
+                  <DataPresenter
+                    title="Power"
+                    value={proposal.riskObject.power.toString()}
+                  />
+                </Grid>
+                <Grid item xs={2} sm={1}>
+                  <DataPresenter
+                    title="Doors"
+                    value={proposal.riskObject.numberDoors.toString()}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <DataPresenter
+                    title="Version"
+                    value={proposal.riskObject.version}
+                  />
+                </Grid>
+                <Grid item xs={4} sm={4}>
+                  <DataPresenter
+                    title="Parking"
+                    value={PARKING_TYPE[proposal.riskObject.parking]}
+                  />
+                </Grid>
+                <Grid item xs={4} sm={2}>
+                  <DataPresenter
+                    title="Kms per year"
+                    value={proposal.riskObject.kmsYear.toString()}
+                  />
+                </Grid>
+                <Grid item xs={4} sm={2}>
+                  <DataPresenter
+                    title="Purchase date"
+                    value={purchaseDate.toLocaleDateString('en-GB')}
+                  />
+                </Grid>
+              </Grid>
+              <Divider />
+              <Grid container rowGap={1}>
+                <Grid item xs={12} display={'flex'} alignItems={'flex-end'}>
+                  <Box mr={1}>
+                    <EmojiPeopleIcon fontSize="small" />
+                  </Box>
+                  <Typography variant="body2" fontStyle={'oblique'}>
+                    Risk Subject
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <DataPresenter
+                    title="Name"
+                    value={proposal.riskSubject.name}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={4}>
+                  <DataPresenter
+                    title="Document Number"
+                    value={proposal.riskSubject.documentNumber}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={4}>
+                  <DataPresenter
+                    title="Birth date"
+                    value={new Date(
+                      proposal.riskSubject.birthDate
+                    ).toLocaleDateString('en-GB')}
+                  />
+                </Grid>
+              </Grid>
+              <Divider />
+              <Grid container>
+                <Grid
+                  item
+                  xs={6}
+                  marginBottom={1}
+                  display={'flex'}
+                  alignItems={'flex-end'}
+                >
+                  <Box mr={1}>
+                    <VerifiedUserIcon fontSize="small" />
+                  </Box>
+                  <Typography variant="body2" fontStyle={'oblique'}>
+                    Coverages
+                  </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <Typography
+                    variant="body2"
+                    fontStyle={'oblique'}
+                    textAlign={'right'}
+                  >
+                    Monthly premium
+                  </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <Typography
+                    variant="body2"
+                    fontStyle={'oblique'}
+                    textAlign={'right'}
+                  >
+                    Ethers
+                  </Typography>
+                </Grid>
+
+                {proposal.coverages.map((coverage) => (
+                  <React.Fragment key={coverage.id}>
+                    <Grid item xs={6}>
+                      <PopoverOnHover
+                        text={coverage.title}
+                        popoverText={coverage.description}
+                      />
+                    </Grid>
+                    <Grid item xs={3} sm={2}>
+                      <Typography variant="body1" textAlign={'right'}>
+                        {coverage.monthlyPremium.toLocaleString('es-ES')}€
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Typography variant="body1" textAlign={'right'}>
+                        {(coverage.monthlyPremium / ethPrice).toFixed(8)} ETH
+                      </Typography>
+                    </Grid>
+                  </React.Fragment>
+                ))}
+              </Grid>
+              <Divider />
+              <Grid container>
+                <Grid item xs={6} display={'flex'} alignItems={'flex-end'}>
+                  <Box mr={1}>
+                    <PaymentsIcon fontSize="small" />
+                  </Box>
+                  <Typography variant="body2">Total monthly premium</Typography>
                 </Grid>
                 <Grid item xs={3} sm={2}>
                   <Typography variant="body1" textAlign={'right'}>
-                    {coverage.monthlyPremium.toLocaleString('es-ES')}€
+                    {monthlyPremium.toLocaleString('es-ES')}€
                   </Typography>
                 </Grid>
                 <Grid item xs={3}>
-                  <Typography variant="body1" textAlign={'right'}>
-                    {(coverage.monthlyPremium / ethPrice).toFixed(8)} ETH
+                  <Typography
+                    variant="body1"
+                    fontWeight={600}
+                    textAlign={'right'}
+                  >
+                    {monthlyPremiumEth.toFixed(8)} ETH
                   </Typography>
                 </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
-          <Divider />
-          <Grid container>
-            <Grid item xs={6} display={'flex'} alignItems={'flex-end'}>
-              <Box mr={1}>
-                <PaymentsIcon fontSize="small" />
-              </Box>
-              <Typography variant="body2">Total monthly premium</Typography>
-            </Grid>
-            <Grid item xs={3} sm={2}>
-              <Typography variant="body1" textAlign={'right'}>
-                {monthlyPremium.toLocaleString('es-ES')}€
-              </Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="body1" fontWeight={600} textAlign={'right'}>
-                {monthlyPremiumEth.toFixed(8)} ETH
-              </Typography>
-            </Grid>
-          </Grid>
-        </Stack>
-      </Paper>
-      <Box display={'flex'} justifyContent={'center'} my={3}>
-        <PurchaseButton onClick={onClickPurchaseProposal} />
-      </Box>
+              </Grid>
+            </Stack>
+          </Paper>
+          <Box display={'flex'} justifyContent={'center'} my={3}>
+            <PurchaseButton onClick={onClickPurchaseProposal} />
+          </Box>
+        </Box>
+      </Slide>
     </Container>
   );
 };

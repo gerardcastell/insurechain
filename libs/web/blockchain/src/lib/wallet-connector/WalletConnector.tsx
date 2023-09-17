@@ -6,7 +6,7 @@ import ConnectedSection from './ConnectedSection';
 import { useSiweAuth } from './useSiweAuth';
 
 export function WalletConnector() {
-  const { isAuthenticated } = useSiweAuth();
+  const { isAuthConnected } = useSiweAuth();
   const [isClientSide, setIsClientSide] = useState(false);
   useEffect(() => {
     if (typeof window !== 'undefined' && 'ethereum' in window) {
@@ -20,7 +20,7 @@ export function WalletConnector() {
   }
   return (
     <Stack spacing={2} direction={'row'}>
-      {isAuthenticated ? <ConnectedSection /> : <ConnectorsMenu />}
+      {isAuthConnected ? <ConnectedSection /> : <ConnectorsMenu />}
     </Stack>
   );
 }

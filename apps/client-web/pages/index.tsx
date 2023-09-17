@@ -1,5 +1,8 @@
+import { useSiweAuth } from '@insurechain/web/blockchain';
 import { Grid, Typography } from '@mui/material';
 export function Index() {
+  const { isAuthConnected, isAuthenticated, isConnected } = useSiweAuth();
+  console.log({ isAuthConnected, isAuthenticated, isConnected });
   return (
     <Grid container spacing={4} justifyContent={'center'}>
       <Grid item>
