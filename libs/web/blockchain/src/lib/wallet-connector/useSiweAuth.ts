@@ -99,6 +99,7 @@ export const useSiweAuth = () => {
     isConnected,
     connectorName: connector?.name,
     chainName: chain?.name,
+    chainId: chain?.id,
     balance,
     address,
     addressShortFormat:

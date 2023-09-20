@@ -17,7 +17,7 @@ import {
   Theme,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 // import PopoverOnHover from './PopoverOnHover';
 import { useQuery } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth/next';
@@ -32,6 +32,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import PurchaseButton from '../../../../features/proposal/purchase-button/PurchaseButton';
 import { StyledLink } from '@insurechain/web/ui-elements';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useFactoryContract } from '@insurechain/web/blockchain';
 const DataPresenter = ({
   title,
   value,
@@ -91,10 +92,16 @@ export const getServerSideProps = async ({ req, res, params }) => {
 };
 
 const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
+  const currentDate = new Date();
+  currentDate.setMonth(currentDate.getMonth() + 2);
+  const unixTimestamp = Math.floor(currentDate.getTime() / 1000); // Convert to seconds
+  const { write, data, isLoading, isSuccess } =
+    useFactoryContract(unixTimestamp);
+  console.log({ data, isLoading, isSuccess });
   const { data: ethPrice } = useQuery({
     queryKey: ['getCurrency'],
     queryFn: () => getSellPrice(),
-    cacheTime: 1000 * 60,
+    staleTime: 1000 * 60,
   });
   const purchaseDate = new Date(proposal.riskObject.purchaseDate);
   const riskObject = `${proposal.riskObject.maker} ${proposal.riskObject.model} ${proposal.riskObject.version}`;
@@ -110,7 +117,7 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
   );
   const monthlyPremiumEth = monthlyPremium / ethPrice;
   const onClickPurchaseProposal = async () => {
-    console.log('purchase proposal');
+    write?.();
   };
   return (
     <Container maxWidth="md" sx={{ marginY: 4 }}>
@@ -306,8 +313,11 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
             </Stack>
           </Paper>
           <Box display={'flex'} justifyContent={'center'} my={3}>
-            <PurchaseButton onClick={onClickPurchaseProposal} />
+            <PurchaseButton onClick={() => onClickPurchaseProposal()} />
           </Box>
+          <Typography>
+            Factory address: {process.env.NEXT_PUBLIC_FACTORY_CONTRACT_ADDRESS}
+          </Typography>
         </Box>
       </Slide>
     </Container>
