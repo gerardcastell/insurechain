@@ -8,8 +8,9 @@ import {
   getProposals,
 } from '@insurechain/web/backend/data-access';
 import { getServerSession } from 'next-auth/next';
-import { Box, Fade, Stack, Typography } from '@mui/material';
+import { Box, Container, Fade, Stack, Typography } from '@mui/material';
 import EmptyState from '../../../features/proposal/empty-state';
+import { BackLink } from '@insurechain/web/ui-elements';
 
 export const getServerSideProps: GetServerSideProps<{
   proposals: ProposalDto[];
@@ -33,47 +34,44 @@ const Proposals = ({
   proposals,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <Grid
-      container
-      spacing={0}
-      direction="column"
-      marginY={5}
-      marginX={'auto'}
-      maxWidth="md"
-    >
-      <Grid item xs={3} marginX={3}>
-        <Typography mb={4} variant="h5">
-          Your proposals
-        </Typography>
+    <Container maxWidth={'lg'} sx={{ my: 4 }}>
+      <BackLink text="Back to dashboard" link="/dashboard" />
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        marginY={3}
+        marginX={'auto'}
+        maxWidth="md"
+      >
+        <Grid item xs={3} marginX={3}>
+          <Typography mb={4} variant="h5">
+            Your proposals
+          </Typography>
 
-        {proposals.length ? (
-          <Stack
-            spacing={2}
-            direction="row"
-            useFlexGap
-            flexWrap="wrap"
-            justifyContent="space-between"
-          >
-            {proposals.map((proposal, index) => (
-              <Fade
-                in={true}
-                key={proposal.id}
-                style={{
-                  transitionDelay: `${index * 400}ms`,
-                  transitionDuration: '500ms',
-                }}
-              >
-                <Box width={{ xs: '100%', sm: '320px', md: '270px' }}>
-                  <ProposalCard proposal={proposal} />
-                </Box>
-              </Fade>
-            ))}
-          </Stack>
-        ) : (
-          <EmptyState />
-        )}
+          {proposals.length ? (
+            <Stack spacing={2} direction="row" useFlexGap flexWrap="wrap">
+              {proposals.map((proposal, index) => (
+                <Fade
+                  in={true}
+                  key={proposal.id}
+                  style={{
+                    transitionDelay: `${index * 400}ms`,
+                    transitionDuration: '500ms',
+                  }}
+                >
+                  <Box width={{ xs: '100%', sm: '320px', md: '270px' }}>
+                    <ProposalCard proposal={proposal} />
+                  </Box>
+                </Fade>
+              ))}
+            </Stack>
+          ) : (
+            <EmptyState />
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+    </Container>
   );
 };
 

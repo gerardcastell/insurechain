@@ -5,10 +5,8 @@ import {
 } from '@insurechain/web/backend/data-access';
 import {
   Box,
-  Button,
   Container,
   Divider,
-  Fade,
   Grid,
   Paper,
   Slide,
@@ -17,7 +15,7 @@ import {
   Theme,
   Typography,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 // import PopoverOnHover from './PopoverOnHover';
 import { useQuery } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth/next';
@@ -30,8 +28,7 @@ import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import PurchaseButton from '../../../../features/proposal/purchase-button/PurchaseButton';
-import { StyledLink } from '@insurechain/web/ui-elements';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { BackLink } from '@insurechain/web/ui-elements';
 import { useFactoryContract } from '@insurechain/web/blockchain';
 const DataPresenter = ({
   title,
@@ -121,16 +118,7 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
   };
   return (
     <Container maxWidth="md" sx={{ marginY: 4 }}>
-      <StyledLink
-        textTransform={'capitalize'}
-        color={'primary'}
-        href="/dashboard/proposals"
-      >
-        <Stack direction={'row'} spacing={1}>
-          <ArrowBackIcon fontSize="small" />
-          <Typography variant="body2">Back to proposals</Typography>
-        </Stack>
-      </StyledLink>
+      <BackLink text="Back to proposals" link="/dashboard/proposals" />
       <Slide direction="up" in={true}>
         <Box sx={{ marginY: 4 }}>
           <Paper component={Box} padding={2}>
