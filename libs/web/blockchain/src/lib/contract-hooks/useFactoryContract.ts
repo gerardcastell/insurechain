@@ -1,0 +1,73 @@
+import { ProposalDto } from '@insurechain/web/backend/data-access';
+import { ethers } from 'ethers';
+import { useMemo } from 'react';
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from 'wagmi';
+import ABI from '../contracts/Factory.sol/Factory.json';
+import { useSiweAuth } from '../wallet-connector/useSiweAuth';
+import { useEtherUtils } from './useEtherUtils';
+
+export const useFactoryContract = (
+  monthAmount: number,
+  proposalData: ProposalDto
+) => {
+  const address = process.env.NEXT_PUBLIC_FACTORY_CONTRACT_ADDRESS as any;
+  const { chainId } = useSiweAuth();
+  const { convertEurosToEthers, ethPrice } = useEtherUtils();
+  const date = useMemo(() => {
+    const currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() + monthAmount);
+    return Math.floor(currentDate.getTime() / 1000);
+  }, [monthAmount]);
+  const proposalStr = useMemo(
+    () => JSON.stringify(proposalData),
+    [proposalData]
+  );
+
+  const ethersValue = useMemo(
+    () =>
+      convertEurosToEthers(
+        monthAmount *
+          proposalData.coverages.reduce(
+            (acc, curr) => acc + curr.monthlyPremium,
+            0
+          )
+      ).toString(),
+    [proposalData, monthAmount, convertEurosToEthers]
+  );
+
+  console.log({
+    ethersValue,
+    totalAmount: proposalData.coverages.reduce(
+      (acc, curr) => acc + curr.monthlyPremium,
+      0
+    ),
+    monthAmount,
+    ethPrice,
+  });
+  const { config } = usePrepareContractWrite({
+    address,
+    chainId,
+    abi: ABI.abi,
+    functionName: 'createPolicy',
+    args: [1, 'proposalStr', date],
+    value: ethers.parseEther(ethersValue),
+  });
+
+  const { write, data: contractData } = useContractWrite(config);
+  const { data, isLoading, isSuccess } = useWaitForTransaction({
+    hash: contractData?.hash,
+  });
+
+  // const { data: getPolicies } = useContractRead({
+  //   address,
+  //   abi: ABI.abi,
+  //   functionName: 'getUserPolicies',
+  //   args: [1],
+  // });
+
+  return { write, data, isLoading, isSuccess };
+};

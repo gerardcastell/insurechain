@@ -1,6 +1,6 @@
 import { useContractRead } from 'wagmi';
-import ABI from './contracts/Policy.sol/Policy.json';
-import { useSiweAuth } from './wallet-connector';
+import ABI from '../contracts/Policy.sol/Policy.json';
+import { useSiweAuth } from '../wallet-connector';
 
 export const usePolicyContract = (address: `0x${string}`) => {
   const { chainId } = useSiweAuth();

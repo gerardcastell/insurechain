@@ -10,13 +10,13 @@ import {
   Grid,
   Paper,
   Slide,
+  Slider,
   Stack,
   SxProps,
   Theme,
   Typography,
 } from '@mui/material';
-import React from 'react';
-// import PopoverOnHover from './PopoverOnHover';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../api/auth/[...nextauth]';
@@ -29,7 +29,8 @@ import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import PurchaseButton from '../../../../features/proposal/purchase-button/PurchaseButton';
 import { BackLink } from '@insurechain/web/ui-elements';
-import { useFactoryContract } from '@insurechain/web/blockchain';
+import { useEtherUtils, useFactoryContract } from '@insurechain/web/blockchain';
+
 const DataPresenter = ({
   title,
   value,
@@ -88,18 +89,46 @@ export const getServerSideProps = async ({ req, res, params }) => {
   }
 };
 
+const marks = [
+  {
+    value: 0,
+    label: '1 month',
+  },
+  {
+    value: 3,
+    label: '3 months',
+  },
+  {
+    value: 6,
+    label: '6 months',
+  },
+  {
+    value: 9,
+    label: '9 months',
+  },
+  {
+    value: 12,
+    label: '12 months',
+  },
+];
+
+const DEFAULT_MONTH_AMOUNT = 3;
+
+function valuetext(value: number) {
+  return value === 1 ? `${value} month` : `${value} months`;
+}
+
 const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
-  const currentDate = new Date();
-  currentDate.setMonth(currentDate.getMonth() + 2);
-  const unixTimestamp = Math.floor(currentDate.getTime() / 1000); // Convert to seconds
-  const { write, data, isLoading, isSuccess } =
-    useFactoryContract(unixTimestamp);
+  const [monthAmount, setMonthAmount] = useState<number>(DEFAULT_MONTH_AMOUNT);
+
+  const { write, data, isLoading, isSuccess } = useFactoryContract(
+    monthAmount,
+    proposal
+  );
   console.log({ data, isLoading, isSuccess });
-  const { data: ethPrice } = useQuery({
-    queryKey: ['getCurrency'],
-    queryFn: () => getSellPrice(),
-    staleTime: 1000 * 60,
-  });
+
+  const { convertEurosToEthers } = useEtherUtils();
+
   const purchaseDate = new Date(proposal.riskObject.purchaseDate);
   const riskObject = `${proposal.riskObject.maker} ${proposal.riskObject.model} ${proposal.riskObject.version}`;
   const PARKING_TYPE: Record<ParkingType, string> = {
@@ -108,19 +137,32 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
     [ParkingType.collective_car_park]: 'Unguarded collective garage',
     [ParkingType.collective_car_park_surveillance]: 'Guarded Collective garage',
   } as const;
+
   const monthlyPremium = proposal.coverages.reduce(
     (acc, coverage) => acc + coverage.monthlyPremium,
     0
   );
-  const monthlyPremiumEth = monthlyPremium / ethPrice;
+  const monthlyPremiumEth = convertEurosToEthers(monthlyPremium);
+
   const onClickPurchaseProposal = async () => {
     write?.();
   };
+
+  const handleChange = (event: Event, newValue: number | number[]) => {
+    setMonthAmount(newValue as number);
+  };
+
+  const getDate = (monthAmount: number): Date => {
+    const date = new Date();
+    date.setMonth(date.getMonth() + monthAmount);
+    return date;
+  };
+
   return (
     <Container maxWidth="md" sx={{ marginY: 4 }}>
       <BackLink text="Back to proposals" link="/dashboard/proposals" />
       <Slide direction="up" in={true}>
-        <Box sx={{ marginY: 4 }}>
+        <Stack spacing={4} sx={{ marginY: 4 }}>
           <Paper component={Box} padding={2}>
             <Stack spacing={3} direction="column">
               <Typography fontWeight={500}>
@@ -300,13 +342,30 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
               </Grid>
             </Stack>
           </Paper>
-          <Box display={'flex'} justifyContent={'center'} my={3}>
+          <Stack spacing={2} mt={2}>
+            <Typography variant="h6" textAlign={'center'}>
+              How many month do you want to be covered?
+            </Typography>
+            <Typography variant="body2" textAlign={'center'}>
+              You will be covered until{' '}
+              {getDate(monthAmount).toLocaleDateString('en-GB')}
+            </Typography>
+            <Slider
+              aria-label="Month amount"
+              defaultValue={DEFAULT_MONTH_AMOUNT}
+              getAriaValueText={valuetext}
+              valueLabelDisplay="auto"
+              step={1}
+              marks={marks}
+              min={1}
+              max={12}
+              onChange={handleChange}
+            />
+          </Stack>
+          <Box display={'flex'} justifyContent={'center'} pt={4}>
             <PurchaseButton onClick={() => onClickPurchaseProposal()} />
           </Box>
-          <Typography>
-            Factory address: {process.env.NEXT_PUBLIC_FACTORY_CONTRACT_ADDRESS}
-          </Typography>
-        </Box>
+        </Stack>
       </Slide>
     </Container>
   );
