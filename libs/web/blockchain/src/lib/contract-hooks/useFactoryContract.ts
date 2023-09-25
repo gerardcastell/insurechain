@@ -16,7 +16,7 @@ export const useFactoryContract = (
 ) => {
   const address = process.env.NEXT_PUBLIC_FACTORY_CONTRACT_ADDRESS as any;
   const { chainId } = useSiweAuth();
-  const { convertEurosToEthers, ethPrice } = useEtherUtils();
+  const { convertEurosToEthers } = useEtherUtils();
   const date = useMemo(() => {
     const currentDate = new Date();
     currentDate.setMonth(currentDate.getMonth() + monthAmount);
@@ -39,21 +39,12 @@ export const useFactoryContract = (
     [proposalData, monthAmount, convertEurosToEthers]
   );
 
-  console.log({
-    ethersValue,
-    totalAmount: proposalData.coverages.reduce(
-      (acc, curr) => acc + curr.monthlyPremium,
-      0
-    ),
-    monthAmount,
-    ethPrice,
-  });
   const { config } = usePrepareContractWrite({
     address,
     chainId,
     abi: ABI.abi,
     functionName: 'createPolicy',
-    args: [1, 'proposalStr', date],
+    args: [1, proposalStr, date],
     value: ethers.parseEther(ethersValue),
   });
 
@@ -61,13 +52,6 @@ export const useFactoryContract = (
   const { data, isLoading, isSuccess } = useWaitForTransaction({
     hash: contractData?.hash,
   });
-
-  // const { data: getPolicies } = useContractRead({
-  //   address,
-  //   abi: ABI.abi,
-  //   functionName: 'getUserPolicies',
-  //   args: [1],
-  // });
 
   return { write, data, isLoading, isSuccess };
 };

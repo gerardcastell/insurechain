@@ -8,7 +8,7 @@ export const useEtherUtils = () => {
     staleTime: 1000 * 60,
   });
 
-  const convertEurosToEthers = (amount: number) => {
+  const convertEurosToEthers = (amount: number): number => {
     return ethPrice ? amount / ethPrice : amount / 1500;
   };
 

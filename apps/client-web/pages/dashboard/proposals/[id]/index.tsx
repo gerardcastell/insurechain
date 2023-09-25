@@ -1,8 +1,4 @@
-import {
-  ProposalDto,
-  getProposal,
-  getSellPrice,
-} from '@insurechain/web/backend/data-access';
+import { ProposalDto, getProposal } from '@insurechain/web/backend/data-access';
 import {
   Box,
   Container,
@@ -17,11 +13,9 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../api/auth/[...nextauth]';
 import PopoverOnHover from '../../../../features/proposal/PopoverOnHover';
-import { ParkingType } from '@prisma/client';
 import { grey } from '@mui/material/colors';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
@@ -30,7 +24,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import PurchaseButton from '../../../../features/proposal/purchase-button/PurchaseButton';
 import { BackLink } from '@insurechain/web/ui-elements';
 import { useEtherUtils, useFactoryContract } from '@insurechain/web/blockchain';
-
+import { PARKING_TYPE } from '@insurechain/web/constants';
 const DataPresenter = ({
   title,
   value,
@@ -91,7 +85,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
 
 const marks = [
   {
-    value: 0,
+    value: 1,
     label: '1 month',
   },
   {
@@ -131,18 +125,13 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
 
   const purchaseDate = new Date(proposal.riskObject.purchaseDate);
   const riskObject = `${proposal.riskObject.maker} ${proposal.riskObject.model} ${proposal.riskObject.version}`;
-  const PARKING_TYPE: Record<ParkingType, string> = {
-    [ParkingType.garage]: 'Individual garage',
-    [ParkingType.street]: 'Street',
-    [ParkingType.collective_car_park]: 'Unguarded collective garage',
-    [ParkingType.collective_car_park_surveillance]: 'Guarded Collective garage',
-  } as const;
 
   const monthlyPremium = proposal.coverages.reduce(
     (acc, coverage) => acc + coverage.monthlyPremium,
     0
   );
   const monthlyPremiumEth = convertEurosToEthers(monthlyPremium);
+  const totalPremiumEth = monthlyPremiumEth * monthAmount;
 
   const onClickPurchaseProposal = async () => {
     write?.();
@@ -311,7 +300,10 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
                     </Grid>
                     <Grid item xs={3}>
                       <Typography variant="body1" textAlign={'right'}>
-                        {(coverage.monthlyPremium / ethPrice).toFixed(8)} ETH
+                        {convertEurosToEthers(coverage.monthlyPremium).toFixed(
+                          8
+                        )}{' '}
+                        ETH
                       </Typography>
                     </Grid>
                   </React.Fragment>
@@ -336,7 +328,7 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
                     fontWeight={600}
                     textAlign={'right'}
                   >
-                    {monthlyPremiumEth.toFixed(8)} ETH
+                    {totalPremiumEth.toFixed(8)} ETH
                   </Typography>
                 </Grid>
               </Grid>
@@ -362,8 +354,19 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
               onChange={handleChange}
             />
           </Stack>
-          <Box display={'flex'} justifyContent={'center'} pt={4}>
-            <PurchaseButton onClick={() => onClickPurchaseProposal()} />
+          <Box display={'flex'} justifyContent={'center'}>
+            <Stack
+              direction={'column'}
+              pt={3}
+              spacing={2}
+              maxWidth={'sm'}
+              sx={{ margin: '0 auto' }}
+            >
+              <Typography textAlign={'center'}>
+                You will pay {totalPremiumEth.toFixed(8)} ETH
+              </Typography>
+              <PurchaseButton onClick={() => onClickPurchaseProposal()} />
+            </Stack>
           </Box>
         </Stack>
       </Slide>

@@ -29,6 +29,8 @@
       "@insurechain/web/blockchain/server": [
         "libs/web/blockchain/src/server.ts"
       ],
+      "@insurechain/web/constants": ["libs/web/constants/src/index.ts"],
+      "@insurechain/web/constants/server": ["libs/web/constants/src/server.ts"],
       "@insurechain/web/ui-elements": ["libs/web/ui-elements/src/index.ts"],
       "@insurechain/web/ui-elements/server": [
         "libs/web/ui-elements/src/server.ts"
