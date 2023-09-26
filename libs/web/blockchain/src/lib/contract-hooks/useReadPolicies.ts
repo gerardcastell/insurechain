@@ -12,7 +12,6 @@ export const useReadPolicies = () => {
     address,
     abi: ABI.abi,
     functionName: 'getUserPolicies',
-    args: [1],
   });
   return { policiesAddresses, isError, isFetching };
 };

@@ -6,18 +6,21 @@ type Props = {
   address: `0x${string}`;
 };
 export const PolicyPreview = ({ address }: Props) => {
-  const { ownerAddress, isError, isFetching } = usePolicyContract(address);
-  if (isError) {
+  const { data, isError, isFetching } = usePolicyContract(address);
+  if (isError || !data) {
     return <Typography color="red">Error fetching owner address</Typography>;
   }
   if (isFetching) {
     <Slider />;
-
-    console.log(ownerAddress);
   }
+
+  const [{ result: owner }, { result: endTime }] = data;
+  const datetime: number = 1000 * Number(endTime);
+  const date = new Date(datetime);
   return (
     <Box>
-      <Typography>Owner Address: {ownerAddress.toString()}</Typography>
+      <Typography>Owner Address: {owner}</Typography>
+      <Typography>End time: {date.toLocaleDateString('en-GB')}</Typography>
     </Box>
   );
 };

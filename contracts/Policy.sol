@@ -12,7 +12,7 @@ struct Claim {
 }
 
 
-contract Policy {   uint policyHolder;
+contract Policy {
     string riskObject;
     uint256 premium;
     address owner;
@@ -50,10 +50,9 @@ contract Policy {   uint policyHolder;
     }
 
 
-    constructor(uint _policyholderId, string memory _riskObject, uint256 _premium, address _owner, uint256 _endDate){
+    constructor(string memory _riskObject, uint256 _premium, address _owner, uint256 _endDate){
         require(_endDate > block.timestamp, "Renewal date has to be upcoming");
         require(_premium > 0 , "Required a premium to activate the policy");
-        policyHolder = _policyholderId;
         riskObject = _riskObject;
         premium = _premium;
         owner = _owner;

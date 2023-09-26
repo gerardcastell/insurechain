@@ -21,18 +21,20 @@ const Policies = () => {
     isError: boolean;
     isFetching: boolean;
   };
-  if (isError) {
+
+  console.log(policiesAddresses);
+  if (isError || policiesAddresses) {
     <Typography color="red">
       Error ocurred while fetching user policies
     </Typography>;
   }
 
-  if (isFetching) {
+  if (isFetching || !policiesAddresses) {
     <Slider />;
   }
   return (
     <Container maxWidth={'md'}>
-      {policiesAddresses.map((address) => (
+      {policiesAddresses?.map((address) => (
         <PolicyPreview key={address} address={address} />
       ))}
     </Container>

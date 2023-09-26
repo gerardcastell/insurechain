@@ -44,7 +44,7 @@ export const useFactoryContract = (
     chainId,
     abi: ABI.abi,
     functionName: 'createPolicy',
-    args: [1, proposalStr, date],
+    args: [proposalStr, date],
     value: ethers.parseEther(ethersValue),
   });
 

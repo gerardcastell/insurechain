@@ -7,7 +7,7 @@ import "./Policy.sol";
 contract Factory {
   address payable insuranceAddress;
     uint256 minimumBudget = 0.999 ether;
-    mapping(uint256 => address[]) policiesMapping;
+    mapping(address => address[]) policiesMapping;
     mapping(address => bool) private claimEvaluators;
 
     constructor() payable {
@@ -36,17 +36,17 @@ contract Factory {
         return address(this).balance;
     }
 
-    function createPolicy(uint policyholder, string memory riskObject, uint endDate) public payable returns (address){
+    function createPolicy(string memory riskObject, uint endDate) public payable returns (address){
         require(msg.value > 0, "To create a policy you must pay a premium.");
-        Policy policyContract = new Policy(policyholder, riskObject, msg.value, msg.sender, endDate);
+        Policy policyContract = new Policy( riskObject, msg.value, msg.sender, endDate);
         address policyAddress = address(policyContract);
-        uint holderId = policyholder;
+        address holderId = msg.sender;
         policiesMapping[holderId].push(policyAddress);
         return policyAddress;
     }
 
-    function getUserPolicies(uint userId) public view returns (address[] memory){
-        address[] memory addresses = policiesMapping[userId];
+    function getUserPolicies() public view returns (address[] memory){
+        address[] memory addresses = policiesMapping[msg.sender];
         return addresses;
     }
 
@@ -86,8 +86,8 @@ contract Factory {
         return claimEvaluators[checkAddress];
     }
 
-    function getHolderPolicies(uint holderId) public view returns (address[] memory){
-        return policiesMapping[holderId];
+    function getHolderPolicies() public view returns (address[] memory){
+        return policiesMapping[msg.sender];
     }
 }
 
