@@ -1,14 +1,18 @@
 import { useContractRead } from 'wagmi';
-import ABI from '../contracts/Policy.sol/Policy.json';
+import ABI from '../contracts/Factory.sol/Factory.json';
 
 export const useReadPolicies = () => {
   const address = process.env
     .NEXT_PUBLIC_FACTORY_CONTRACT_ADDRESS as `0x${string}`;
-  const { data: getPolicies } = useContractRead({
+  const {
+    data: policiesAddresses,
+    isFetching,
+    isError,
+  } = useContractRead({
     address,
     abi: ABI.abi,
     functionName: 'getUserPolicies',
     args: [1],
   });
-  return { getPolicies };
+  return { policiesAddresses, isError, isFetching };
 };

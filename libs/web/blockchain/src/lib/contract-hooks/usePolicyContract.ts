@@ -4,7 +4,11 @@ import { useSiweAuth } from '../wallet-connector';
 
 export const usePolicyContract = (address: `0x${string}`) => {
   const { chainId } = useSiweAuth();
-  const { data: ownerAddress } = useContractRead({
+  const {
+    data: ownerAddress,
+    isError,
+    isFetching,
+  } = useContractRead({
     address,
     chainId,
     abi: ABI.abi,
@@ -12,5 +16,5 @@ export const usePolicyContract = (address: `0x${string}`) => {
     args: [],
   });
 
-  return { ownerAddress };
+  return { ownerAddress, isError, isFetching };
 };
