@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Grid } from '@mui/material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Step from './components/Step';

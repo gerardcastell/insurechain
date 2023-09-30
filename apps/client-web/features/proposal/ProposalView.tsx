@@ -159,7 +159,11 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
     <>
       <Confetti getInstance={getInstance} />
       <StyledModal open={openSuccessModal}>
-        <SuccessPurchaseModal address={policyAddress} />
+        <SuccessPurchaseModal
+          address={
+            policyAddress || (proposal.smartContractAddress as `0x${string}`)
+          }
+        />
       </StyledModal>
       <Container maxWidth="md" sx={{ marginY: 4 }}>
         <BackLink text="Back to proposals" link="/dashboard/proposals" />

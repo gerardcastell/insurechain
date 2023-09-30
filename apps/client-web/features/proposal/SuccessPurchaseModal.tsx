@@ -30,8 +30,8 @@ const SuccessPurchaseModal = ({ address }: Props) => {
       </Typography>
       <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
         <Typography>
-          Your policy has been created successfully in the blockchain. You will
-          find it in your dashboard.
+          Your policy has been created successfully in the blockchain.
+          <br /> You will find it in your dashboard, where you can manage it.
         </Typography>
       </Typography>
       <Box
