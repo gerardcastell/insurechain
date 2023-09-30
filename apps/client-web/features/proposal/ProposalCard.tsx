@@ -2,7 +2,7 @@ import {
   ProposalDto,
   getSellPrice,
 } from '@insurechain/web/backend/data-access';
-import { Box, Divider, Paper, Stack, Typography } from '@mui/material';
+import { Box, Chip, Divider, Paper, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
@@ -14,6 +14,7 @@ type ProposalCardProps = {
 };
 
 const ProposalCard = ({ proposal }: ProposalCardProps) => {
+  const isPurchased = proposal.smartContractAddress !== null;
   const { data: ethPrice } = useQuery({
     queryKey: ['getCurrency'],
     queryFn: () => getSellPrice(),
@@ -29,7 +30,11 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
   const router = useRouter();
   const handleClick = (e) => {
     e.preventDefault();
-    router.push(`/dashboard/proposals/${proposal.id}`);
+    router.push(
+      isPurchased
+        ? `/dashboard/policies/${proposal.smartContractAddress}`
+        : `/dashboard/proposals/${proposal.id}`
+    );
   };
 
   return (
@@ -37,18 +42,77 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
       elevation={3}
       onClick={handleClick}
       sx={{
-        '&:hover': {
-          cursor: 'pointer',
-          backgroundColor: 'secondary.light',
-          color: 'white',
-          transition: 'all 0.3s ease-in-out',
-          '& .accentOnHover': {
-            color: 'white',
-          },
-        },
+        position: 'relative',
+        ...(!isPurchased
+          ? {
+              '&:hover': {
+                cursor: 'pointer',
+                backgroundColor: 'secondary.light',
+                color: 'white',
+                transition: 'all 0.3s ease-in-out',
+                '& .accentOnHover': {
+                  color: 'white',
+                },
+              },
+            }
+          : {
+              '&:hover': {
+                cursor: 'pointer',
+                '.MuiChip-root': {
+                  opacity: '1 !important',
+                },
+              },
+            }),
       }}
     >
-      <Stack spacing={2} padding={2}>
+      {isPurchased && (
+        <>
+          <Paper
+            sx={{
+              transition: 'all 0.2s ease-in-out',
+              position: 'absolute',
+              background: 'linear-gradient(to right bottom, #07c8f9, #d66fee)',
+              color: 'white',
+              padding: 2,
+              zIndex: 1,
+              borderRadius: 1,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <Typography textTransform="uppercase" fontWeight={500}>
+              Proposal purchased
+            </Typography>
+          </Paper>
+          <Chip
+            sx={{
+              opacity: 0,
+              transition: 'all 0.2s ease-in-out',
+              position: 'absolute',
+              padding: 1,
+              zIndex: 1,
+              top: '75%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              whiteSpace: 'nowrap',
+              '&:hover': {
+                cursor: 'pointer',
+              },
+            }}
+            label={'Click to visit'}
+            color="primary"
+          ></Chip>
+        </>
+      )}
+      <Stack
+        spacing={2}
+        padding={2}
+        sx={{
+          opacity: isPurchased ? 0.5 : 1,
+        }}
+      >
         <Box>
           <Typography
             className="accentOnHover"
