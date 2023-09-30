@@ -2,3 +2,4 @@
 
 export * from './lib/BackLink';
 export * from './lib/Link';
+export * from './lib/StyledModal';

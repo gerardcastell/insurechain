@@ -16,6 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ToastContainer } from 'react-toastify';
 import WagmiConfigProvider from '../config/WagmiConfigProvider';
 import dynamic from 'next/dynamic';
+import ErrorBoundary from '../features/error-boundary';
 const clientSideEmotionCache = createEmotionCache();
 const DynamicHeader = dynamic(() => import('../features/layout/header'), {
   loading: () => <p>Loading...</p>,
@@ -30,32 +31,34 @@ function CustomApp({
   pageProps: { session, ...pageProps },
 }: MyAppProps) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <WagmiConfigProvider>
-        <SessionProvider session={session}>
-          <CacheProvider value={emotionCache}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Head>
-                <meta
-                  name="viewport"
-                  content="initial-scale=1, width=device-width"
-                />
-                <title>Insurechain</title>
-              </Head>
-              <ThemeProvider theme={theme}>
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline />
-                {/* <BackendLauncherProvider> */}
-                <DynamicHeader />
-                <Component {...pageProps} />
-                <ToastContainer autoClose={3000} />
-                {/* </BackendLauncherProvider> */}
-              </ThemeProvider>
-            </LocalizationProvider>
-          </CacheProvider>
-        </SessionProvider>
-      </WagmiConfigProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <WagmiConfigProvider>
+          <SessionProvider session={session}>
+            <CacheProvider value={emotionCache}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Head>
+                  <meta
+                    name="viewport"
+                    content="initial-scale=1, width=device-width"
+                  />
+                  <title>Insurechain</title>
+                </Head>
+                <ThemeProvider theme={theme}>
+                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                  <CssBaseline />
+                  {/* <BackendLauncherProvider> */}
+                  <DynamicHeader />
+                  <Component {...pageProps} />
+                  <ToastContainer autoClose={3000} />
+                  {/* </BackendLauncherProvider> */}
+                </ThemeProvider>
+              </LocalizationProvider>
+            </CacheProvider>
+          </SessionProvider>
+        </WagmiConfigProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -3,15 +3,16 @@ import { PropsWithChildren } from 'react';
 
 type Props = {
   open: boolean;
-  handleClose: () => void;
+  handleClose?: () => void;
 };
-const StyledModal = ({
+export const StyledModal = ({
   open,
   handleClose,
   children,
 }: PropsWithChildren<Props>) => {
   const { breakpoints } = useTheme();
   if (!children) return null;
+  const onClickBackdrop: any = handleClose ?? null;
   return (
     <Modal
       disableEscapeKeyDown
@@ -22,7 +23,7 @@ const StyledModal = ({
       aria-describedby="keep-mounted-modal-description"
       slotProps={{
         backdrop: {
-          onClick: handleClose,
+          onClick: onClickBackdrop,
           timeout: 500,
         },
       }}
@@ -61,5 +62,3 @@ const style = {
     outline: 'none',
   },
 };
-
-export default StyledModal;

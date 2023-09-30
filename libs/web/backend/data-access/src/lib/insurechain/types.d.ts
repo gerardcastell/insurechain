@@ -38,3 +38,10 @@ export type ProposalDto = {
 export type AuthenticateWithNonceResponse = {
   access_token: string;
 };
+
+export type PatchProposalDto = {
+  id: number;
+  policyHolderId: number;
+  riskSubjectId: number;
+  smartContractAddress: `0x${string}`;
+};

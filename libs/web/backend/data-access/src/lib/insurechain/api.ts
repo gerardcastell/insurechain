@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import axios from '../axios';
 import {
   AuthenticateWithNonceResponse,
+  PatchProposalDto,
   ProposalDto,
   QuoteResponse,
   SaveProposalBody,
@@ -67,4 +68,17 @@ export const authenticateWithNonce = async (data: {
     data
   );
   return response.data;
+};
+
+export const patchProposal = async (
+  proposalId: number,
+  address: `0x${string}`
+): Promise<PatchProposalDto> => {
+  const response = await axios.patch<PatchProposalDto>(
+    `/proposals/blockchain/${proposalId}`,
+    {
+      address,
+    }
+  );
+  return response?.data;
 };
