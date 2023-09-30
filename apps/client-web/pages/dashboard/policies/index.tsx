@@ -1,7 +1,7 @@
 import React from 'react';
-import PoliciesPage from '../../../features/policies';
+import { PoliciesView } from '../../../features/policies';
 const Policies = () => {
-  return <PoliciesPage />;
+  return <PoliciesView />;
 };
 
 export default Policies;

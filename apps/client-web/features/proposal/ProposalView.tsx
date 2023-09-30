@@ -12,8 +12,6 @@ import {
   Slide,
   Slider,
   Stack,
-  SxProps,
-  Theme,
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -29,27 +27,7 @@ import { useEtherUtils, useFactoryContract } from '@insurechain/web/blockchain';
 import { PARKING_TYPE } from '@insurechain/web/constants';
 import SuccessPurchaseModal from './SuccessPurchaseModal';
 import Confetti, { useConfetti } from '../../components/confetti';
-
-const DataPresenter = ({
-  title,
-  value,
-  sx,
-}: {
-  title: string;
-  value: string;
-  sx?: SxProps<Theme>;
-}) => {
-  return (
-    <Box>
-      <Typography variant="body2" mr={1} color={grey[500]}>
-        {title}
-      </Typography>
-      <Typography variant="body1" sx={sx} noWrap>
-        {value}
-      </Typography>
-    </Box>
-  );
-};
+import { DataPresenter } from './DataPresenter';
 
 const marks = [
   {
@@ -85,23 +63,13 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
   const {
     write,
     isError,
-    isLoading,
     isSuccess,
-    contractData,
     isPrepareError,
     error,
     prepareError,
     data,
   } = useFactoryContract(monthAmount, proposal);
-  console.log({
-    isError,
-    isLoading,
-    isSuccess,
-    contractData,
-    prepareError,
-    data,
-    error,
-  });
+
   const { convertEurosToEthers } = useEtherUtils();
   const { getInstance, startAnimation, stopAnimation } = useConfetti();
 
@@ -134,7 +102,6 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
     date.setMonth(date.getMonth() + monthAmount);
     return date;
   };
-  console.log({ proposal });
 
   useEffect(() => {
     const storeSmartContractAddress = async () => {
@@ -385,7 +352,7 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
               >
                 <Stack direction={'column'} spacing={1}>
                   <Stack direction={'row'} spacing={1} alignItems="flex-start">
-                    <Typography textAlign={'center'} variant="body2" pt={1}>
+                    <Typography textAlign={'center'} variant="body1" pt={0.5}>
                       You will pay
                     </Typography>
                     <Stack spacing={1}>
@@ -407,7 +374,7 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
                         Equivalent to {totalPremium.toFixed(2)} €
                       </Typography>
                     </Stack>
-                    <Typography textAlign={'center'} variant="body2" pt={1}>
+                    <Typography textAlign={'center'} variant="body1" pt={0.5}>
                       + gas fees
                     </Typography>
                   </Stack>

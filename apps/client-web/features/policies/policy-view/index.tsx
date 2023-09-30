@@ -7,7 +7,7 @@ import {
   Box,
   Slide,
   Typography,
-  Slider,
+  CircularProgress,
 } from '@mui/material';
 import React from 'react';
 
@@ -16,11 +16,19 @@ type Props = {
 };
 const PolicyView = ({ address }: Props) => {
   const { data, isError, isFetching } = usePolicyContract(address);
-  if (isError || !data) {
-    return <Typography color="red">Error fetching owner address</Typography>;
+  if (isError) {
+    return (
+      <Container maxWidth="md" sx={{ marginY: 4 }}>
+        <Typography color="red">Error fetching owner address</Typography>
+      </Container>
+    );
   }
   if (isFetching) {
-    return <Slider />;
+    return (
+      <Container maxWidth="md" sx={{ marginY: 4 }}>
+        <CircularProgress />
+      </Container>
+    );
   }
   return (
     <Container maxWidth="md" sx={{ marginY: 4 }}>

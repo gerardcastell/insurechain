@@ -1,5 +1,5 @@
 import { usePolicyContract } from '@insurechain/web/blockchain';
-import { Slider, Typography } from '@mui/material';
+import { CircularProgress, Slider, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -13,7 +13,7 @@ export const PolicyPreview = ({ address }: Props) => {
     return <Typography color="red">Error fetching owner address</Typography>;
   }
   if (isFetching) {
-    return <Slider />;
+    return <CircularProgress />;
   }
 
   const [{ result: owner }, { result: endTime }, { result: policyData }] = data;

@@ -76,6 +76,8 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
               padding: 2,
               zIndex: 1,
               borderRadius: 1,
+              width: '90%',
+              textAlign: 'center',
               top: '83%',
               left: '50%',
               transform: 'translate(-50%, -50%)',

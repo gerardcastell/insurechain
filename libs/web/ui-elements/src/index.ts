@@ -2,4 +2,5 @@
 
 export * from './lib/BackLink';
 export * from './lib/Link';
+export * from './lib/PageLayout';
 export * from './lib/StyledModal';

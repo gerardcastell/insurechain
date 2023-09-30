@@ -127,7 +127,7 @@ const InsuranceContractForm = () => {
         </Step>
 
         {isRiskObjectDefined && (
-          <Step title="About you" icon={BadgeIcon}>
+          <Step title="About the driver" icon={BadgeIcon}>
             <RiskSubject />
           </Step>
         )}

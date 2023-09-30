@@ -11,18 +11,23 @@ import MenuItem from '@mui/material/MenuItem';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import MuiLink from '@mui/material/Link';
-import { WalletConnector } from '@insurechain/web/blockchain';
+import { WalletConnector, useSiweAuth } from '@insurechain/web/blockchain';
 import { StyledLink } from '@insurechain/web/ui-elements';
+import { useMemo } from 'react';
 
-const pages = [
-  { link: '/dashboard', name: 'Dashboard' },
-  { link: '/insurance-contract', name: 'Car insurance' },
-];
+const publicPages = [{ link: '/insurance-contract', name: 'Car insurance' }];
+
+const privatePages = [{ link: '/dashboard', name: 'Dashboard' }];
 function HeaderV2() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
+  const { isAuthenticated } = useSiweAuth();
 
+  const pages = useMemo(
+    () => (isAuthenticated ? [...publicPages, ...privatePages] : publicPages),
+    [isAuthenticated]
+  );
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
