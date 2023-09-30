@@ -76,13 +76,17 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
               padding: 2,
               zIndex: 1,
               borderRadius: 1,
-              top: '50%',
+              top: '83%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
               whiteSpace: 'nowrap',
             }}
           >
-            <Typography textTransform="uppercase" fontWeight={500}>
+            <Typography
+              textTransform="uppercase"
+              fontWeight={500}
+              fontStyle="oblique"
+            >
               Proposal purchased
             </Typography>
           </Paper>
@@ -93,7 +97,7 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
               position: 'absolute',
               padding: 1,
               zIndex: 1,
-              top: '75%',
+              top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
               whiteSpace: 'nowrap',
