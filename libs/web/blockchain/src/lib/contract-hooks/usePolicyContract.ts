@@ -9,6 +9,7 @@ export const usePolicyContract = (address: `0x${string}`) => {
     contracts: [
       { ...contractConfig, functionName: 'getOwnerAddress', args: [] },
       { ...contractConfig, functionName: 'getEndDate', args: [] },
+      { ...contractConfig, functionName: 'getRiskFigures', args: [] },
     ],
   });
 

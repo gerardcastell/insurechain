@@ -122,4 +122,8 @@ contract Policy {
     function getEndDate() onlyCompanyOrOwner external view returns (uint){
         return endDate;
     }
+
+    function getRiskFigures() onlyCompanyOrOwner external view returns (string memory){
+        return riskObject;
+    }
 }

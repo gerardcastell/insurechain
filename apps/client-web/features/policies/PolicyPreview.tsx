@@ -11,10 +11,12 @@ export const PolicyPreview = ({ address }: Props) => {
     return <Typography color="red">Error fetching owner address</Typography>;
   }
   if (isFetching) {
-    <Slider />;
+    return <Slider />;
   }
 
-  const [{ result: owner }, { result: endTime }] = data;
+  const [{ result: owner }, { result: endTime }, { result: policyData }] = data;
+  const policy = JSON.parse(policyData as any);
+  console.log({ policy });
   const datetime: number = 1000 * Number(endTime);
   const date = new Date(datetime);
   return (
