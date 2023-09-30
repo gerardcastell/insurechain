@@ -1,6 +1,7 @@
 import { ProposalDto, getProposal } from '@insurechain/web/backend/data-access';
 import {
   Box,
+  Chip,
   Container,
   Divider,
   Grid,
@@ -25,6 +26,9 @@ import PurchaseButton from '../../../../features/proposal/purchase-button/Purcha
 import { BackLink } from '@insurechain/web/ui-elements';
 import { useEtherUtils, useFactoryContract } from '@insurechain/web/blockchain';
 import { PARKING_TYPE } from '@insurechain/web/constants';
+import { useRouter } from 'next/router';
+import { redirect } from 'next/navigation';
+import { toast } from 'react-toastify';
 const DataPresenter = ({
   title,
   value,
@@ -115,12 +119,26 @@ function valuetext(value: number) {
 const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
   const [monthAmount, setMonthAmount] = useState<number>(DEFAULT_MONTH_AMOUNT);
 
-  const { write, data, isLoading, isSuccess } = useFactoryContract(
-    monthAmount,
-    proposal
-  );
-  console.log({ data, isLoading, isSuccess });
-
+  const {
+    write,
+    isError,
+    isLoading,
+    isSuccess,
+    contractData,
+    isPrepareError,
+    error,
+    prepareError,
+    data,
+  } = useFactoryContract(monthAmount, proposal);
+  console.log({
+    isError,
+    isLoading,
+    isSuccess,
+    contractData,
+    prepareError,
+    data,
+    error,
+  });
   const { convertEurosToEthers } = useEtherUtils();
 
   const purchaseDate = new Date(proposal.riskObject.purchaseDate);
@@ -130,8 +148,12 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
     (acc, coverage) => acc + coverage.monthlyPremium,
     0
   );
+  const totalPremium = monthlyPremium * monthAmount;
   const monthlyPremiumEth = convertEurosToEthers(monthlyPremium);
   const totalPremiumEth = monthlyPremiumEth * monthAmount;
+
+  const policyAddress =
+    isSuccess && data?.logs?.length ? data?.logs[0]?.address : undefined;
 
   const onClickPurchaseProposal = async () => {
     write?.();
@@ -146,6 +168,12 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
     date.setMonth(date.getMonth() + monthAmount);
     return date;
   };
+  const router = useRouter();
+
+  if (policyAddress) {
+    toast.success('Policy purchased successfully');
+    router.push(`/dashboard/policies/${policyAddress}`);
+  }
 
   return (
     <Container maxWidth="md" sx={{ marginY: 4 }}>
@@ -358,14 +386,47 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
             <Stack
               direction={'column'}
               pt={3}
-              spacing={2}
+              spacing={4}
               maxWidth={'sm'}
               sx={{ margin: '0 auto' }}
             >
-              <Typography textAlign={'center'}>
-                You will pay {totalPremiumEth.toFixed(8)} ETH
-              </Typography>
+              <Stack direction={'column'} spacing={1}>
+                <Stack direction={'row'} spacing={1} alignItems="flex-start">
+                  <Typography textAlign={'center'} variant="body2" pt={1}>
+                    You will pay
+                  </Typography>
+                  <Stack spacing={1}>
+                    <Chip
+                      label={`${totalPremiumEth.toFixed(8)} ETH`}
+                      sx={{
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        color: 'white',
+                        background:
+                          'linear-gradient(to right bottom, #9491e2, #aff2d8)',
+                      }}
+                    />
+                    <Typography
+                      variant="body2"
+                      textAlign={'center'}
+                      color={grey[600]}
+                    >
+                      Equivalent to {totalPremium.toFixed(2)} €
+                    </Typography>
+                  </Stack>
+                  <Typography textAlign={'center'} variant="body2" pt={1}>
+                    + gas fees
+                  </Typography>
+                </Stack>
+              </Stack>
               <PurchaseButton onClick={() => onClickPurchaseProposal()} />
+
+              {(isPrepareError || isError) && (
+                <Typography variant="body2" textAlign={'center'} color="red">
+                  Error: {(prepareError || error)?.message}
+                </Typography>
+              )}
+              <Typography>policyAddress: {policyAddress}</Typography>
             </Stack>
           </Box>
         </Stack>

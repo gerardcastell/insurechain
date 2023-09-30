@@ -4,10 +4,15 @@ import Button from '@mui/material/Button';
 
 export type PurchaseButtonProps = {
   onClick?: () => void;
+  disabled?: boolean;
 };
-const PurchaseButton = ({ onClick }: PurchaseButtonProps) => {
+const PurchaseButton = ({ onClick, disabled }: PurchaseButtonProps) => {
   return (
-    <Button onClick={onClick} className={classes.continueApplication}>
+    <Button
+      disabled={disabled}
+      onClick={onClick}
+      className={classes.continueApplication}
+    >
       <div>
         <div className={classes.pencil}></div>
         <div className={classes.folder}>

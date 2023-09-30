@@ -39,7 +39,11 @@ export const useFactoryContract = (
     [proposalData, monthAmount, convertEurosToEthers]
   );
 
-  const { config } = usePrepareContractWrite({
+  const {
+    config,
+    error: prepareError,
+    isError: isPrepareError,
+  } = usePrepareContractWrite({
     address,
     chainId,
     abi: ABI.abi,
@@ -49,9 +53,19 @@ export const useFactoryContract = (
   });
 
   const { write, data: contractData } = useContractWrite(config);
-  const { data, isLoading, isSuccess } = useWaitForTransaction({
+  const { isLoading, isSuccess, isError, error, data } = useWaitForTransaction({
     hash: contractData?.hash,
   });
 
-  return { write, data, isLoading, isSuccess };
+  return {
+    data,
+    contractData,
+    write,
+    isError,
+    error,
+    isLoading,
+    isSuccess,
+    isPrepareError,
+    prepareError,
+  };
 };

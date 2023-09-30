@@ -29,6 +29,11 @@
   background: var(--bg, var(--background));
 }
 
+.continueApplication:disabled {
+  color: white;
+  opacity: 0.5;
+}
+
 .continueApplication > div {
   top: 0;
   left: 0;
