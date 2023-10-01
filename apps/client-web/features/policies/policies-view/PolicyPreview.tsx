@@ -7,6 +7,7 @@ import {
   Paper,
   Stack,
   Typography,
+  keyframes,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -16,6 +17,7 @@ import { formatEther, BigNumberish } from 'ethers';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+
 type Props = {
   address: `0x${string}`;
 };
@@ -58,8 +60,29 @@ export const PolicyPreview = ({ address }: Props) => {
       elevation={3}
       onClick={handleClick}
       sx={{
+        position: 'relative',
+
+        '::before': {
+          opacity: 0,
+          backgroundImage:
+            'linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%)',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          content: '""',
+          width: '110%',
+          height: '110%',
+          position: 'absolute',
+          zIndex: -1,
+          borderRadius: '1em',
+          filter: 'blur(20px)',
+          transition: 'all 0.3s ease-in-out',
+        },
         '&:hover': {
           cursor: 'pointer',
+          '::before': {
+            animation: `${pulse} 2s linear infinite`,
+          },
         },
       }}
     >
@@ -148,3 +171,16 @@ export const PolicyPreview = ({ address }: Props) => {
     </Paper>
   );
 };
+
+const pulse = keyframes`
+  0% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0.3;
+}`;
