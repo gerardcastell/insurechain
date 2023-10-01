@@ -316,7 +316,7 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
                       fontWeight={600}
                       textAlign={'right'}
                     >
-                      {totalPremiumEth.toFixed(8)} ETH
+                      {monthlyPremiumEth.toFixed(8)} ETH
                     </Typography>
                   </Grid>
                 </Grid>
