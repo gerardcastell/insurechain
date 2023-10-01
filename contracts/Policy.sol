@@ -123,7 +123,15 @@ contract Policy {
         return endDate;
     }
 
+    function getStartDate() onlyCompanyOrOwner external view returns (uint){
+        return startDate;
+    }
+
     function getRiskFigures() onlyCompanyOrOwner external view returns (string memory){
         return riskObject;
+    }
+
+     function getPremium() onlyCompanyOrOwner external view returns (uint256){
+        return premium;
     }
 }

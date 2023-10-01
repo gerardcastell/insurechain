@@ -11,7 +11,10 @@ type Props = {
 };
 const ProposalsView = ({ proposals }: Props) => {
   return (
-    <PageLayout backLink={{ text: 'Back to dashboard', link: '/dashboard' }}>
+    <PageLayout
+      maxWidth="lg"
+      backLink={{ text: 'Back to dashboard', link: '/dashboard' }}
+    >
       <Grid
         container
         spacing={0}
@@ -21,7 +24,7 @@ const ProposalsView = ({ proposals }: Props) => {
         maxWidth="md"
       >
         <Grid item xs={3} marginX={3}>
-          <Typography mb={4} variant="h5">
+          <Typography mb={4} variant="h4">
             Your proposals
           </Typography>
 

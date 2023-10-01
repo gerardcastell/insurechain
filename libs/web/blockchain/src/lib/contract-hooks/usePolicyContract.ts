@@ -7,7 +7,8 @@ export const usePolicyContract = (address: `0x${string}`) => {
   const contractConfig: any = { address, chainId, abi: ABI.abi };
   const { data, isError, isFetching } = useContractReads({
     contracts: [
-      { ...contractConfig, functionName: 'getOwnerAddress', args: [] },
+      { ...contractConfig, functionName: 'getPremium', args: [] },
+      { ...contractConfig, functionName: 'getStartDate', args: [] },
       { ...contractConfig, functionName: 'getEndDate', args: [] },
       { ...contractConfig, functionName: 'getRiskFigures', args: [] },
     ],

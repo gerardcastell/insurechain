@@ -1,6 +1,7 @@
 import Container from '@mui/material/Container';
 import React, { PropsWithChildren } from 'react';
 import { BackLink } from './BackLink';
+import Box from '@mui/material/Box';
 
 type Props = {
   backLink?: {
@@ -16,7 +17,11 @@ export const PageLayout = ({
 }: PropsWithChildren<Props>) => {
   return (
     <Container maxWidth={maxWidth} sx={{ my: 4 }}>
-      {backLink && <BackLink text={backLink.text} link={backLink.link} />}
+      {backLink && (
+        <Box mb={2}>
+          <BackLink text={backLink.text} link={backLink.link} />
+        </Box>
+      )}
       {children}
     </Container>
   );

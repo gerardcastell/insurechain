@@ -1,5 +1,5 @@
 import { useReadPolicies } from '@insurechain/web/blockchain';
-import { CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material';
 import React, { PropsWithChildren } from 'react';
 import { PolicyPreview } from './PolicyPreview';
 import {
@@ -56,9 +56,25 @@ export const PoliciesView = () => {
 
   return (
     <PageLayout>
-      {policiesAddresses?.map((address) => (
-        <PolicyPreview key={address} address={address} />
-      ))}
+      <Typography mb={4} variant="h4">
+        Your policies
+      </Typography>
+      <Stack spacing={2} direction="row" useFlexGap flexWrap="wrap">
+        {policiesAddresses?.map((address, index) => (
+          <Fade
+            in={true}
+            key={address}
+            style={{
+              transitionDelay: `${index * 400}ms`,
+              transitionDuration: '500ms',
+            }}
+          >
+            <Box width={{ xs: '100%', sm: '320px', md: '270px' }}>
+              <PolicyPreview address={address} />
+            </Box>
+          </Fade>
+        ))}
+      </Stack>
     </PageLayout>
   );
 };
