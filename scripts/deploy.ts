@@ -5,7 +5,7 @@ async function main() {
   const currentTimestampInSeconds = Math.round(Date.now() / 1000);
   const unlockTime = currentTimestampInSeconds + 60;
 
-  const lockedAmount = ethers.parseEther('1');
+  const lockedAmount = ethers.parseEther('100');
 
   const factory = await ethers.deployContract('Factory', [], {
     value: lockedAmount,

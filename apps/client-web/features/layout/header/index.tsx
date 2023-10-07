@@ -14,6 +14,7 @@ import MuiLink from '@mui/material/Link';
 import { WalletConnector, useSiweAuth } from '@insurechain/web/blockchain';
 import { StyledLink } from '@insurechain/web/ui-elements';
 import { useMemo } from 'react';
+import { useTheme } from '@mui/material/styles';
 
 const publicPages = [{ link: '/insurance-contract', name: 'Car insurance' }];
 
@@ -31,13 +32,19 @@ function HeaderV2() {
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+  const { palette } = useTheme();
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      sx={{
+        background: `linear-gradient(45deg, ${palette.primary.main} 30%, #204c8e 90%)`,
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}>

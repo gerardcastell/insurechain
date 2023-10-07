@@ -22,7 +22,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3333;
 
   const config = new DocumentBuilder()
-    .setTitle('InsureChain')
+    .setTitle('Insurechain')
     .setDescription('The Insurechain API description')
     .setVersion('0.1')
     .addBearerAuth()
