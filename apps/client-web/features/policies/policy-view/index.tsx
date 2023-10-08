@@ -24,6 +24,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import { PARKING_TYPE } from '@insurechain/web/constants';
 import { DataPresenter } from '../../proposal/DataPresenter';
 import PopoverOnHover from '../../proposal/PopoverOnHover';
+import { useRouter } from 'next/router';
 
 function monthDiff(d1, d2) {
   let months;
@@ -48,6 +49,7 @@ type Props = {
 
 export const PolicyView = ({ address }: Props) => {
   const { data, isError, isFetching } = usePolicyContract(address);
+  const router = useRouter();
   const { convertEurosToEthers } = useEtherUtils();
 
   if (isError) {
@@ -68,14 +70,23 @@ export const PolicyView = ({ address }: Props) => {
       </PageLayout>
     );
   }
-  console.log(data);
   if (!data) {
     return (
       <PageLayout>
-        <Typography>You cannot access this policy</Typography>
-        <StyledLink href="/dashboard/proposals">
-          Purchase your first proposal
-        </StyledLink>
+        <Stack spacing={2} alignItems={'center'}>
+          <Typography variant="h6">
+            You don&rsquo;t have any policies yet
+          </Typography>
+          <Typography variant="body1">
+            Purchase your first policy to start and you will find it here
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => router.push('/dashboard/proposals')}
+          >
+            Purchase proposal
+          </Button>
+        </Stack>
       </PageLayout>
     );
   }
