@@ -26,9 +26,7 @@ export const getServerSideProps = async ({ req, res, params }) => {
   return { props: { policyAddress } };
 };
 
-const PolicyPage = ({ policyAddress }: { policyAddress: string }) => {
-  console.log(policyAddress);
-
+const PolicyPage = ({ policyAddress }: { policyAddress: `0x${string}` }) => {
   return <PolicyView address={policyAddress} />;
 };
 
