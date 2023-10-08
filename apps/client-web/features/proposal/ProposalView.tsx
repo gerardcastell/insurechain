@@ -121,7 +121,6 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
       stopAnimation();
     };
   }, [openSuccessModal]);
-
   return (
     <>
       <Confetti getInstance={getInstance} />
@@ -382,9 +381,17 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
                 <PurchaseButton onClick={() => onClickPurchaseProposal()} />
 
                 {(isPrepareError || isError) && (
-                  <Typography variant="body2" textAlign={'center'} color="red">
-                    Error: {(prepareError || error)?.message}
-                  </Typography>
+                  <Box>
+                    <Typography
+                      variant="body2"
+                      textAlign={'center'}
+                      color="red"
+                      textOverflow={'ellipsis'}
+                      overflow={'hidden'}
+                    >
+                      Error: {(prepareError || error)?.message}
+                    </Typography>
+                  </Box>
                 )}
               </Stack>
             </Box>

@@ -48,29 +48,36 @@ type Props = {
 
 export const PolicyView = ({ address }: Props) => {
   const { data, isError, isFetching } = usePolicyContract(address);
+  const { convertEurosToEthers } = useEtherUtils();
 
   if (isError) {
-    <PageLayout>
-      <Typography color="red">
-        Error ocurred while fetching user policies
-      </Typography>
-      ;
-    </PageLayout>;
+    return (
+      <PageLayout>
+        <Typography color="red">
+          Error ocurred while fetching user policies
+        </Typography>
+        ;
+      </PageLayout>
+    );
   }
 
   if (isFetching) {
-    <PageLayout>
-      <CircularProgress />
-    </PageLayout>;
+    return (
+      <PageLayout>
+        <CircularProgress />
+      </PageLayout>
+    );
   }
   console.log(data);
   if (!data) {
-    <PageLayout>
-      <Typography>You cannot access this policy</Typography>
-      <StyledLink href="/dashboard/proposals">
-        Purchase your first proposal
-      </StyledLink>
-    </PageLayout>;
+    return (
+      <PageLayout>
+        <Typography>You cannot access this policy</Typography>
+        <StyledLink href="/dashboard/proposals">
+          Purchase your first proposal
+        </StyledLink>
+      </PageLayout>
+    );
   }
   const [
     { result: premium },
@@ -78,7 +85,6 @@ export const PolicyView = ({ address }: Props) => {
     { result: endTime },
     { result: policyData },
   ] = data;
-  const { convertEurosToEthers } = useEtherUtils();
 
   const policy: ProposalDto = JSON.parse(policyData as any);
   const startDate = new Date(1000 * Number(startTime));
@@ -314,7 +320,7 @@ export const PolicyView = ({ address }: Props) => {
                   <Grid item xs={8} sm={4}>
                     <DataPresenter
                       title="Premium (Ethers)"
-                      value={`${totalPremiumEth.toFixed(10).toString()} ETH`}
+                      value={`${ethersPaid.substring(0, 10)} ETH`}
                       sx={{ fontWeight: 600 }}
                     />
                   </Grid>
@@ -329,8 +335,15 @@ export const PolicyView = ({ address }: Props) => {
           flexShrink={0}
           spacing={2}
         >
-          <Button variant="contained">Make a claim</Button>
-          <Button variant="contained">Cancel policy</Button>
+          <Button variant="contained" color="primary" disabled={true}>
+            Renew
+          </Button>
+          <Button variant="contained" color="warning">
+            Make a claim
+          </Button>
+          <Button variant="contained" sx={{ backgroundColor: '#d71c1c' }}>
+            Cancel policy
+          </Button>
         </Stack>
       </Box>
     </PageLayout>

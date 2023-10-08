@@ -40,7 +40,7 @@ function HeaderV2() {
 
   return (
     <AppBar
-      position="static"
+      position="sticky"
       sx={{
         background: `linear-gradient(45deg, ${palette.primary.main} 30%, #204c8e 90%)`,
       }}

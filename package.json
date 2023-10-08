@@ -18,6 +18,7 @@
     "db:seed:dev": "dotenv -e .env.development  prisma db seed",
     "db:seed:prod": "dotenv -e .env.production  prisma db seed",
     "sc:compile": "node libs/blockchain/src/lib/scripts/compile.js",
+    "hh:start": "concurrently --kill-others-on-fail  \"npm run hh:network\" \"wait-on http://127.0.0.1:8545/ && npm run hh:deploy\"",
     "hh:network": "hardhat node",
     "hh:deploy": "hardhat run scripts/deploy.ts --network localhost",
     "hh:compile": "hardhat compile",

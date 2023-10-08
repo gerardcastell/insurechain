@@ -12,7 +12,7 @@ type Props = {
 const ProposalsView = ({ proposals }: Props) => {
   return (
     <PageLayout
-      maxWidth="lg"
+      maxWidth="md"
       backLink={{ text: 'Back to dashboard', link: '/dashboard' }}
     >
       <Grid

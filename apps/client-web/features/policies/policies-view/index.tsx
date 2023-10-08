@@ -1,11 +1,16 @@
 import { useReadPolicies } from '@insurechain/web/blockchain';
-import { Box, CircularProgress, Fade, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Fade,
+  Stack,
+  Typography,
+} from '@mui/material';
 import React, { PropsWithChildren } from 'react';
 import { PolicyPreview } from './PolicyPreview';
-import {
-  StyledLink,
-  PageLayout as UiPageLayout,
-} from '@insurechain/web/ui-elements';
+import { PageLayout as UiPageLayout } from '@insurechain/web/ui-elements';
+import { useRouter } from 'next/router';
 
 const PageLayout = ({ children }: PropsWithChildren) => {
   return (
@@ -29,29 +34,46 @@ export const PoliciesView = () => {
     isError: boolean;
     isFetching: boolean;
   };
+  const router = useRouter();
 
   if (isError) {
-    <PageLayout>
-      <Typography color="red">
-        Error ocurred while fetching user policies
-      </Typography>
-      ;
-    </PageLayout>;
+    return (
+      <PageLayout>
+        <Typography color="red">
+          Error ocurred while fetching user policies
+        </Typography>
+        ;
+      </PageLayout>
+    );
   }
 
   if (isFetching || !policiesAddresses) {
-    <PageLayout>
-      <CircularProgress />
-    </PageLayout>;
+    return (
+      <PageLayout>
+        <CircularProgress />
+      </PageLayout>
+    );
   }
 
-  if (!policiesAddresses?.length) {
-    <PageLayout>
-      <Typography>You don&apost have any policies yet</Typography>
-      <StyledLink href="/dashboard/proposals">
-        Purchase your first proposal
-      </StyledLink>
-    </PageLayout>;
+  if (policiesAddresses?.length === 0) {
+    return (
+      <PageLayout>
+        <Stack spacing={2} alignItems={'center'}>
+          <Typography variant="h6">
+            You don&rsquo;t have any policies yet
+          </Typography>
+          <Typography variant="body1">
+            Purchase your first policy to start and you will find it here
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => router.push('/dashboard/proposals')}
+          >
+            Purchase proposal
+          </Button>
+        </Stack>
+      </PageLayout>
+    );
   }
 
   return (
@@ -59,6 +81,7 @@ export const PoliciesView = () => {
       <Typography mb={4} variant="h4">
         Your policies
       </Typography>
+
       <Stack spacing={2} direction="row" useFlexGap flexWrap="wrap">
         {policiesAddresses?.map((address, index) => (
           <Fade
