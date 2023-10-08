@@ -132,7 +132,7 @@
     },
     {
       "inputs": [],
-      "name": "getUserPolicies",
+      "name": "getHolderPolicies",
       "outputs": [
         {
           "internalType": "address[]",

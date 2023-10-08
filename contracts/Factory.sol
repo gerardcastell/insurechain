@@ -5,7 +5,7 @@ import "./Policy.sol";
 
 
 contract Factory {
-  address payable insuranceAddress;
+    address payable public insuranceAddress;
     uint256 minimumBudget = 0.999 ether;
     mapping(address => address[]) policiesMapping;
     mapping(address => bool) private claimEvaluators;
@@ -36,18 +36,13 @@ contract Factory {
         return address(this).balance;
     }
 
-    function createPolicy(string memory riskObject, uint endDate) public payable returns (address){
+    function createPolicy(string memory proposalData, uint endDate) public payable returns (address){
         require(msg.value > 0, "To create a policy you must pay a premium.");
-        Policy policyContract = new Policy( riskObject, msg.value, msg.sender, endDate);
+        Policy policyContract = new Policy( proposalData, msg.value, msg.sender, endDate);
         address policyAddress = address(policyContract);
         address holderId = msg.sender;
         policiesMapping[holderId].push(policyAddress);
         return policyAddress;
-    }
-
-    function getUserPolicies() public view returns (address[] memory){
-        address[] memory addresses = policiesMapping[msg.sender];
-        return addresses;
     }
 
     // Renews the policy and return the new end date.

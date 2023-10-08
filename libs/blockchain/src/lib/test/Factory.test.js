@@ -61,7 +61,7 @@ describe('Factory', () => {
     await contract.createPolicy(123, 'car', Date.now() + 1000, {
       value: utils.parseEther('0.5'),
     });
-    const policies = await contract.getUserPolicies(123);
+    const policies = await contract.getHolderPolicies(123);
     expect(policies).toHaveLength(1);
   });
 
@@ -72,7 +72,7 @@ describe('Factory', () => {
       .createPolicy(123, 'car', endDate, {
         value: utils.parseEther('0.5'),
       });
-    const addresses = await contract.getUserPolicies(123);
+    const addresses = await contract.getHolderPolicies(123);
 
     const newEndDate = endDate + 86400;
     expect(addresses).toHaveLength(1);
@@ -95,7 +95,7 @@ describe('Factory', () => {
       .createPolicy(123, 'car', endDate, {
         value: claimExpenses,
       });
-    const [policyAddress] = await contract.getUserPolicies(123);
+    const [policyAddress] = await contract.getHolderPolicies(123);
     const prevBalance = await policyholderSigner.getBalance();
     await contract.addEvaluator(evaluatorAddress);
     await contract.approveClaim(policyAddress, claimId, claimExpenses);
@@ -118,7 +118,7 @@ describe('Factory', () => {
       .createPolicy(123, 'car', endDate, {
         value: utils.parseEther('0.1'),
       });
-    const [policyAddress] = await contract.getUserPolicies(123);
+    const [policyAddress] = await contract.getHolderPolicies(123);
     const prevBalance = await policyholderSigner.getBalance();
     await contract.addEvaluator(evaluatorAddress);
     await contract.declineClaim(policyAddress, claimId);

@@ -11,7 +11,7 @@ export const useReadPolicies = () => {
   } = useContractRead({
     address,
     abi: ABI.abi,
-    functionName: 'getUserPolicies',
+    functionName: 'getHolderPolicies',
   });
   return { policiesAddresses, isError, isFetching };
 };
