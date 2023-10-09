@@ -13,10 +13,10 @@ struct Claim {
 
 
 contract Policy {
-    string riskObject;
+    string riskData;
     uint256 premium;
     address owner;
-    address insuranceAddress;
+    address public insuranceAddress;
     uint endDate;
     uint startDate;
     mapping(uint256 => Claim) claims;
@@ -50,10 +50,10 @@ contract Policy {
     }
 
 
-    constructor(string memory _riskObject, uint256 _premium, address _owner, uint256 _endDate){
+    constructor(string memory _proposalData, uint256 _premium, address _owner, uint256 _endDate){
         require(_endDate > block.timestamp, "Renewal date has to be upcoming");
         require(_premium > 0 , "Required a premium to activate the policy");
-        riskObject = _riskObject;
+        riskData = _proposalData;
         premium = _premium;
         owner = _owner;
         insuranceAddress = msg.sender;
@@ -127,8 +127,8 @@ contract Policy {
         return startDate;
     }
 
-    function getRiskFigures() onlyCompanyOrOwner external view returns (string memory){
-        return riskObject;
+    function getRiskData() onlyCompanyOrOwner external view returns (string memory){
+        return riskData;
     }
 
      function getPremium() onlyCompanyOrOwner external view returns (uint256){
