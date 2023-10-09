@@ -102,6 +102,9 @@ contract Factory {
 
     function cancelPolicy(address addressPolicy)  public {
         Policy policy = Policy(addressPolicy);
+        address owner = policy.getOwnerAddress();
+
+        require(msg.sender == owner || msg.sender == insuranceAddress, "Just the policyholder of the policy is able to cancel it.");
         policy.cancelPolicy();
 
         uint premium = policy.getPremium();
@@ -113,7 +116,7 @@ contract Factory {
         uint256 totalTimeSpan = renewalDate - startDate;
 
         uint256 timePercentage = (timeNotEnjoyed * 100) / totalTimeSpan;
-        address payable holderAddress = payable(policy.getOwnerAddress());
+        address payable holderAddress = payable(owner);
         uint256 amountToReturn = premium * timePercentage / 100;
 
         require (amountToReturn < address(this).balance, "Insufficient balance to pay the cancellation.");

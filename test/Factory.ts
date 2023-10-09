@@ -225,7 +225,6 @@ describe('Factory', function () {
       const endDate = new Date();
       endDate.setMonth(endDate.getMonth() + 12);
       const endDateSeconds: number = Math.floor(endDate.getTime() / 1000);
-      const firstBalance = await ethers.provider.getBalance(clientAccount);
       await factory
         .connect(clientAccount)
         .createPolicy(JSON.stringify(PROPOSAL_DATA), endDateSeconds, {
@@ -247,6 +246,66 @@ describe('Factory', function () {
 
       expect(finalBalance.toString().substring(0, 6)).to.be.equal(
         (initialBalance + ethers.parseEther('0.49')).toString().substring(0, 6)
+      );
+    });
+
+    it('Should allow the company to cancel a policy', async () => {
+      const { factory, clientAccount } = await loadFixture(
+        deployOneEtherFactoryFixture
+      );
+
+      const endDate = new Date();
+      endDate.setMonth(endDate.getMonth() + 12);
+      const endDateSeconds: number = Math.floor(endDate.getTime() / 1000);
+      await factory
+        .connect(clientAccount)
+        .createPolicy(JSON.stringify(PROPOSAL_DATA), endDateSeconds, {
+          value: ethers.parseEther('1'),
+        });
+
+      const [policyAddress] = await factory
+        .connect(clientAccount)
+        .getHolderPolicies();
+      const cancelDate = endDate.setMonth(endDate.getMonth() - 6);
+      const cancelDateSeconds: number = Math.floor(cancelDate / 1000);
+
+      const initialBalance = await ethers.provider.getBalance(clientAccount);
+      await time.increaseTo(cancelDateSeconds);
+      await expect(factory.cancelPolicy(policyAddress)).to.emit(
+        factory,
+        'PolicyCanceled'
+      );
+      const finalBalance = await ethers.provider.getBalance(clientAccount);
+
+      expect(finalBalance.toString().substring(0, 6)).to.be.equal(
+        (initialBalance + ethers.parseEther('0.49')).toString().substring(0, 6)
+      );
+    });
+    it('Should not allow others to cancel the policy', async () => {
+      const { factory, clientAccount, evaluatorAccount } = await loadFixture(
+        deployOneEtherFactoryFixture
+      );
+
+      const endDate = new Date();
+      endDate.setMonth(endDate.getMonth() + 12);
+      const endDateSeconds: number = Math.floor(endDate.getTime() / 1000);
+      await factory
+        .connect(clientAccount)
+        .createPolicy(JSON.stringify(PROPOSAL_DATA), endDateSeconds, {
+          value: ethers.parseEther('1'),
+        });
+
+      const [policyAddress] = await factory
+        .connect(clientAccount)
+        .getHolderPolicies();
+      const cancelDate = endDate.setMonth(endDate.getMonth() - 6);
+      const cancelDateSeconds: number = Math.floor(cancelDate / 1000);
+
+      await time.increaseTo(cancelDateSeconds);
+      await expect(
+        factory.connect(evaluatorAccount).cancelPolicy(policyAddress)
+      ).to.be.revertedWith(
+        'Just the policyholder of the policy is able to cancel it.'
       );
     });
   });
