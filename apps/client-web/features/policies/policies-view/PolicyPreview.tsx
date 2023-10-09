@@ -2,6 +2,7 @@ import { ProposalDto } from '@insurechain/web/backend/data-access';
 import { usePolicyContract } from '@insurechain/web/blockchain';
 import {
   Box,
+  Chip,
   CircularProgress,
   Divider,
   Paper,
@@ -36,6 +37,7 @@ export const PolicyPreview = ({ address }: Props) => {
     { result: startTime },
     { result: endTime },
     { result: policyData },
+    { result: isActive },
   ] = data;
   const policy: ProposalDto = JSON.parse(policyData as any);
   const startDate = new Date(1000 * Number(startTime));
@@ -61,7 +63,7 @@ export const PolicyPreview = ({ address }: Props) => {
       onClick={handleClick}
       sx={{
         position: 'relative',
-
+        height: '100%',
         '::before': {
           opacity: 0,
           backgroundImage:
@@ -86,6 +88,53 @@ export const PolicyPreview = ({ address }: Props) => {
         },
       }}
     >
+      {!isActive && (
+        <>
+          <Paper
+            sx={{
+              transition: 'all 0.2s ease-in-out',
+              position: 'absolute',
+              background: 'linear-gradient(to right bottom, #f9b16e, #f68080)',
+              color: 'white',
+              padding: 2,
+              zIndex: 1,
+              borderRadius: 1,
+              width: '90%',
+              textAlign: 'center',
+              top: '76%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <Typography
+              textTransform="uppercase"
+              fontWeight={500}
+              fontStyle="oblique"
+            >
+              Cancelled
+            </Typography>
+          </Paper>
+          <Chip
+            sx={{
+              opacity: 0,
+              transition: 'all 0.2s ease-in-out',
+              position: 'absolute',
+              padding: 1,
+              zIndex: 1,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              whiteSpace: 'nowrap',
+              '&:hover': {
+                cursor: 'pointer',
+              },
+            }}
+            label={'Click to visit'}
+            color="primary"
+          ></Chip>
+        </>
+      )}
       <Stack spacing={2} padding={2}>
         <Box>
           <Typography

@@ -24,7 +24,7 @@ export const useSiweAuth = () => {
   const { status } = useSession();
   const isAuthenticated = status === 'authenticated';
   const { isConnected, address, connector } = useAccount();
-  const { data: balance } = useBalance({ address });
+  const { data: balance, refetch: refetchBalance } = useBalance({ address });
   const { chain } = useNetwork();
   const { connect } = useConnect({
     connector: new InjectedConnector(),
@@ -109,5 +109,6 @@ export const useSiweAuth = () => {
       CONNECTOR_ICON_MAP[connector?.name || 'default'] ||
       CONNECTOR_ICON_MAP['default'],
     chainImageSrc: CHAIN_ICON_MAP[chain?.name || 'Ethereum'],
+    refetchBalance,
   };
 };

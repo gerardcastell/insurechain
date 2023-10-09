@@ -11,6 +11,7 @@ export const usePolicyContract = (address: `0x${string}`) => {
       { ...contractConfig, functionName: 'getStartDate', args: [] },
       { ...contractConfig, functionName: 'getEndDate', args: [] },
       { ...contractConfig, functionName: 'getRiskData', args: [] },
+      { ...contractConfig, functionName: 'isActive', args: [] },
     ],
   });
 

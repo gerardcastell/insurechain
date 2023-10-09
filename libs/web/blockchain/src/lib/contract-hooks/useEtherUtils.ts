@@ -12,5 +12,9 @@ export const useEtherUtils = () => {
     return ethPrice ? amount / ethPrice : amount / 1500;
   };
 
-  return { convertEurosToEthers, ethPrice };
+  const convertEthersToEuros = (amount: number): number => {
+    return ethPrice ? ethPrice * amount : 1500 * amount;
+  };
+
+  return { convertEurosToEthers, ethPrice, convertEthersToEuros };
 };

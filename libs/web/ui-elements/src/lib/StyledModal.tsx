@@ -1,7 +1,7 @@
 import { Box, Modal, Slide, useTheme } from '@mui/material';
 import { PropsWithChildren } from 'react';
 
-type Props = {
+export type StyledModalProps = {
   open: boolean;
   handleClose?: () => void;
 };
@@ -9,7 +9,7 @@ export const StyledModal = ({
   open,
   handleClose,
   children,
-}: PropsWithChildren<Props>) => {
+}: PropsWithChildren<StyledModalProps>) => {
   const { breakpoints } = useTheme();
   if (!children) return null;
   const onClickBackdrop: any = handleClose ?? null;

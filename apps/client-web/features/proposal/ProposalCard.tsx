@@ -42,6 +42,7 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
       elevation={3}
       onClick={handleClick}
       sx={{
+        height: '100%',
         position: 'relative',
         ...(!isPurchased
           ? {
@@ -171,19 +172,12 @@ const ProposalCard = ({ proposal }: ProposalCardProps) => {
               variant="body1"
               color="secondary.main"
             >
-              {monthlyPremiumEth.toFixed(5)} ETH
+              {monthlyPremiumEth.toFixed(5)} ETH/month
             </Typography>
             <Typography variant="body2" fontStyle="oblique">
-              Equivalent to {monthlyPremium.toLocaleString('es-ES')}€
+              ~ {monthlyPremium.toLocaleString('es-ES')}€/month
             </Typography>
           </Box>
-          <Typography
-            className="accentOnHover"
-            typography="body2"
-            fontStyle="oblique"
-          >
-            per month
-          </Typography>
         </Box>
       </Stack>
     </Paper>

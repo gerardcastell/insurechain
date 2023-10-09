@@ -92,7 +92,7 @@ export const PoliciesView = () => {
               transitionDuration: '500ms',
             }}
           >
-            <Box width={{ xs: '100%', sm: '320px', md: '270px' }}>
+            <Box width={{ xs: '100%', sm: '320px', md: '255px' }}>
               <PolicyPreview address={address} />
             </Box>
           </Fade>

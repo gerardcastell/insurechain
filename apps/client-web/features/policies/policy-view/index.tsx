@@ -1,20 +1,24 @@
-import { useEtherUtils, usePolicyContract } from '@insurechain/web/blockchain';
+import {
+  useCancelPolicy,
+  useEtherUtils,
+  usePolicyContract,
+} from '@insurechain/web/blockchain';
 import {
   Box,
   Button,
   CircularProgress,
+  Collapse,
   Divider,
   Fade,
   Grid,
   Paper,
+  Slide,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import React, { PropsWithChildren } from 'react';
-import {
-  StyledLink,
-  PageLayout as UiPageLayout,
-} from '@insurechain/web/ui-elements';
+import { PageLayout as UiPageLayout } from '@insurechain/web/ui-elements';
 import { BigNumberish, formatEther } from 'ethers';
 import { ProposalDto } from '@insurechain/web/backend/data-access';
 import DirectionsCarOutlinedIcon from '@mui/icons-material/DirectionsCarOutlined';
@@ -25,6 +29,8 @@ import { PARKING_TYPE } from '@insurechain/web/constants';
 import { DataPresenter } from '../../proposal/DataPresenter';
 import PopoverOnHover from '../../proposal/PopoverOnHover';
 import { useRouter } from 'next/router';
+import CancelModal from './CancelModal';
+import { toast } from 'react-toastify';
 
 function monthDiff(d1, d2) {
   let months;
@@ -48,9 +54,16 @@ type Props = {
 };
 
 export const PolicyView = ({ address }: Props) => {
+  const [cancelModalOpen, setCancelModalOpen] = React.useState(false);
   const { data, isError, isFetching } = usePolicyContract(address);
   const router = useRouter();
-  const { convertEurosToEthers } = useEtherUtils();
+  const { convertEurosToEthers, convertEthersToEuros } = useEtherUtils();
+
+  const cancelPolicy = useCancelPolicy(router.query?.id as `0x${string}`);
+  console.log(cancelPolicy);
+  const isPolicyCancelled =
+    (cancelPolicy.prepareError as any)?.cause?.reason ===
+    'Policy is not active';
 
   if (isError) {
     return (
@@ -106,22 +119,55 @@ export const PolicyView = ({ address }: Props) => {
     (acc, coverage) => acc + coverage.monthlyPremium,
     0
   );
-  const monthAmount = monthDiff(startDate, endDate);
-  const totalPremium = monthlyPremium * monthAmount;
+  const totalPremium = convertEthersToEuros(+ethersPaid);
   const monthlyPremiumEth = convertEurosToEthers(monthlyPremium);
   const purchaseDate = new Date(policy.riskObject.purchaseDate);
-  const totalPremiumEth = monthlyPremiumEth * monthAmount;
 
   return (
     <PageLayout>
       <Typography mb={4} variant="h4">
-        Policy details
+        Policy detail
       </Typography>
       <Box display={'flex'} gap={2}>
         <Box flexBasis={{ xs: '100%', sm: '80%' }} flexGrow={1} flexShrink={0}>
           <Fade in={true}>
-            <Paper component={Box} padding={2} width="100%">
-              <Stack spacing={3} direction="column">
+            <Paper
+              component={Box}
+              padding={2}
+              width="100%"
+              sx={{
+                position: 'relative',
+              }}
+            >
+              {isPolicyCancelled && (
+                <Slide direction="down" in={true}>
+                  <Paper
+                    sx={{
+                      position: 'absolute',
+                      background:
+                        'linear-gradient(to right bottom, #f9b16e, #f68080)',
+                      color: 'white',
+                      padding: 2,
+                      borderRadius: 1,
+                      right: '1rem',
+                      top: '1rem',
+                      textAlign: 'center',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    <Typography fontWeight={600} fontStyle="oblique">
+                      Cancelled on {endDate.toLocaleDateString('en-GB')}
+                    </Typography>
+                  </Paper>
+                </Slide>
+              )}
+              <Stack
+                spacing={3}
+                direction="column"
+                sx={{
+                  opacity: isPolicyCancelled ? 0.6 : 1,
+                }}
+              >
                 <Typography fontWeight={500}>Policy ID: {policy.id}</Typography>
                 <Grid container rowGap={1}>
                   <Grid item xs={12} display={'flex'} alignItems={'flex-end'}>
@@ -346,17 +392,40 @@ export const PolicyView = ({ address }: Props) => {
           flexShrink={0}
           spacing={2}
         >
-          <Button variant="contained" color="primary" disabled={true}>
-            Renew
-          </Button>
-          <Button variant="contained" color="warning">
+          <Button
+            variant="contained"
+            color="warning"
+            disabled={isPolicyCancelled}
+          >
             Make a claim
           </Button>
-          <Button variant="contained" sx={{ backgroundColor: '#d71c1c' }}>
+          <Button
+            variant="contained"
+            color="error"
+            disabled={isPolicyCancelled}
+            onClick={() => setCancelModalOpen(true)}
+          >
             Cancel policy
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            disabled={isPolicyCancelled}
+            onClick={() =>
+              toast.info('Renewal feature is still not implemented')
+            }
+          >
+            Renew
           </Button>
         </Stack>
       </Box>
+      <CancelModal
+        startDate={startDate}
+        endDate={endDate}
+        premium={premium as unknown as BigNumberish}
+        open={cancelModalOpen}
+        handleClose={() => setCancelModalOpen(false)}
+      />
     </PageLayout>
   );
 };
