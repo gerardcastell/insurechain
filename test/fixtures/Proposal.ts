@@ -1,0 +1,38 @@
+export const PROPOSAL_DATA = {
+  id: 3,
+  policyHolderId: 2,
+  riskSubjectId: 1,
+  smartContractAddress: null,
+  coverages: [
+    {
+      id: 13,
+      identifier: 'third_party_liability',
+      monthlyPremium: 10,
+      title: 'Theft',
+      description: 'Theft of the insured vehicle.',
+      proposalId: 3,
+    },
+  ],
+  riskObject: {
+    id: 3,
+    model: 'A1',
+    power: 120,
+    purchaseDate: '2018-02-01T00:00:00.000Z',
+    plate: '1234LLC',
+    kmsYear: 10000,
+    numberDoors: 3,
+    maker: 'AUDI',
+    releaseDate: '2016-02-01T00:00:00.000Z',
+    retailPrice: 20750,
+    version: '1.0 TFSI ACTIVE KIT',
+    fuelType: 'gasoline',
+    parking: 'street',
+    proposalId: 3,
+  },
+  riskSubject: {
+    id: 1,
+    name: 'Gerard Castell',
+    documentNumber: '11111111H',
+    birthDate: '1978-05-02T22:00:00.000Z',
+  },
+};

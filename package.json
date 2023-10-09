@@ -22,7 +22,7 @@
     "hh:network": "hardhat node",
     "hh:deploy": "hardhat run scripts/deploy.ts --network localhost",
     "hh:compile": "hardhat compile",
-    "hh:test": "REPORT_GAS=true hardhat  test --parallel"
+    "hh:test": "REPORT_GAS=true hardhat test"
   },
   "private": true,
   "dependencies": {
