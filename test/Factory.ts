@@ -11,14 +11,11 @@ describe('Factory', function () {
   // and reset Hardhat Network to that snapshot in every test.
 
   async function deployOneEtherFactoryFixture() {
-    const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
+    const ONE_MONTH_IN_SECS = 30 * 24 * 60 * 60;
     const ONE_ETHER = ethers.parseEther('1');
-    const currentDate = new Date();
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    const THREE_MONTHS_FROM_TODAY = Math.floor(currentDate.getTime() / 1000);
+    const endTime = (await time.latest()) + ONE_MONTH_IN_SECS;
 
     const initialBalance = ONE_ETHER;
-    const unlockTime = (await time.latest()) + ONE_YEAR_IN_SECS;
 
     // Contracts are deployed using the first signer/account by default
     const [insuranceAccount, clientAccount, evaluatorAccount] =
@@ -33,9 +30,7 @@ describe('Factory', function () {
       clientAccount,
       initialBalance,
       evaluatorAccount,
-
-      THREE_MONTHS_FROM_TODAY,
-      unlockTime,
+      endTime,
     };
   }
 
@@ -67,7 +62,7 @@ describe('Factory', function () {
         clientAccount,
 
         initialBalance,
-        unlockTime,
+        endTime,
       } = await loadFixture(deployOneEtherFactoryFixture);
       const currentDate = new Date();
       currentDate.setMonth(currentDate.getMonth() + 12);
@@ -91,7 +86,7 @@ describe('Factory', function () {
       expect(
         await factory.connect(clientAccount).getHolderPolicies()
       ).to.have.length(0);
-      await time.increaseTo(unlockTime);
+      await time.increaseTo(endTime);
 
       await expect(
         factory
@@ -140,13 +135,9 @@ describe('Factory', function () {
       );
     });
     it('should approve a claim', async () => {
-      const {
-        factory,
-        clientAccount,
-        evaluatorAccount,
-
-        THREE_MONTHS_FROM_TODAY,
-      } = await loadFixture(deployOneEtherFactoryFixture);
+      const { factory, clientAccount, evaluatorAccount } = await loadFixture(
+        deployOneEtherFactoryFixture
+      );
       const endDate = Date.now() + 1000;
       const claimId = 1;
       const claimExpenses = ethers.parseEther('0.1');

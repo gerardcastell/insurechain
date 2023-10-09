@@ -64,7 +64,7 @@ contract Policy {
         emit Creation(owner);
     }
 
-    function cancelPolicy() onlyCompanyOrOwner isActive external {
+    function cancelPolicy() onlyCompany() isActive external {
         endDate = block.timestamp;
         emit Cancelation(endDate);
     }

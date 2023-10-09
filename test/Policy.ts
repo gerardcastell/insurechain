@@ -5,17 +5,15 @@ import {
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { PROPOSAL_DATA } from './fixtures/Proposal';
-describe('Factory', function () {
+describe('Policy', function () {
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
 
   async function deployOneEtherPolicyFixture() {
-    const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
+    const THREE_MONTHS_IN_SECS = 90 * 24 * 60 * 60;
     const ONE_ETHER = ethers.parseEther('1');
-    const currentDate = new Date();
-    currentDate.setMonth(currentDate.getMonth() + 3);
-    const endTime = Math.floor(currentDate.getTime() / 1000);
+    const endTime = (await time.latest()) + THREE_MONTHS_IN_SECS;
 
     const initialBalance = ONE_ETHER;
 
@@ -152,7 +150,7 @@ describe('Factory', function () {
     });
   });
   describe('Policy actions', () => {
-    it('Should allow just the owner to cancel the policy', async () => {
+    it('Should allow just the company to cancel the policy', async () => {
       const { policy, clientPolicy, evaluatorAccount } = await loadFixture(
         deployOneEtherPolicyFixture
       );
@@ -160,7 +158,10 @@ describe('Factory', function () {
       await expect(
         policy.connect(evaluatorAccount).cancelPolicy()
       ).to.be.rejectedWith(
-        'Just the policyholder or the insurance company can perform this action'
+        'Just the insurance company can perform this action'
+      );
+      await expect(clientPolicy.cancelPolicy()).to.be.rejectedWith(
+        'Just the insurance company can perform this action'
       );
       clientPolicy.cancelPolicy();
     });
