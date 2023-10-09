@@ -64,16 +64,17 @@ export const PolicyPreview = ({ address }: Props) => {
       sx={{
         position: 'relative',
         height: '100%',
+
         '::before': {
-          opacity: 0,
+          opacity: 0.7,
           backgroundImage:
             'linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%)',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           content: '""',
-          width: '110%',
-          height: '110%',
+          width: '80%',
+          height: '80%',
           position: 'absolute',
           zIndex: -1,
           borderRadius: '1em',
@@ -83,7 +84,8 @@ export const PolicyPreview = ({ address }: Props) => {
         '&:hover': {
           cursor: 'pointer',
           '::before': {
-            animation: `${pulse} 2s linear infinite`,
+            width: '110%',
+            height: '110%',
           },
         },
       }}
@@ -135,7 +137,13 @@ export const PolicyPreview = ({ address }: Props) => {
           ></Chip>
         </>
       )}
-      <Stack spacing={2} padding={2}>
+      <Stack
+        sx={{
+          opacity: isActive ? 1 : 0.5,
+        }}
+        spacing={2}
+        padding={2}
+      >
         <Box>
           <Typography
             className="accentOnHover"
@@ -220,16 +228,3 @@ export const PolicyPreview = ({ address }: Props) => {
     </Paper>
   );
 };
-
-const pulse = keyframes`
-  0% {
-    opacity: 0.3;
-  }
-
-  50% {
-    opacity: 0.8;
-  }
-
-  100% {
-    opacity: 0.3;
-}`;

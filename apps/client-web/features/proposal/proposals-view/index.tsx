@@ -35,8 +35,8 @@ const ProposalsView = ({ proposals }: Props) => {
                   in={true}
                   key={proposal.id}
                   style={{
-                    transitionDelay: `${index * 400}ms`,
-                    transitionDuration: '500ms',
+                    transitionDelay: `${index * 150}ms`,
+                    transitionDuration: '400ms',
                   }}
                 >
                   <Box width={{ xs: '100%', sm: '320px', md: '255px' }}>

@@ -1,20 +1,14 @@
-import {
-  useCancelPolicy,
-  useEtherUtils,
-  usePolicyContract,
-} from '@insurechain/web/blockchain';
+import { useEtherUtils, usePolicyContract } from '@insurechain/web/blockchain';
 import {
   Box,
   Button,
   CircularProgress,
-  Collapse,
   Divider,
   Fade,
   Grid,
   Paper,
   Slide,
   Stack,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import React, { PropsWithChildren } from 'react';
@@ -32,14 +26,6 @@ import { useRouter } from 'next/router';
 import CancelModal from './CancelModal';
 import { toast } from 'react-toastify';
 
-function monthDiff(d1, d2) {
-  let months;
-  months = (d2.getFullYear() - d1.getFullYear()) * 12;
-  months -= d1.getMonth();
-  months += d2.getMonth();
-  return months <= 0 ? 0 : months;
-}
-
 const PageLayout = ({ children }: PropsWithChildren) => {
   return (
     <UiPageLayout
@@ -55,15 +41,9 @@ type Props = {
 
 export const PolicyView = ({ address }: Props) => {
   const [cancelModalOpen, setCancelModalOpen] = React.useState(false);
-  const { data, isError, isFetching } = usePolicyContract(address);
+  const { data, isError, isFetching, refetch } = usePolicyContract(address);
   const router = useRouter();
   const { convertEurosToEthers, convertEthersToEuros } = useEtherUtils();
-
-  const cancelPolicy = useCancelPolicy(router.query?.id as `0x${string}`);
-  console.log(cancelPolicy);
-  const isPolicyCancelled =
-    (cancelPolicy.prepareError as any)?.cause?.reason ===
-    'Policy is not active';
 
   if (isError) {
     return (
@@ -103,12 +83,18 @@ export const PolicyView = ({ address }: Props) => {
       </PageLayout>
     );
   }
+  const hasFailedLoading = data.some((r) => r.status === 'failure');
+  if (hasFailedLoading) {
+    router.push('/dashboard/policies');
+  }
   const [
     { result: premium },
     { result: startTime },
     { result: endTime },
     { result: policyData },
+    { result: isActive },
   ] = data;
+  const isPolicyCancelled = !isActive;
 
   const policy: ProposalDto = JSON.parse(policyData as any);
   const startDate = new Date(1000 * Number(startTime));
@@ -420,6 +406,7 @@ export const PolicyView = ({ address }: Props) => {
         </Stack>
       </Box>
       <CancelModal
+        onSuccessCancel={() => refetch()}
         startDate={startDate}
         endDate={endDate}
         premium={premium as unknown as BigNumberish}
