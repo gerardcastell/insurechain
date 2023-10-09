@@ -88,7 +88,6 @@ const ProposalPage = ({ proposal }: { proposal: ProposalDto }) => {
     isSuccess && data?.logs?.length ? data?.logs[0]?.address : undefined;
   const openSuccessModal =
     Boolean(policyAddress) || Boolean(proposal.smartContractAddress);
-  console.log({ policyAddress, proposal });
   const onClickPurchaseProposal = async () => {
     write?.();
   };
