@@ -18,6 +18,7 @@ contract Policy {
     address owner;
     address public insuranceAddress;
     uint endDate;
+    uint renewalDate;
     uint startDate;
     mapping(uint256 => Claim) claims;
     uint256[] claimIdList;
@@ -45,10 +46,9 @@ contract Policy {
     }
 
     modifier isActive(){
-        require(endDate > block.timestamp, "Policy is not active");
+        require(endDate > block.timestamp && renewalDate > block.timestamp, "Policy is not active");
         _;
     }
-
 
     constructor(string memory _proposalData, uint256 _premium, address _owner, uint256 _endDate){
         require(_endDate > block.timestamp, "Renewal date has to be upcoming");
@@ -59,6 +59,7 @@ contract Policy {
         insuranceAddress = msg.sender;
         startDate = block.timestamp;
         endDate = _endDate;
+        renewalDate = _endDate;
 
         emit Creation(owner);
     }
@@ -99,16 +100,18 @@ contract Policy {
 
     }
 
-    function getOwnerAddress() onlyCompanyOrOwner external view returns (address) {
-        return owner;
-    }
-
     function renew(uint newEndDate) onlyCompany external returns (uint){
         require(newEndDate > endDate, "New end date has to be after the current one");
         endDate = newEndDate;
+        renewalDate = newEndDate;
 
         emit Renewal(endDate);
-        return endDate;
+        return renewalDate;
+    }
+
+
+    function getOwnerAddress() onlyCompanyOrOwner external view returns (address) {
+        return owner;
     }
 
     function getClaim(uint256 claimId) onlyCompanyOrOwner external view returns (Claim memory){
@@ -127,6 +130,10 @@ contract Policy {
         return startDate;
     }
 
+    function getRenewalDate() onlyCompanyOrOwner external view returns (uint){
+        return renewalDate;
+    }
+
     function getRiskData() onlyCompanyOrOwner external view returns (string memory){
         return riskData;
     }
@@ -134,4 +141,9 @@ contract Policy {
      function getPremium() onlyCompanyOrOwner external view returns (uint256){
         return premium;
     }
+
+    function getIsActive()onlyCompanyOrOwner external view returns (bool){
+        return endDate > block.timestamp;
+    }
+
 }

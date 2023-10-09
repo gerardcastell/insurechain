@@ -165,55 +165,89 @@ describe('Factory', function () {
 
       expect(newBalance).to.be.equal(claimExpenses + prevBalance);
     });
-  });
-  it('should decline a claim', async () => {
-    const { factory, clientAccount, evaluatorAccount } = await loadFixture(
-      deployOneEtherFactoryFixture
-    );
-    const endDate = Date.now() + 1000;
-    const claimId = 1;
-    const claimExpenses = ethers.parseEther('0.1');
-    await factory
-      .connect(clientAccount)
-      .createPolicy(JSON.stringify(PROPOSAL_DATA), endDate, {
-        value: claimExpenses,
-      });
-    const [policyAddress] = await factory
-      .connect(clientAccount)
-      .getHolderPolicies();
-    const prevFactoryBalance = await ethers.provider.getBalance(factory);
 
-    const prevBalance = await ethers.provider.getBalance(clientAccount);
-    await factory.addEvaluator(evaluatorAccount.address);
-    await factory.declineClaim(policyAddress, claimId);
-    const newFactoryBalance = await ethers.provider.getBalance(factory);
-    const newBalance = await ethers.provider.getBalance(clientAccount);
+    it('should decline a claim', async () => {
+      const { factory, clientAccount, evaluatorAccount } = await loadFixture(
+        deployOneEtherFactoryFixture
+      );
+      const endDate = Date.now() + 1000;
+      const claimId = 1;
+      const claimExpenses = ethers.parseEther('0.1');
+      await factory
+        .connect(clientAccount)
+        .createPolicy(JSON.stringify(PROPOSAL_DATA), endDate, {
+          value: claimExpenses,
+        });
+      const [policyAddress] = await factory
+        .connect(clientAccount)
+        .getHolderPolicies();
+      const prevFactoryBalance = await ethers.provider.getBalance(factory);
 
-    expect(newBalance).to.be.equal(prevBalance);
-    expect(newFactoryBalance).to.be.equal(prevFactoryBalance);
-  });
+      const prevBalance = await ethers.provider.getBalance(clientAccount);
+      await factory.addEvaluator(evaluatorAccount.address);
+      await factory.declineClaim(policyAddress, claimId);
+      const newFactoryBalance = await ethers.provider.getBalance(factory);
+      const newBalance = await ethers.provider.getBalance(clientAccount);
 
-  it('should add an evaluator', async () => {
-    const { factory, evaluatorAccount } = await loadFixture(
-      deployOneEtherFactoryFixture
-    );
+      expect(newBalance).to.be.equal(prevBalance);
+      expect(newFactoryBalance).to.be.equal(prevFactoryBalance);
+    });
 
-    await factory.addEvaluator(evaluatorAccount.address);
-    const isClaimEvaluatorKnown = await factory.isClaimEvaluatorKnown(
-      evaluatorAccount.address
-    );
-    expect(isClaimEvaluatorKnown).to.be.true;
-  });
+    it('should add an evaluator', async () => {
+      const { factory, evaluatorAccount } = await loadFixture(
+        deployOneEtherFactoryFixture
+      );
 
-  it('should change evaluator value', async () => {
-    const { factory, evaluatorAccount } = await loadFixture(
-      deployOneEtherFactoryFixture
-    );
-    await factory.addEvaluator(evaluatorAccount.address);
-    await factory.changeEvaluatorValue(evaluatorAccount.address, false);
-    const isClaimEvaluatorKnown = await factory.isClaimEvaluatorKnown(
-      evaluatorAccount.address
-    );
-    expect(isClaimEvaluatorKnown).to.be.false;
+      await factory.addEvaluator(evaluatorAccount.address);
+      const isClaimEvaluatorKnown = await factory.isClaimEvaluatorKnown(
+        evaluatorAccount.address
+      );
+      expect(isClaimEvaluatorKnown).to.be.true;
+    });
+
+    it('should change evaluator value', async () => {
+      const { factory, evaluatorAccount } = await loadFixture(
+        deployOneEtherFactoryFixture
+      );
+      await factory.addEvaluator(evaluatorAccount.address);
+      await factory.changeEvaluatorValue(evaluatorAccount.address, false);
+      const isClaimEvaluatorKnown = await factory.isClaimEvaluatorKnown(
+        evaluatorAccount.address
+      );
+      expect(isClaimEvaluatorKnown).to.be.false;
+    });
+
+    it('Should cancel a policy a receive the amount', async () => {
+      const { factory, clientAccount } = await loadFixture(
+        deployOneEtherFactoryFixture
+      );
+
+      const endDate = new Date();
+      endDate.setMonth(endDate.getMonth() + 12);
+      const endDateSeconds: number = Math.floor(endDate.getTime() / 1000);
+      const firstBalance = await ethers.provider.getBalance(clientAccount);
+      await factory
+        .connect(clientAccount)
+        .createPolicy(JSON.stringify(PROPOSAL_DATA), endDateSeconds, {
+          value: ethers.parseEther('1'),
+        });
+
+      const [policyAddress] = await factory
+        .connect(clientAccount)
+        .getHolderPolicies();
+      const cancelDate = endDate.setMonth(endDate.getMonth() - 6);
+      const cancelDateSeconds: number = Math.floor(cancelDate / 1000);
+
+      const initialBalance = await ethers.provider.getBalance(clientAccount);
+      await time.increaseTo(cancelDateSeconds);
+      await expect(
+        factory.connect(clientAccount).cancelPolicy(policyAddress)
+      ).to.emit(factory, 'PolicyCanceled');
+      const finalBalance = await ethers.provider.getBalance(clientAccount);
+
+      expect(finalBalance.toString().substring(0, 6)).to.be.equal(
+        (initialBalance + ethers.parseEther('0.49')).toString().substring(0, 6)
+      );
+    });
   });
 });

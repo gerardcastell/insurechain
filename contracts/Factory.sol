@@ -10,6 +10,7 @@ contract Factory {
     mapping(address => address[]) policiesMapping;
     mapping(address => bool) private claimEvaluators;
     event PolicyCreated(address owner, uint when);
+    event PolicyCanceled(address policy, uint when, uint256 amount);
     event PolicyRenewal(address policy, uint newDate, uint renewalAmount);
     event ClaimApproved(address policyAddress ,uint256 claimId , uint256 claimExpenses);
     event ClaimDeclined(address policyAddress, uint256 claimId);
@@ -97,6 +98,28 @@ contract Factory {
 
     function getHolderPolicies() public view returns (address[] memory){
         return policiesMapping[msg.sender];
+    }
+
+    function cancelPolicy(address addressPolicy)  public {
+        Policy policy = Policy(addressPolicy);
+        policy.cancelPolicy();
+
+        uint premium = policy.getPremium();
+        uint256 startDate = policy.getStartDate();
+        uint256 renewalDate = policy.getRenewalDate();
+        uint256 cancellationDate = policy.getEndDate();
+
+        uint256 timeNotEnjoyed = renewalDate - cancellationDate;
+        uint256 totalTimeSpan = renewalDate - startDate;
+
+        uint256 timePercentage = (timeNotEnjoyed * 100) / totalTimeSpan;
+        address payable holderAddress = payable(policy.getOwnerAddress());
+        uint256 amountToReturn = premium * timePercentage / 100;
+
+        require (amountToReturn < address(this).balance, "Insufficient balance to pay the cancellation.");
+
+        holderAddress.transfer(amountToReturn);
+        emit PolicyCanceled(addressPolicy, cancellationDate, amountToReturn);
     }
 }
 
