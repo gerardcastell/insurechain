@@ -14,6 +14,7 @@ const ProposalsView = ({ proposals }: Props) => {
     <PageLayout
       maxWidth="md"
       backLink={{ text: 'Back to dashboard', link: '/dashboard' }}
+      title="Your proposals"
     >
       <Grid
         container
@@ -24,10 +25,6 @@ const ProposalsView = ({ proposals }: Props) => {
         maxWidth="md"
       >
         <Grid item xs={3} marginX={3}>
-          <Typography mb={4} variant="h4">
-            Your proposals
-          </Typography>
-
           {proposals.length ? (
             <Stack spacing={2} direction="row" useFlexGap flexWrap="wrap">
               {proposals.map((proposal, index) => (

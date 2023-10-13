@@ -14,7 +14,10 @@ import { useRouter } from 'next/router';
 
 const PageLayout = ({ children }: PropsWithChildren) => {
   return (
-    <UiPageLayout backLink={{ text: 'Back to dashboard', link: '/dashboard' }}>
+    <UiPageLayout
+      title="Your policies"
+      backLink={{ text: 'Back to dashboard', link: '/dashboard' }}
+    >
       {children}
     </UiPageLayout>
   );

@@ -382,6 +382,7 @@ export const PolicyView = ({ address }: Props) => {
             variant="contained"
             color="warning"
             disabled={isPolicyCancelled}
+            onClick={() => toast.info('Claim feature is not implemented yet')}
           >
             Make a claim
           </Button>
@@ -397,9 +398,7 @@ export const PolicyView = ({ address }: Props) => {
             variant="contained"
             color="success"
             disabled={isPolicyCancelled}
-            onClick={() =>
-              toast.info('Renewal feature is still not implemented')
-            }
+            onClick={() => toast.info('Renewal feature is not implemented yet')}
           >
             Renew
           </Button>
