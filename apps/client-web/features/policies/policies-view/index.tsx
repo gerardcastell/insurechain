@@ -81,10 +81,6 @@ export const PoliciesView = () => {
 
   return (
     <PageLayout>
-      <Typography mb={4} variant="h4">
-        Your policies
-      </Typography>
-
       <Stack spacing={2} direction="row" useFlexGap flexWrap="wrap">
         {policiesAddresses?.map((address, index) => (
           <Fade
