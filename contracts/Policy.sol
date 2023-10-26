@@ -16,7 +16,7 @@ contract Policy {
     string riskData;
     uint256 premium;
     address owner;
-    address public insuranceAddress;
+    address public factoryAddress;
     uint endDate;
     uint renewalDate;
     uint startDate;
@@ -30,8 +30,8 @@ contract Policy {
     event ClaimDeclined(uint claimId);
     event Renewal(uint endDate);
 
-    modifier onlyCompanyOrOwner(){
-        require(msg.sender == insuranceAddress || msg.sender == owner, "Just the policyholder or the insurance company can perform this action");
+    modifier onlyFactoryOrOwner(){
+        require(msg.sender == factoryAddress || msg.sender == owner, "Just the policyholder or the insurance company can perform this action");
         _;
     }
 
@@ -40,8 +40,8 @@ contract Policy {
         _;
     }
 
-    modifier onlyCompany(){
-        require(msg.sender == insuranceAddress, "Just the insurance company can perform this action");
+    modifier onlyFactory(){
+        require(msg.sender == factoryAddress, "Just the insurance company can perform this action");
         _;
     }
 
@@ -56,7 +56,7 @@ contract Policy {
         riskData = _proposalData;
         premium = _premium;
         owner = _owner;
-        insuranceAddress = msg.sender;
+        factoryAddress = msg.sender;
         startDate = block.timestamp;
         endDate = _endDate;
         renewalDate = _endDate;
@@ -64,7 +64,7 @@ contract Policy {
         emit Creation(owner);
     }
 
-    function cancelPolicy() onlyCompany() isActive external {
+    function cancelPolicy() onlyFactory() isActive external {
         endDate = block.timestamp;
         emit Cancelation(endDate);
     }
@@ -77,7 +77,7 @@ contract Policy {
     }
 
 
-    function approveClaim(uint256 claimId , uint256 claimExpenses) onlyCompany external {
+    function approveClaim(uint256 claimId , uint256 claimExpenses) onlyFactory external {
         Claim storage claim = claims[claimId];
 
         resolveClaim(claimId, true);
@@ -85,7 +85,7 @@ contract Policy {
         emit ClaimApproved(claimId);
     }
 
-    function declineClaim(uint256 claimId) onlyCompany external{
+    function declineClaim(uint256 claimId) onlyFactory external{
         resolveClaim(claimId, false);
         emit ClaimDeclined(claimId);
     }
@@ -100,49 +100,50 @@ contract Policy {
 
     }
 
-    function renew(uint newEndDate) onlyCompany external returns (uint){
+    function renew(uint newEndDate, uint256 _renewalPremium) onlyFactory external returns (uint){
         require(newEndDate > endDate, "New end date has to be after the current one");
         endDate = newEndDate;
         renewalDate = newEndDate;
+        premium = _renewalPremium;
 
         emit Renewal(endDate);
         return renewalDate;
     }
 
 
-    function getOwnerAddress() onlyCompanyOrOwner external view returns (address) {
+    function getOwnerAddress() onlyFactoryOrOwner external view returns (address) {
         return owner;
     }
 
-    function getClaim(uint256 claimId) onlyCompanyOrOwner external view returns (Claim memory){
+    function getClaim(uint256 claimId) onlyFactoryOrOwner external view returns (Claim memory){
         return claims[claimId];
     }
 
-    function getClaimsList() onlyCompanyOrOwner external view returns (uint256[] memory){
+    function getClaimsList() onlyFactoryOrOwner external view returns (uint256[] memory){
         return claimIdList;
     }
 
-    function getEndDate() onlyCompanyOrOwner external view returns (uint){
+    function getEndDate() onlyFactoryOrOwner external view returns (uint){
         return endDate;
     }
 
-    function getStartDate() onlyCompanyOrOwner external view returns (uint){
+    function getStartDate() onlyFactoryOrOwner external view returns (uint){
         return startDate;
     }
 
-    function getRenewalDate() onlyCompanyOrOwner external view returns (uint){
+    function getRenewalDate() onlyFactoryOrOwner external view returns (uint){
         return renewalDate;
     }
 
-    function getRiskData() onlyCompanyOrOwner external view returns (string memory){
+    function getRiskData() onlyFactoryOrOwner external view returns (string memory){
         return riskData;
     }
 
-     function getPremium() onlyCompanyOrOwner external view returns (uint256){
+     function getPremium() onlyFactoryOrOwner external view returns (uint256){
         return premium;
     }
 
-    function getIsActive()onlyCompanyOrOwner external view returns (bool){
+    function getIsActive()onlyFactoryOrOwner external view returns (bool){
         return endDate > block.timestamp;
     }
 

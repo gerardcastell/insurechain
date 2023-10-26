@@ -82,16 +82,14 @@ describe('Policy', function () {
       expect(await policy.getStartDate()).to.equal(startTime);
     });
 
-    it('Should set the right insuranceAddress on creation', async function () {
+    it('Should set the right factoryAddress on creation', async function () {
       const { clientPolicy, policy, insuranceAccount } = await loadFixture(
         deployOneEtherPolicyFixture
       );
-      expect(await clientPolicy.insuranceAddress()).to.equal(
+      expect(await clientPolicy.factoryAddress()).to.equal(
         insuranceAccount.address
       );
-      expect(await policy.insuranceAddress()).to.equal(
-        insuranceAccount.address
-      );
+      expect(await policy.factoryAddress()).to.equal(insuranceAccount.address);
     });
 
     it('Should set the right endTime on creation', async function () {

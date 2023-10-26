@@ -63,7 +63,7 @@ contract Factory {
         require(msg.sender == policyContract.getOwnerAddress(), "Just the policyholder of the policy is able to renew it.");
         emit PolicyRenewal(policyAddress, newEndDate, renewalAmount);
 
-        return policyContract.renew(newEndDate);
+        return policyContract.renew(newEndDate, msg.value);
     }
 
 
@@ -96,7 +96,7 @@ contract Factory {
         return claimEvaluators[checkAddress];
     }
 
-    function getHolderPolicies() public view returns (address[] memory){
+    function getPolicies() public view returns (address[] memory){
         return policiesMapping[msg.sender];
     }
 

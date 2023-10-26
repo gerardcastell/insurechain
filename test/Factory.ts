@@ -73,9 +73,9 @@ describe('Factory', function () {
         clientAccount
       );
 
-      expect(
-        await factory.connect(clientAccount).getHolderPolicies()
-      ).to.have.length(0);
+      expect(await factory.connect(clientAccount).getPolicies()).to.have.length(
+        0
+      );
 
       await expect(
         factory
@@ -83,9 +83,9 @@ describe('Factory', function () {
           .createPolicy(JSON.stringify(PROPOSAL_DATA), date)
       ).to.be.revertedWith('To create a policy you must pay a premium.');
 
-      expect(
-        await factory.connect(clientAccount).getHolderPolicies()
-      ).to.have.length(0);
+      expect(await factory.connect(clientAccount).getPolicies()).to.have.length(
+        0
+      );
       await time.increaseTo(endTime);
 
       await expect(
@@ -96,9 +96,9 @@ describe('Factory', function () {
           })
       ).to.emit(factory, 'PolicyCreated');
 
-      expect(
-        await factory.connect(clientAccount).getHolderPolicies()
-      ).to.have.length(1);
+      expect(await factory.connect(clientAccount).getPolicies()).to.have.length(
+        1
+      );
 
       const balance = await ethers.provider.getBalance(factory.getAddress());
       expect(balance).to.equal(initialBalance + premium);
@@ -120,9 +120,7 @@ describe('Factory', function () {
           value: ethers.parseEther('1'),
         });
 
-      const addresses = await factory
-        .connect(clientAccount)
-        .getHolderPolicies();
+      const addresses = await factory.connect(clientAccount).getPolicies();
 
       const newEndDate = endDate + 86400;
       expect(addresses).to.have.length(1);
@@ -148,7 +146,7 @@ describe('Factory', function () {
         });
       const [policyAddress] = await factory
         .connect(clientAccount)
-        .getHolderPolicies();
+        .getPolicies();
       const prevBalance = await ethers.provider.getBalance(clientAccount);
       await factory.addEvaluator(evaluatorAccount.address);
       await factory.approveClaim(policyAddress, claimId, claimExpenses);
@@ -171,7 +169,7 @@ describe('Factory', function () {
         });
       const [policyAddress] = await factory
         .connect(clientAccount)
-        .getHolderPolicies();
+        .getPolicies();
       const prevFactoryBalance = await ethers.provider.getBalance(factory);
 
       const prevBalance = await ethers.provider.getBalance(clientAccount);
@@ -224,7 +222,7 @@ describe('Factory', function () {
 
       const [policyAddress] = await factory
         .connect(clientAccount)
-        .getHolderPolicies();
+        .getPolicies();
       const cancelDate = endDate.setMonth(endDate.getMonth() - 6);
       const cancelDateSeconds: number = Math.floor(cancelDate / 1000);
 
@@ -256,7 +254,7 @@ describe('Factory', function () {
 
       const [policyAddress] = await factory
         .connect(clientAccount)
-        .getHolderPolicies();
+        .getPolicies();
       const cancelDate = endDate.setMonth(endDate.getMonth() - 6);
       const cancelDateSeconds: number = Math.floor(cancelDate / 1000);
 
@@ -288,7 +286,7 @@ describe('Factory', function () {
 
       const [policyAddress] = await factory
         .connect(clientAccount)
-        .getHolderPolicies();
+        .getPolicies();
       const cancelDate = endDate.setMonth(endDate.getMonth() - 6);
       const cancelDateSeconds: number = Math.floor(cancelDate / 1000);
 
