@@ -1,7 +1,7 @@
 # Insurechain
 
 Insurechain is DAPP solution which consists on a technological ecosystem that builds the next generation of Web3 insurance.
-
+[You may find the project slides here.](https://slides.com/gerardcastell/development-of-a-dapp)
 ## Stacks
 
 - Frontend: Next.js
