@@ -1,7 +1,9 @@
 # Insurechain
 
-Insurechain is DAPP solution which consists on a technological ecosystem that builds the next generation of Web3 insurance.
+Insurechain is a DAPP solution that comprises a technological ecosystem designed to build the next generation of Web3 insurance.<br/>
+[The web application is deployed here.](https://insurechain.vercel.app/)<br/>
 [You may find the project slides here.](https://slides.com/gerardcastell/development-of-a-dapp)
+
 ## Stacks
 
 - Frontend: Next.js
@@ -15,7 +17,7 @@ Insurechain is DAPP solution which consists on a technological ecosystem that bu
 
 ### Local Database
 
-To init the database locally first we have to run the docker container with the database:
+To initialize the database locally, first we have to run the Docker container with the database:
 
 ```bash
 npm run db:up:dev
